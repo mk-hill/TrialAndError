@@ -1,3 +1,14 @@
 #main-title {
     font-weight: 400;
 }
+
+.fa-remove {
+    cursor: pointer;
+}
+
+#toast-container {
+    top: auto;
+    right: auto;
+    bottom: 0;
+    transform: scale(.9);
+}
