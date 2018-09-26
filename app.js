@@ -17,7 +17,7 @@ function addTask(e) {
     // Create li element
     const li = document.createElement('li');
     // Add class for materialize
-    li.className = 'collection-item';
+    li.className = 'collection-item grey lighten-5';
     // Create text node and append to li
     // INJECTION?
     li.appendChild(document.createTextNode(taskInput.value));
