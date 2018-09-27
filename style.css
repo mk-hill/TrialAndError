@@ -5,9 +5,14 @@
 
 .fa-remove {
     position: relative;
-    right: -2.2rem;
+    right: -2rem;
     cursor: pointer;
     transform: scale(1.2);
+    color: rgba(183, 28, 28, .7);
+}
+
+.fa-remove:hover {
+    color: #d32f2f;
 }
 
 #toast-container {

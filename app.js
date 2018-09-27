@@ -44,12 +44,23 @@ function removeTask(e) {
   }
 }
 
+// Clear all tasks
+function clearTasks() {
+  // taskList.innerHTML = '';
+  // Looping faster?! ******* research further *******
+  while (taskList.firstChild) {
+    taskList.removeChild(taskList.firstChild);
+  }
+}
+
 // Load all event listeners
 function loadEventListeners() {
   // Add task event
   form.addEventListener('submit', addTask);
   // Remove task event
-  taskList.addEventListener('click', removeTask)
+  taskList.addEventListener('click', removeTask);
+  // Clear all tasks event
+  clearBtn.addEventListener('click', clearTasks);
 }
 
 loadEventListeners();
