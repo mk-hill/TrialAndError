@@ -5,43 +5,74 @@ const clearBtn = document.querySelector('.clear-tasks');
 const filter = document.querySelector('#filter');
 const taskInput = document.querySelector('#task');
 
+// Create task html element with appropriate classes and content
+function createTaskElement(content) {
+  // Create li element
+  const li = document.createElement('li');
+  // Add class for materialize
+  li.className = 'collection-item grey lighten-5';
+  // Create text node and append to li
+  // INJECTION WITH USER INPUT / LOCAL STORAGE MODIFICATION?
+  li.appendChild(document.createTextNode(content));
+  // Create new link element
+  const removeButton = document.createElement('a');
+  removeButton.className = 'delete-item secondary-content';
+  // Add remove icon html
+  removeButton.innerHTML = '<i class="fa fa-remove"></i>';
+  // Append link to li
+  li.appendChild(removeButton);
+  // Append li to ul
+  taskList.appendChild(li);
+}
+
+// Check local storage, return empty array or array from LS accordingly
+// Parsing string from local storage
+function getStoredTasks() {
+  return localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks')) : [];
+}
+
+// Store added task in local storage
+function storeTaskLocal(task) {
+  const tasks = getStoredTasks();
+  tasks.push(task);
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+// Remove task from local storage
+// function removeTaskLocal(taskElement) {
+//   if (localStorage.getItem('tasks') !== null) {
+//     taskElement.textContent
+//   }
+// }
+
+
 function addTask(e) {
   // Prevent empty items
   if (taskInput.value === '') {
     M.toast({
       html: 'No empty tasks!',
-      displayLength: 1500,
     });
   } else {
-    // Create li element
-    const li = document.createElement('li');
-    // Add class for materialize
-    li.className = 'collection-item grey lighten-5';
-    // Create text node and append to li
-    // INJECTION?
-    li.appendChild(document.createTextNode(taskInput.value));
-    // Create new link element
-    const removeLink = document.createElement('a');
-    removeLink.className = 'delete-item secondary-content';
-    // Add icon html
-    removeLink.innerHTML = '<i class="fa fa-remove"></i>';
-    // Append link to li
-    li.appendChild(removeLink);
-    // Append li to ul
-    taskList.appendChild(li);
+    createTaskElement(taskInput.value);
+    // Store task in local storage
+    storeTaskLocal(taskInput.value);
     // Clear input
     taskInput.value = '';
   }
   e.preventDefault();
 }
 
+
 // Removing single task from list
 function removeTask(e) {
-  // Target returns <i>, <a> is parent
-  if (e.target.parentElement.classList.contains('delete-item')) {
-    e.target.parentElement.parentElement.remove();
+  // Target returns <i>, <a> is parent. <li> is <a>'s parent
+  const li = e.target.parentElement.parentElement;
+  if (li.querySelector('a').classList.contains('delete-item')) {
+    li.remove();
   }
+  // removeTaskLocal(li);
 }
+
 
 // Clear all tasks
 function clearTasks() {
@@ -51,6 +82,7 @@ function clearTasks() {
     taskList.removeChild(taskList.firstChild);
   }
 }
+
 
 function filterTasks(e) {
   const text = e.target.value.toLowerCase();
@@ -65,8 +97,24 @@ function filterTasks(e) {
   });
 }
 
+
+// Get tasks from Local Storage
+function getTasks() {
+  let tasks;
+  if (localStorage.getItem('tasks') === null) {
+    tasks = [];
+  } else {
+    // Local storage stores as string
+    tasks = JSON.parse(localStorage.getItem('tasks'));
+  }
+  tasks.forEach(task => createTaskElement(task));
+}
+
+
 // Load all event listeners
 function loadEventListeners() {
+  // Load local storage once DOM is ready
+  document.addEventListener('DOMContentLoaded', getTasks);
   // Add task event
   form.addEventListener('submit', addTask);
   // Remove task event
