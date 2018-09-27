@@ -5,6 +5,7 @@ const clearBtn = document.querySelector('.clear-tasks');
 const filter = document.querySelector('#filter');
 const taskInput = document.querySelector('#task');
 const rememberSwitch = document.querySelector('#remember-checkbox');
+let rememberState = true;
 
 // Create task html element with appropriate classes and content
 function createTaskElement(content) {
@@ -61,8 +62,10 @@ function addTask(e) {
     });
   } else {
     createTaskElement(taskInput.value);
-    // Store task in local storage
-    storeTaskLocal(taskInput.value);
+    // Store task in local storage unless user toggled LS off
+    if (rememberState) {
+      storeTaskLocal(taskInput.value);
+    }
     // Clear input
     taskInput.value = '';
   }
@@ -121,9 +124,12 @@ function getTasks() {
 }
 
 // Clear local storage when user unchecks remember me
-function forgetMe() {
+function rememberToggle() {
   if (!rememberSwitch.checked) {
     clearTasksLocal();
+    rememberState = false;
+  } else {
+    rememberState = true;
   }
 }
 
@@ -140,7 +146,7 @@ function loadEventListeners() {
   // Filter tasks event
   filter.addEventListener('keyup', filterTasks);
   // Clear local storage when user unchecks remember me
-  rememberSwitch.addEventListener('change', forgetMe);
+  rememberSwitch.addEventListener('change', rememberToggle);
 }
 
 loadEventListeners();

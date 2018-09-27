@@ -33,8 +33,12 @@
     padding-bottom: 5rem;
 }
 
-#main-card {
-    padding-top: 10px;
+#main {
+    padding: .6rem;
+}
+
+#main-content {
+    padding-top: 1rem;
 }
 
 .clear-tasks:hover {
