@@ -35,7 +35,7 @@ function getStoredTasks() {
 
 
 // Store added task in local storage
-function storeTaskLocal(task) {
+function storeLocalTask(task) {
   const tasks = getStoredTasks();
   tasks.push(task);
   localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -43,7 +43,7 @@ function storeTaskLocal(task) {
 
 
 // Remove task from local storage
-function removeTaskLocal(taskElement) {
+function removeLocalTask(taskElement) {
   const tasks = getStoredTasks();
   tasks.forEach((task, index) => {
     if (taskElement.textContent === task) {
@@ -64,7 +64,7 @@ function addTask(e) {
     createTaskElement(taskInput.value);
     // Store task in local storage unless user toggled LS off
     if (rememberState) {
-      storeTaskLocal(taskInput.value);
+      storeLocalTask(taskInput.value);
     }
     // Clear input
     taskInput.value = '';
@@ -80,11 +80,11 @@ function removeTask(e) {
   if (li.querySelector('a').classList.contains('delete-item')) {
     li.remove();
   }
-  removeTaskLocal(li);
+  removeLocalTask(li);
 }
 
 
-function clearTasksLocal() { localStorage.clear(); }
+function clearLocalTasks() { localStorage.clear(); }
 
 // Clear all tasks
 function clearTasks() {
@@ -93,7 +93,7 @@ function clearTasks() {
   while (taskList.firstChild) {
     taskList.removeChild(taskList.firstChild);
   }
-  clearTasksLocal();
+  clearLocalTasks();
 }
 
 
@@ -126,7 +126,7 @@ function getTasks() {
 // Clear local storage when user unchecks remember me
 function rememberToggle() {
   if (!rememberSwitch.checked) {
-    clearTasksLocal();
+    clearLocalTasks();
     rememberState = false;
   } else {
     rememberState = true;
