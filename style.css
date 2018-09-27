@@ -33,6 +33,14 @@
     padding-bottom: 5rem;
 }
 
+#main-card {
+    padding-top: 10px;
+}
+
 .clear-tasks:hover {
     background-color: #d32f2f !important;
+}
+
+#remember-lever {
+    margin: 0 .5rem 0 .3rem;
 }

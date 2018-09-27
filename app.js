@@ -4,6 +4,7 @@ const taskList = document.querySelector('.collection');
 const clearBtn = document.querySelector('.clear-tasks');
 const filter = document.querySelector('#filter');
 const taskInput = document.querySelector('#task');
+const rememberSwitch = document.querySelector('#remember-checkbox');
 
 // Create task html element with appropriate classes and content
 function createTaskElement(content) {
@@ -119,6 +120,12 @@ function getTasks() {
   tasks.forEach(task => createTaskElement(task));
 }
 
+// Clear local storage when user unchecks remember me
+function forgetMe() {
+  if (!rememberSwitch.checked) {
+    clearTasksLocal();
+  }
+}
 
 // Load all event listeners
 function loadEventListeners() {
@@ -132,6 +139,8 @@ function loadEventListeners() {
   clearBtn.addEventListener('click', clearTasks);
   // Filter tasks event
   filter.addEventListener('keyup', filterTasks);
+  // Clear local storage when user unchecks remember me
+  rememberSwitch.addEventListener('change', forgetMe);
 }
 
 loadEventListeners();
