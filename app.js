@@ -5,7 +5,6 @@ const clearBtn = document.querySelector('.clear-tasks');
 const filter = document.querySelector('#filter');
 const taskInput = document.querySelector('#task');
 
-// Adding tasks to list
 function addTask(e) {
   // Prevent empty items
   if (taskInput.value === '') {
@@ -36,7 +35,7 @@ function addTask(e) {
   e.preventDefault();
 }
 
-// Removing tasks from list
+// Removing single task from list
 function removeTask(e) {
   // Target returns <i>, <a> is parent
   if (e.target.parentElement.classList.contains('delete-item')) {
@@ -47,10 +46,23 @@ function removeTask(e) {
 // Clear all tasks
 function clearTasks() {
   // taskList.innerHTML = '';
-  // Looping faster?! ******* research further *******
+  // Could looping really be faster?! **** research further ****
   while (taskList.firstChild) {
     taskList.removeChild(taskList.firstChild);
   }
+}
+
+function filterTasks(e) {
+  const text = e.target.value.toLowerCase();
+  // Returns node list, forEach usable
+  document.querySelectorAll('.collection-item').forEach((task) => {
+    const item = task.firstChild.textContent;
+    if (item.toLowerCase().indexOf(text) !== -1) {
+      task.style.display = 'block';
+    } else {
+      task.style.display = 'none';
+    }
+  });
 }
 
 // Load all event listeners
@@ -61,6 +73,8 @@ function loadEventListeners() {
   taskList.addEventListener('click', removeTask);
   // Clear all tasks event
   clearBtn.addEventListener('click', clearTasks);
+  // Filter tasks event
+  filter.addEventListener('keyup', filterTasks);
 }
 
 loadEventListeners();
