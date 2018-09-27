@@ -31,12 +31,14 @@ function getStoredTasks() {
   return localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks')) : [];
 }
 
+
 // Store added task in local storage
 function storeTaskLocal(task) {
   const tasks = getStoredTasks();
   tasks.push(task);
   localStorage.setItem('tasks', JSON.stringify(tasks));
 }
+
 
 // Remove task from local storage
 function removeTaskLocal(taskElement) {
@@ -76,6 +78,7 @@ function removeTask(e) {
   }
   removeTaskLocal(li);
 }
+
 
 function clearTasksLocal() { localStorage.clear(); }
 
