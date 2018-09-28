@@ -1,3 +1,30 @@
+// Show error if number is not finite
+const clearError = () => {
+  document.querySelector('.alert').remove();
+};
+
+const showError = (error) => {
+  const errorDiv = document.createElement('div');
+  // Add classes for bootstrap
+  errorDiv.className = 'alert alert-danger';
+  // Get parent and sibling for insertion
+  const cardEl = document.querySelector('.card');
+  const headingEl = document.querySelector('.heading');
+
+  // Create text node and append to div
+  errorDiv.appendChild(document.createTextNode(error));
+  // Insert error in card above heading
+  cardEl.insertBefore(errorDiv, headingEl);
+
+  // clear error after 2 seconds
+  setTimeout(clearError, 2000);
+
+  // Separate function cleaner?
+  // setTimeout(() => {
+  //   document.querySelector('.alert').remove();
+  // }, 2000);
+};
+
 const calculateResults = (e) => {
   // Declare UI element variables
   const amountEl = document.getElementById('amount');
@@ -20,11 +47,10 @@ const calculateResults = (e) => {
     totalPaymentEl.value = (monthly * calculatedPayments).toFixed(2);
     totalInterestEl.value = ((monthly * calculatedPayments) - principal).toFixed(2);
   } else {
-    console.log('Check numbers');
+    showError('Please check your numbers.');
   }
-
   e.preventDefault();
-}
+};
 
 // Listen for submit
 document.getElementById('loan-form').addEventListener('submit', calculateResults);
