@@ -4,6 +4,9 @@ const clearError = () => {
 };
 
 const showError = (error) => {
+  // Prevent results from showing up if there is an error
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('loading').style.display = 'none';
   const errorDiv = document.createElement('div');
   // Add classes for bootstrap
   errorDiv.className = 'alert alert-danger';
@@ -25,7 +28,7 @@ const showError = (error) => {
   // }, 2000);
 };
 
-const calculateResults = (e) => {
+const calculateResults = () => {
   // Declare UI element variables
   const amountEl = document.getElementById('amount');
   const interestEl = document.getElementById('interest');
@@ -46,11 +49,22 @@ const calculateResults = (e) => {
     monthlyPaymentEl.value = monthly.toFixed(2);
     totalPaymentEl.value = (monthly * calculatedPayments).toFixed(2);
     totalInterestEl.value = ((monthly * calculatedPayments) - principal).toFixed(2);
+
+    // Show results and hide loader
+    document.getElementById('results').style.display = 'block';
+    document.getElementById('loading').style.display = 'none';
   } else {
     showError('Please check your numbers.');
   }
-  e.preventDefault();
 };
 
 // Listen for submit
-document.getElementById('loan-form').addEventListener('submit', calculateResults);
+document.getElementById('loan-form').addEventListener('submit', (e) => {
+  // Ensure results remain hidden with multiple clicks
+  document.getElementById('results').style.display = 'none';
+
+  // Show loader
+  document.getElementById('loading').style.display = 'block';
+  setTimeout(calculateResults, 1000);
+  e.preventDefault();
+});
