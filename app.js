@@ -133,6 +133,13 @@ function rememberToggle() {
   }
 }
 
+
+// Initialize Materialize side nav
+function loadSideNav() {
+  const elems = document.querySelectorAll('.sidenav');
+  M.Sidenav.init(elems);
+}
+
 // Load all event listeners
 function loadEventListeners() {
   // Load local storage once DOM is ready
@@ -147,6 +154,8 @@ function loadEventListeners() {
   filter.addEventListener('keyup', filterTasks);
   // Clear local storage when user unchecks remember me
   rememberSwitch.addEventListener('change', rememberToggle);
+  // Materialize side nav
+  document.addEventListener('DOMContentLoaded', loadSideNav);
 }
 
 loadEventListeners();
