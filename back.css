@@ -1,0 +1,35 @@
+#back-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  line-height: 1;
+  font-size: 2rem;
+  background-color: #00895C;
+  padding: 0 8px 4px 8px;
+  text-align: center;
+  box-shadow: 0 .4rem 1rem rgba(0, 0, 0, .3);
+  transition: all .1s;
+  cursor: pointer;
+  z-index: 9001;
+}
+
+#back-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 .6rem 1.7rem rgba(0, 0, 0, .4);
+}
+
+#back-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 .2rem .5rem rgba(0, 0, 0, .7);
+}
+
+#back-arrow:link,
+#back-arrow:visited {
+  line-height: 1;
+  text-decoration: none;
+  color: #fff;
+}
+
+.back-button-spacer {
+  margin-top: 35px;
+}
