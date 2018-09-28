@@ -1,3 +1,6 @@
+// Wrapping entire code in an IIFE to prevent console exploit?
+// Research further
+
 /*
 GAME FUNCTIONS:
 - Generate random min and max
@@ -13,7 +16,7 @@ GAME FUNCTIONS:
 // Game values
 let min = 1,
     max = 10,
-    winningNum = 2,
+    winningNum = getWinningNum(),
     guessesLeft = 3;
 
 // DOM Elements
@@ -25,7 +28,13 @@ const gameEl = document.querySelector('#game'),
       messageEl = document.querySelector('.message');
 
 // Use classes for stuff like this? ^
+// Look into reasons/best practices on eslint rule requiring separate declarations
 /* eslint-enable */
+console.log(winningNum);
+// Hoisting this function so we don't have to split up the variable declarations above
+function getWinningNum() {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
 
 // Assign DOM min and max values
 minNumEl.textContent = min;
@@ -38,12 +47,17 @@ const setMessage = (msg, color) => {
 };
 
 // Take boolean for win state
-const gameOver = (won, msg) => { 
+const gameOver = (won, msg) => {
   const color = won ? 'green' : 'red';
   guessInputEl.disabled = true;
   guessInputEl.style.borderColor = color;
   setMessage(msg, color);
-}
+
+  // New round prompt add class for new event handler
+  guessBtnEl.value = 'Play again?';
+  // setting class for now until event listener is fixed *******************************************
+  guessBtnEl.className = 'play-again';
+};
 
 // Listen for guess
 guessBtnEl.addEventListener('click', () => {
@@ -51,27 +65,32 @@ guessBtnEl.addEventListener('click', () => {
 
   // Validate input
   if (!guess || guess < min || guess > max) {
-    setMessage(`Please enter a number between ${min} and ${max}.`);
+    setMessage(`Please enter a number between ${min} and ${max}.`, 'red');
+    return;
   }
 
   // Check win case
   if (guess === winningNum) {
     gameOver(true, `${winningNum} is correct, you win!`, 'green');
-    // guessInputEl.disabled = true;
-    // guessInputEl.style.borderColor = 'green';
-    // setMessage(`${winningNum} is correct, you win!`, 'green');
   } else {
     guessesLeft -= 1;
-    
+
+    // Check lose case
     if (guessesLeft === 0) {
-      // Game over - lose
       gameOver(false, `Game over, you lost. The correct number was ${winningNum}`);
     } else {
       // Game continues - wrong answer
       guessInputEl.style.borderColor = 'red';
       // Clear input field
       guessInputEl.value = '';
-      setMessage(`${guess} is not correct. You have ${guessesLeft} guesses left.`, 'red');
+      setMessage(`${guess} is not correct. Remaining guesses: ${guessesLeft}`, 'red');
     }
+  }
+});
+
+// Listen for new round. new-round class not present on dom load, delegating event
+gameEl.addEventListener('mousedown', (e) => {
+  if (e.target.className === 'play-again') {
+    window.location.reload();
   }
 });
