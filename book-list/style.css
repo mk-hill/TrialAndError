@@ -1,0 +1,26 @@
+body {
+  background-color: #FFFCFA;
+}
+
+.success,
+.error {
+  color: #fff;
+  padding: .4rem;
+  margin: .3rem 0 1rem 0;
+}
+
+.success {
+  background-color: green;
+}
+
+.error {
+  background-color: red;
+}
+
+h1 {
+  text-align: center;
+}
+
+#submit {
+  background-color: #fff;
+}
