@@ -24,6 +24,7 @@ const gameEl = document.querySelector('#game'),
       guessInputEl = document.querySelector('#guess-input'),
       messageEl = document.querySelector('.message');
 
+// Use classes for stuff like this? ^
 /* eslint-enable */
 
 // Assign DOM min and max values
@@ -36,19 +37,41 @@ const setMessage = (msg, color) => {
   messageEl.textContent = msg;
 };
 
+// Take boolean for win state
+const gameOver = (won, msg) => { 
+  const color = won ? 'green' : 'red';
+  guessInputEl.disabled = true;
+  guessInputEl.style.borderColor = color;
+  setMessage(msg, color);
+}
+
 // Listen for guess
 guessBtnEl.addEventListener('click', () => {
   const guess = parseInt(guessInputEl.value, 10);
 
   // Validate input
   if (!guess || guess < min || guess > max) {
-    setMessage(`Please enter a number between ${min} and ${max}.`, 'red');
+    setMessage(`Please enter a number between ${min} and ${max}.`);
   }
 
   // Check win case
   if (guess === winningNum) {
-    guessInputEl.disabled = true;
-    guessInputEl.style.borderColor = 'green';
-    setMessage(`${winningNum} is correct, you win!`, 'green');
+    gameOver(true, `${winningNum} is correct, you win!`, 'green');
+    // guessInputEl.disabled = true;
+    // guessInputEl.style.borderColor = 'green';
+    // setMessage(`${winningNum} is correct, you win!`, 'green');
+  } else {
+    guessesLeft -= 1;
+    
+    if (guessesLeft === 0) {
+      // Game over - lose
+      gameOver(false, `Game over, you lost. The correct number was ${winningNum}`);
+    } else {
+      // Game continues - wrong answer
+      guessInputEl.style.borderColor = 'red';
+      // Clear input field
+      guessInputEl.value = '';
+      setMessage(`${guess} is not correct. You have ${guessesLeft} guesses left.`, 'red');
+    }
   }
 });
