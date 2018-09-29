@@ -6,8 +6,6 @@ function Book(title, author, isbn) {
 }
 
 
-/* eslint-disable */
-
 // UI Constructor
 function UI() {}
 
@@ -89,6 +87,6 @@ document.getElementById('book-form').addEventListener('submit', (e) => {
 document.getElementById('book-list').addEventListener('click', (e) => {
   // Instantiate ui
   const ui = new UI();
-  ui.deleteBook(e.target)
+  ui.deleteBook(e.target);
   e.preventDefault();
 });
