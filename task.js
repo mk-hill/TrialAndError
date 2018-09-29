@@ -14,7 +14,7 @@ function createTaskElement(content) {
   // Add class for materialize
   li.className = 'collection-item grey lighten-5';
   // Create text node and append to li
-  // INJECTION WITH USER INPUT / LOCAL STORAGE MODIFICATION?
+  // ? Injection from input / local storage ?
   li.appendChild(document.createTextNode(content));
   // Create new link element
   const removeButton = document.createElement('a');
@@ -89,7 +89,7 @@ function clearLocalTasks() { localStorage.clear(); }
 // Clear all tasks
 function clearTasks() {
   // taskList.innerHTML = '';
-  // Could looping really be faster?! **** research further ****
+  // ? Could looping really be faster ?
   while (taskList.firstChild) {
     taskList.removeChild(taskList.firstChild);
   }

@@ -1,5 +1,5 @@
-// Wrapping entire code in an IIFE to prevent console exploit?
-// Research further
+// ? Wrapping entire code in an IIFE to prevent console exploit ?
+// ? Research further ?
 
 /*
 GAME FUNCTIONS:
@@ -27,10 +27,11 @@ const gameEl = document.querySelector('#game'),
       guessInputEl = document.querySelector('#guess-input'),
       messageEl = document.querySelector('.message');
 
-// Use classes for stuff like this? ^
-// Look into reasons/best practices on eslint rule requiring separate declarations
+// ? Use classes for stuff like this? ^
+// ? Look into reasons/best practices on eslint rule requiring separate declarations
 /* eslint-enable */
-console.log(winningNum);
+// Might as well:
+console.log(`Here you go: ${winningNum}`);
 // Hoisting this function so we don't have to split up the variable declarations above
 function getWinningNum() {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -55,7 +56,7 @@ const gameOver = (won, msg) => {
 
   // New round prompt add class for new event handler
   guessBtnEl.value = 'Play again?';
-  // setting class for now until event listener is fixed *******************************************
+
   guessBtnEl.className = 'play-again';
 };
 

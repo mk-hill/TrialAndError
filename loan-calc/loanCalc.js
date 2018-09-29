@@ -22,7 +22,7 @@ const showError = (error) => {
   // clear error after 2 seconds
   setTimeout(clearError, 2000);
 
-  // Separate function cleaner?
+  // ? Separate function cleaner ?
   // setTimeout(() => {
   //   document.querySelector('.alert').remove();
   // }, 2000);
