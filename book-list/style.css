@@ -25,3 +25,11 @@ h1 {
 #submit {
   background-color: #fff;
 }
+
+.delete:link,
+.delete:visited {
+  padding: 0 5px;
+  color: crimson;
+  font-weight: bold;
+  text-decoration: none;
+}
