@@ -19,6 +19,7 @@ searchUser.addEventListener('keyup', (e) => {
       } else {
         // data returns object with profile key specified in GitHub.js
         ui.showProfile(data.profile);
+        ui.showRepos(data.repos);
       }
     });
   } else {
