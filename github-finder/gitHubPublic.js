@@ -1,5 +1,7 @@
-// * API returns 404 once 10 requests/min limit is reached without client id&secret
-// ? Implement user warning ?
+// // API returns 404 once 10 requests/min limit is reached without client id&secret
+// // ? Implement user warning ?
+// ? Cannot reproduce error from 10 search/min limit without auth ?
+// ? Seems to work fine - recheck GitHub API docs if it becomes an issue ?
 
 class GitHub {
   // constructor() {

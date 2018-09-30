@@ -6,12 +6,21 @@ class UI {
   showProfile(userReceived) {
     // ? Change null's into something human readable ?
     // ! Test looping performance on slower devices  !
+    // ? Lighthouse only seems to check initial load ?
+    // ? Input response seems fine on cell phone     ?
     const user = userReceived;
-    for (let [key, value] of Object.entries(user)) {
-      if (user[key] === null || user[key] === '') {
-        user[key] = 'N/A';
-      }
-    }
+    // for (let [key, value] of Object.entries(user)) {
+    //   if (user[key] === null || user[key] === '') {
+    //     user[key] = 'N/A';
+    //   }
+    // }
+    // ? Or just reassign assign the ones we use ?
+    user.company = user.company ? user.company : 'N/A';
+    user.blog = user.blog ? user.blog : 'N/A';
+    user.location = user.location ? user.location : 'N/A';
+    user.created_at = user.created_at ? user.created_at : 'N/A';
+    // ? Looks uglier, but should run faster ?
+
     this.profile.innerHTML = `
     <div class="card card-body mb-3">
       <div class="row">
@@ -37,5 +46,34 @@ class UI {
     <h3 class="page-heading mb-3">Latest Repos</h3>
     <div id="repos"></div>
     `;
+  }
+
+  showAlert(message, className) {
+    // Clear previous alerts first
+    this.clearAlert();
+    // Create new div, assign classes, add text
+    const newDiv = document.createElement('div');
+    newDiv.className = className;
+    newDiv.appendChild(document.createTextNode(message));
+    // Get parent
+    const container = document.querySelector('.searchContainer');
+    // Get search box
+    const search = document.querySelector('.search');
+    // Insert alert
+    container.insertBefore(newDiv, search);
+    setTimeout(() => {
+      this.clearAlert();
+    }, 2500);
+  }
+
+  clearAlert() {
+    const currentAlert = document.querySelector('.alert');
+    if (currentAlert) {
+      currentAlert.remove();
+    }
+  }
+
+  clearProfile() {
+    this.profile.innerHTML = '';
   }
 }

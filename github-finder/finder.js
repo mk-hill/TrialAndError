@@ -12,13 +12,17 @@ searchUser.addEventListener('keyup', (e) => {
     // Make get request
     github.getUser(userText).then((data) => {
       if (data.profile.message === 'Not Found') {
-        // Show alert in UI
+        // Send message and bootsrap classes to ui method
+        ui.showAlert('User not found', 'alert alert-danger');
+        // ? Also clear last profile that was loaded ?
+        ui.clearProfile();
       } else {
         // data returns object with profile key specified in GitHub.js
         ui.showProfile(data.profile);
       }
     });
   } else {
-    // Clear profile if input is empty
+    // Clear profile section if input is empty
+    ui.clearProfile();
   }
 });
