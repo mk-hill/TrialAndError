@@ -17,7 +17,7 @@ function getJson() {
     // data is an array of objects
     let output = '';
     data.forEach((post) => {
-      output += `<li>${post.title}: ${post.body}</li>`; 
+      output += `<li>${post.title}: ${post.body}</li>`;
     });
     document.getElementById('output').innerHTML = output;
   }).catch((error) => {
