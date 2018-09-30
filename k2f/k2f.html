@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <title>Kelvin to Fahrenheit</title>
+</head>
+<body>
+  <div class="container">
+  
+      
+        <main id="main" class="card grey lighten-5">
+          <div id="main-content" class="card-content">
+            <span style="margin-bottom:50px"id="main-title" class="card-title center">Kelvin to Fahrenheit</span>
+            <div class="row">
+              <div class="input-field col s4">
+                <input type="number" step="0.01" min="0" name="kelvin" id="kelvin">
+                <label for="kelvin">Kelvin</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="number" step="0.01" name="celsius" id="celsius" readonly>
+                <label for="celsius">Celsius</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="number" step="0.01" name="fahrenheit" id="fahrenheit" readonly>
+                <label for="celsius">Fahrenheit</label>
+              </div>
+            </div>
+            <div class="row">
+              <button id="calculate" class="btn col s4 push-s4">Get Fahrenheit</button>
+            </div>
+          </div>
+        </main>
+      
+    
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="k2f.js"></script>
+</body>
+</html>
