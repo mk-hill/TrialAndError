@@ -57,6 +57,7 @@ document.getElementById('put-btn').addEventListener('click', updateUser);
 document.getElementById('delete-btn').addEventListener('click', deleteUser);
 
 
+// ********************************** Earlier experiments **********************************
 // Get posts
 // http.get('https://jsonplaceholder.typicode.com/posts', function (error, postsReceived) {
 //   if (error) {
