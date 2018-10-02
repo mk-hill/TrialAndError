@@ -15,8 +15,87 @@
     return new Greetr.init(firstName, lastName, language);
   };
 
-  // Creating empty object for use below
-  Greetr.prototype = {};
+  // Creating some separte variables for internal use which
+  // will not be exposed to global through Greetr object.
+  // Greetr methods will have access through closure
+  const supportedLangs = ['en', 'es'];
+
+  const greetings = {
+    en: 'Hello',
+    es: 'Hola',
+  };
+
+  const formalGreetings = {
+    en: 'Greetings',
+    es: 'Saludos',
+  };
+
+  const logMessages = {
+    en: 'Logged in',
+    es: 'Inicio sesión',
+  };
+
+  // Creating object for use below
+  // Prototype methods added here
+  Greetr.prototype = {
+    getFullName() {
+      return `${this.firstName} ${this.lastName}`;
+    },
+
+    validate() {
+      // ? Use .includes instead ?
+      if (supportedLangs.indexOf(this.language) === -1) {
+        throw "Language not supported";
+      }
+    },
+
+    // ? Add _ to these two methods which aren't intended for the user ?
+    greeting() {
+      return `${greetings[this.language]} ${this.firstName}!`;
+    },
+
+    formalGreeting() {
+      return `${formalGreetings[this.language]}, ${this.getFullName()}.`;
+    },
+
+    greet(isFormal) {
+      let msg;
+      // Will be falsy if undefined or null
+      if (isFormal) {
+        msg = this.formalGreeting();
+      } else {
+        msg = this.greeting();
+      }
+
+      if (console) {
+        console.log(msg);
+      }
+
+      // 'this' will refer to the calling object at execution time
+      // makes the method chainable!
+      return this;
+    },
+
+    log() {
+      // ? IE doesn't have console object if it's not opened ?
+      // * test later *
+      // Confirm console existence first
+      if (console) {
+        console.log(`${logMessages[this.language]}: ${this.getFullName()}`);
+      }
+
+      return this;
+    },
+
+    // Allow changing the language on the fly
+    setLang(lang) {
+      this.language = lang;
+      this.validate();
+
+      return this;
+    },
+
+  };
 
   // Actual function constructor
   Greetr.init = function (firstName = '', lastName = '', language = 'en') {

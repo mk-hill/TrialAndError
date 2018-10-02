@@ -1,2 +1,8 @@
 const g = G$('John', 'Doe');
-console.log(g);
+
+// g.greet();
+// g.greet(true);
+// g.log();
+
+// Chainable
+g.greet().setLang('es').greet(true).log();
