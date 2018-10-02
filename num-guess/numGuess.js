@@ -2,6 +2,9 @@
 
   // ? Wrapping entire code in an IIFE to prevent console exploit ?
   // ? Seems to work, undo in case of issues ?
+  // ? Any performance cost due to additional execution context ?
+  // ? Maybe wrap only winningNum related code in IIFE ?
+  // ? Though libraries seem to do the same ?
 
   /*
   GAME FUNCTIONS:
@@ -99,4 +102,4 @@
     }
   });
 
-}())
+}());
