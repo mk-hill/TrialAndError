@@ -21,8 +21,15 @@ class UI {
     const fahrenheit = Math.floor(celsius * (9 / 5) + 32);
     this.temp.textContent = `${fahrenheit} °F (${celsius} °C)`;
     this.humidity.textContent = `Humidity: ${weather.main.humidity}%`;
-    this.pressure.textContent = `Pressure: ${weather.main.pressure}`;
-    this.windSpeed.textContent = `Wind Speed: ${weather.wind.speed}m/s`;
+    this.pressure.textContent = `Pressure: ${weather.main.pressure} hPa`;
+    this.windSpeed.textContent = `Wind Speed: ${weather.wind.speed} m/s`;
     this.windDeg.textContent = `Wind Direction: ${weather.wind.speed}°`;
+  }
+
+  closeModal() {
+    const modal = document.querySelector('.modal');
+    const modalBackdrop = document.querySelector('.modal-backdrop');
+    modal.classList.remove('show');
+    modalBackdrop.classList.remove('show');
   }
 }
