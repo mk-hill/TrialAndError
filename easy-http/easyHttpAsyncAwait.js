@@ -1,4 +1,4 @@
-// v2 of easyHttp using Fetch API
+// v3 of easyHttp using Async Await
 
 class EasyHTTP {
   async get(url) {
