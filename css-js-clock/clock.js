@@ -13,9 +13,7 @@ function setDate() {
   const secondsDeg = (90 + seconds * 6); // % 360;
   const minsDeg = (90 + minutes * 6); // % 360;
   const hoursDeg = (90 + hours * 30); // % 360;
-  console.log(`minutes: ${minsDeg}`);
-  console.log(`hours: ${hoursDeg}`);
-  console.log(`seconds: ${secondsDeg}`);
+
   // Transition forces a full rotation after 0 which looks janky
   // Commenting out %360 above so the transitionless tick happens at 12
   // rather than arbitrary 9 - jank deg becomes 90 instead of 0
