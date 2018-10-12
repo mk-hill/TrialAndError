@@ -6,7 +6,7 @@ fetch(endpoint)
   .then(res => res.json())
   .then(data => cities.push(...data));
 
-const findMatches = (wordToMatch, cities) => cities.filter((cityObj) => {
+const findMatches = wordToMatch => cities.filter((cityObj) => {
   const regex = new RegExp(wordToMatch, 'gi');
   return cityObj.city.match(regex) || cityObj.state.match(regex);
 });
@@ -36,5 +36,3 @@ function displayMatches() {
 
 inputEl.addEventListener('change', displayMatches);
 inputEl.addEventListener('keyup', displayMatches);
-
-console.log(cities);
