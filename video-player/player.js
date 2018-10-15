@@ -6,6 +6,7 @@ const progressBar = player.querySelector('.progress__filled');
 const toggleBtn = player.querySelector('.toggle');
 const skipButtons = player.querySelectorAll('[data-skip');
 const ranges = player.querySelectorAll('.player__slider');
+const fullscreen = player.querySelector('#fullscreen');
 let mousedown = false;
 
 // Build functions
@@ -48,23 +49,36 @@ function handleVideoProgress() {
   progressBar.style.flexBasis = `${percent}%`;
 }
 
-// Add event listeners
+function goFullscreen() {
+  if (player.requestFullScreen) {
+    player.requestFullScreen();
+  } else if (player.webkitRequestFullScreen) {
+    player.webkitRequestFullScreen();
+  } else if (player.mozRequestFullScreen) {
+    player.mozRequestFullScreen();
+  }
+}
 
+// Add event listeners
 video.addEventListener('click', togglePlay);
 video.addEventListener('timeupdate', handleVideoProgress);
 toggleBtn.addEventListener('click', togglePlay);
+fullscreen.addEventListener('click', goFullscreen);
 skipButtons.forEach(button => button.addEventListener('click', skip));
 ranges.forEach(range => range.addEventListener('change', updateRange));
 ranges.forEach(range => range.addEventListener('mousemove', updateRange));
 progress.addEventListener('click', scrub);
 // Only run scrub() if mousedown is true
 progress.addEventListener('mousemove', e => mousedown && scrub(e));
-progress.addEventListener('mousedown', () => {
+window.addEventListener('mousedown', () => {
   mousedown = true;
 });
-progress.addEventListener('mouseup', () => {
+window.addEventListener('mouseup', () => {
   mousedown = false;
 });
+// document.addEventListener('DOMContentLoaded', () => {
+//   progressBar.style.flexBasis = 0;
+// });
 // Adding separate event listeners to video to detect when its paused/playing
 // to update play/pause button appearance instead of typing it into togglePlay()\
 // in case user toggles the video another way (plugin etc.)
