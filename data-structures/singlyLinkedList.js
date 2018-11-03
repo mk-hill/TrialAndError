@@ -142,6 +142,36 @@ class LinkedList {
     // Yay for garbage collection?
     return this.printList();
   }
+
+  worseReverse() {
+    const reversedArr = this.printList().reverse();
+    const newHead = new Node();
+    [newHead.value] = reversedArr;
+    this.head = newHead;
+    this.tail = newHead;
+    for (let i = 1; i < reversedArr.length; i++) {
+      this.append(reversedArr[i]);
+    }
+    return this.printList();
+  }
+
+  reverse() {
+    if (!this.head.next) {
+      return this;
+    }
+    let first = this.head;
+    this.tail = this.head;
+    let second = first.next;
+    while (second) {
+      const third = second.next;
+      second.next = first;
+      first = second;
+      second = third;
+    }
+    this.head.next = null;
+    this.head = first;
+    return this.printList();
+  }
 }
 
 const myLinkedList = new LinkedList(10);
@@ -154,4 +184,6 @@ myLinkedList.prepend(2);
 
 myLinkedList.insert(6, 1248);
 myLinkedList.remove(3);
-myLinkedList.printList();
+console.log(myLinkedList.printList());
+myLinkedList.reverse();
+console.log(myLinkedList.printList());

@@ -20,6 +20,7 @@ class CrappyHashTable {
     const address = this._hash(key);
     if (!this.data[address]) {
       // Create new empty array only if bucket was empty
+      // Can use linked list instead of array
       this.data[address] = [];
     }
     this.data[address].push([key, value]);

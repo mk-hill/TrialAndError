@@ -86,7 +86,6 @@ class DoublyLinkedList {
     const entry = new Node(value);
     const priorNode = this.traverseToIndex(index - 1);
     const nextNode = priorNode.next;
-    console.log(priorNode.value);
     nextNode.previous = entry;
     priorNode.next = entry;
     entry.next = nextNode;
