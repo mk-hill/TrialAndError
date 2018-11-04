@@ -41,8 +41,8 @@ body {
 
 .items.active {
   background: rgba(255, 255, 255, 0.3);
-  cursor: grabbing;
   cursor: -webkit-grabbing;
+  cursor: grabbing;
   transform: scale(1);
 }
 
