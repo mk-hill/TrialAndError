@@ -26,8 +26,8 @@ function handleMouseMove(e) {
   // Preventing mouse hold from selecting text/elems etc
   e.preventDefault();
   const currentX = e.pageX - slider.offsetLeft;
-  const dX = (currentX - startX) * 2;
-  slider.scrollLeft = initialScrollPoint - dX;
+  const deltaX = (currentX - startX) * 2;
+  slider.scrollLeft = initialScrollPoint - deltaX;
 }
 
 slider.addEventListener('mousedown', handleMouseDown);
