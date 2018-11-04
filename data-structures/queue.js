@@ -1,3 +1,7 @@
+//
+// ─── QUEUE ATTEMPT ──────────────────────────────────────────────────────────────
+//
+
 class Node {
   constructor(value) {
     this.value = value;
