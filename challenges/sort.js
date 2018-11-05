@@ -127,7 +127,9 @@ function mergeSort(arr) {
 function merge(left, right) {
   const newArr = [];
   while (left.length > 0 && right.length > 0) {
+    // ? refactor into ternary push(x<y ? a:b) or is this more readable ?
     if (left[0] < right[0]) {
+      // ? unnecessary shifts instead of iterative index comparison ?
       newArr.push(left.shift());
     } else if (left[0] > right[0]) {
       newArr.push(right.shift());
@@ -135,4 +137,38 @@ function merge(left, right) {
   }
   // Concat any remaining
   return newArr.concat(left.length ? left : right);
+}
+
+// todo compare performance of 2 versions
+
+function mergeSort2(array) {
+  if (array.length === 1) {
+    return array;
+  }
+  // Split Array in into right and left
+  const length = array.length;
+  const middle = Math.floor(length / 2);
+  const left = array.slice(0, middle);
+  const right = array.slice(middle);
+  // console.log('left:', left);
+  // console.log('right:', right);
+
+  return merge2(mergeSort(left), mergeSort(right));
+}
+
+function merge2(left, right) {
+  const result = [];
+  let leftIndex = 0;
+  let rightIndex = 0;
+  while (leftIndex < left.length && rightIndex < right.length) {
+    if (left[leftIndex] < right[rightIndex]) {
+      result.push(left[leftIndex]);
+      leftIndex++;
+    } else {
+      result.push(right[rightIndex]);
+      rightIndex++;
+    }
+  }
+  // console.log(left, right)
+  return result.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
 }
