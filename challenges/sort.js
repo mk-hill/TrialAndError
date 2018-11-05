@@ -112,13 +112,27 @@ function insertionSort2(array) {
 // ─── MERGE SORT ─────────────────────────────────────────────────────────────────
 //
 
-function mergeSort(array) {
-  if (array.length === 1) {
-    return array;
+function mergeSort(arr) {
+  if (arr.length === 1) {
+    return arr;
   }
   // Split Array in into right and left
-
-  return merge(mergeSort(left), mergeSort(right));
+  // ? Math.floor in case length is odd ?
+  const mid = Math.floor(arr.length / 2);
+  const firstHalf = arr.slice(0, mid);
+  const secondHalf = arr.slice(mid);
+  return merge(mergeSort(firstHalf), mergeSort(secondHalf));
 }
 
-function merge(left, right) {}
+function merge(left, right) {
+  const newArr = [];
+  while (left.length > 0 && right.length > 0) {
+    if (left[0] < right[0]) {
+      newArr.push(left.shift());
+    } else if (left[0] > right[0]) {
+      newArr.push(right.shift());
+    }
+  }
+  // Concat any remaining
+  return newArr.concat(left.length ? left : right);
+}
