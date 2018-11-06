@@ -85,7 +85,7 @@ class BinarySearchTree {
   }
 
   // *
-  // *── BREADTH FIRST SEARCH ───────────────────────────────────────────────────────
+  // *── BREADTH FIRST SEARCH/TRAVERSAL ─────────────────────────────────────────────
   // *
 
   breadthFirstSearch() {
@@ -131,6 +131,70 @@ class BinarySearchTree {
     return this._breadthFirstSearchRecursive(queue, arr);
   }
 
+  // *
+  // *── DEPTH FIRST SEARCH/TRAVERSAL ───────────────────────────────────────────────
+  // *
+
+  _traverse(node, list, order) {
+    if (order === 'preOrder') list.push(node.value);
+    if (node.left) {
+      this._traverse(node.left, list, order);
+    }
+    if (order === 'inOrder') list.push(node.value);
+    if (node.right) {
+      this._traverse(node.right, list, order);
+    }
+    if (order === 'postOrder') list.push(node.value);
+    return list;
+  }
+  // ? How much do the unnecessary order checks slow it down ?
+  // todo test with separate functions below
+
+  dfsInOrder() {
+    return this._traverse(this.root, [], 'inOrder');
+  }
+
+  // _traverseInOrder(node, list) {
+  //   if (node.left) {
+  //     this._traverseInOrder(node.left, list);
+  //   }
+  //   list.push(node.value);
+  //   if (node.right) {
+  //     this._traverseInOrder(node.right, list);
+  //   }
+  //   return list;
+  // }
+
+  dfsPostOrder() {
+    return this._traverse(this.root, [], 'postOrder');
+  }
+
+  // _traversePostOrder(node, list) {
+  //   if (node.left) {
+  //     this._traverseInOrder(node.left, list);
+  //   }
+  //   if (node.right) {
+  //     this._traverseInOrder(node.right, list);
+  //   }
+  //   list.push(node.value);
+  //   return list;
+  // }
+
+  dfsPreOrder() {
+    return this._traverse(this.root, [], 'preOrder');
+  }
+
+  // _traversePreOrder(node, list) {
+  //   list.push(node.value);
+  //   if (node.left) {
+  //     this._traverseInOrder(node.left, list);
+  //   }
+  //   if (node.right) {
+  //     this._traverseInOrder(node.right, list);
+  //   }
+  //   return list;
+  // }
+
   isEmpty() {
     return this.root === null;
   }
@@ -153,4 +217,10 @@ tree.insert(1);
 
 // console.log(tree.breadthFirstSearch());
 
-console.log(tree.bfsRecursive());
+// console.log(tree.bfsRecursive());
+
+// tree.dfsInOrder();
+
+// tree.dfsPreOrder();
+
+tree.dfsPostOrder();
