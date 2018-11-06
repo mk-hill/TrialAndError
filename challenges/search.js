@@ -117,7 +117,6 @@ class BinarySearchTree {
   // * Must pass in queue and array so that new ones are not created
   // * with each recursive call
   _breadthFirstSearchRecursive(queue, arr) {
-    debugger;
     if (!queue.length) {
       return arr;
     }
