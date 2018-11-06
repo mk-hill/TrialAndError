@@ -178,7 +178,6 @@ function merge2(left, right) {
 //
 
 function quickSort(arr, left, right) {
-  const len = arr.length;
   let pivot;
   let partitionIndex;
 
