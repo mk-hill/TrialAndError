@@ -4,7 +4,7 @@ const ui = new UI();
 
 const searchUser = document.getElementById('searchUser');
 
-searchUser.addEventListener('keyup', (e) => {
+const searchHandler = (e) => {
   // Get input text
   const userText = e.target.value;
 
@@ -26,4 +26,21 @@ searchUser.addEventListener('keyup', (e) => {
     // Clear profile section if input is empty
     ui.clearProfile();
   }
-});
+};
+
+function debounced(fn) {
+  let timerId;
+  return function (...args) {
+    if (timerId) {
+      clearTimeout(timerId);
+    }
+    timerId = setTimeout(() => {
+      fn(...args);
+      timerId = null;
+    }, 300);
+  };
+}
+
+const debouncedSearchHandler = debounced(searchHandler);
+
+searchUser.addEventListener('keyup', debouncedSearchHandler);
