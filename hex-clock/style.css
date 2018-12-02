@@ -4,7 +4,7 @@ body {
   display: grid;
   height: 100%;
   width: 100%;
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: 'Lato', sans-serif;
   box-sizing: border-box;
 }
 
@@ -21,10 +21,9 @@ body {
 }
 
 .row {
-  overflow: hidden;
   height: 2vh;
   width: 100%;
-  transition: all 1s;
+  transition: all ease-in 1s;
 }
 
 .row::before {
@@ -38,14 +37,13 @@ body {
 
 .row-main {
   color: #fff;
-  transition: all 1s;
   height: 20vh;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 7rem;
   font-weight: 100;
-  letter-spacing: 1rem;
+  letter-spacing: 0.5rem;
 }
 
 .row-main::before {
@@ -60,5 +58,11 @@ body {
   .row-main {
     font-size: 4rem;
     letter-spacing: 0;
+  }
+}
+
+@media only screen and (max-height: 420px) {
+  .row-main {
+    font-size: 4.5rem;
   }
 }
