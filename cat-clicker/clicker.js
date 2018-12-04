@@ -48,6 +48,13 @@ function setActiveCat(name = 'space') {
   updateCounter();
 }
 
+function initialLoad() {
+  catHeader.style.display = 'block';
+  counter.style.display = 'block';
+  catPic.style.display = 'block';
+  setActiveCat();
+}
+
 function catClicked() {
   cats[activeCat].clicks += 1;
   if (cats[activeCat].clicks % 10 === 0) {
@@ -66,4 +73,10 @@ function navHandler(e) {
 
 catLinks.forEach(link => link.addEventListener('click', navHandler));
 catPic.addEventListener('click', catClicked);
-document.addEventListener('DOMContentLoaded', () => setActiveCat());
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => initialLoad());
+} else {
+  // `DOMContentLoaded` already fired
+  initialLoad();
+}

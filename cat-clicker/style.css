@@ -6,7 +6,7 @@
 
 body {
   min-height: 100vh;
-  font-family: 'Lato', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   box-sizing: border-box;
   background-repeat: no-repeat;
 }
@@ -17,9 +17,24 @@ h2 {
 }
 
 #cat-pic {
+  display: none;
   max-width: 60%;
   max-height: 50vh;
   border-radius: 5px;
+}
+
+@media only screen and (max-width: 420px) {
+  #cat-pic {
+    max-width: 90%;
+  }
+}
+
+#cat-name {
+  display: none;
+}
+
+#counter {
+  display: none;
 }
 
 #cat-nav {
@@ -33,6 +48,7 @@ h2 {
 #cat-list {
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-evenly;
   list-style: none;
   color: #fff;
