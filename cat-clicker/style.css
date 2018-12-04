@@ -5,8 +5,10 @@
 }
 
 body {
+  min-height: 100vh;
   font-family: 'Lato', sans-serif;
   box-sizing: border-box;
+  background-repeat: no-repeat;
 }
 
 h1,
@@ -14,65 +16,69 @@ h2 {
   margin: 1rem 0;
 }
 
-.cat-pic {
-  width: 60%;
+#cat-pic {
+  max-width: 60%;
+  max-height: 50vh;
   border-radius: 5px;
 }
 
-.stars {
-  background: #000
-    url(http://www.script-tutorials.com/demos/360/images/stars.png) repeat top
-    center;
-  z-index: 0;
+#cat-nav {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  padding: 1rem 0;
+  background: rgba(41, 41, 41, 0.1);
 }
 
-.twinkling {
-  background: transparent
-    url(http://www.script-tutorials.com/demos/360/images/twinkling.png) repeat
-    top center;
-  z-index: 1;
+#cat-list {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  list-style: none;
+  color: #fff;
+}
 
-  -moz-animation: move-twink-back 200s linear infinite;
-  -ms-animation: move-twink-back 200s linear infinite;
-  -o-animation: move-twink-back 200s linear infinite;
-  -webkit-animation: move-twink-back 200s linear infinite;
-  animation: move-twink-back 200s linear infinite;
+.nav-link {
+  cursor: pointer;
+}
 
+#cat-list .active {
+  text-decoration: underline;
+}
+
+.wrapper {
+  min-height: 95vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-@keyframes move-twink-back {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: -10000px 5000px;
-  }
+.space {
+  background: #000
+    url(http://www.script-tutorials.com/demos/360/images/stars.png) repeat top
+    center;
 }
-@-webkit-keyframes move-twink-back {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: -10000px 5000px;
-  }
+
+.forest {
+  background: linear-gradient(
+    to right top,
+    #051937,
+    #004d7a,
+    #008793,
+    #00bf72,
+    #a8eb12
+  );
 }
-@-moz-keyframes move-twink-back {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: -10000px 5000px;
-  }
+
+.blanket {
+  background: linear-gradient(to right, #654ea3, #eaafc8);
 }
-@-ms-keyframes move-twink-back {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: -10000px 5000px;
-  }
+
+.moon {
+  background: linear-gradient(to top, #355c7d, #6c5b7b, #c06c84);
+}
+
+.watcher {
+  background: linear-gradient(to bottom, #00b4db, #0083b0);
 }
