@@ -117,9 +117,9 @@ function findClaimWithoutOverlap(claims) {
       });
     }
   });
-  const result = claimIds.filter(id => !overlappingClaims[id]);
+  const results = claimIds.filter(id => !overlappingClaims[id]);
 
-  return result.length === 1 ? result[0] : `Error: more than one result found. ${result}`;
+  return results.length === 1 ? results[0] : `Error: more than one result found. ${results}`;
 }
 
 console.log('Claim without overlap: ', findClaimWithoutOverlap(claimsArr)); // 1097
