@@ -280,3 +280,123 @@ q1b();
 q1c();
 q2a();
 q2b();
+
+function romanNumerals(arg) {
+  function romanToInt(str) {
+    const values = {
+      i: 1,
+      v: 5,
+      x: 10,
+      l: 50,
+      c: 100,
+      d: 500,
+      m: 1000,
+    };
+    const chars = [...str.toLowerCase()];
+    return chars.reduce((acc, char, i) => {
+      if (i === chars.length - 1 || values[char] >= values[chars[i + 1]]) {
+        return acc + values[char];
+      }
+      if (values[char] < values[chars[i + 1]]) {
+        return acc - values[char];
+      }
+    }, 0);
+  }
+  function intToRoman(n) {
+    const values = [
+      [1000, 'M'],
+      [900, 'CM'],
+      [500, 'D'],
+      [400, 'CD'],
+      [100, 'C'],
+      [90, 'XC'],
+      [50, 'L'],
+      [40, 'XL'],
+      [10, 'X'],
+      [9, 'IX'],
+      [5, 'V'],
+      [4, 'IV'],
+      [1, 'I'],
+    ];
+    let currentVal = n;
+    return values.reduce((str, arr) => {
+      const [num, char] = arr;
+      while (currentVal >= num) {
+        currentVal -= num;
+        str += char;
+      }
+      return str;
+    }, '');
+  }
+  return typeof arg === 'number' ? intToRoman(arg) : romanToInt(arg);
+}
+
+// Pig latin translator
+
+function TranslateWord(word) {
+  if (typeof word !== 'string' || word.length === 0) return '';
+  const vowels = 'aeiou';
+  const startsWithVowel = vowels.includes(word[0].toLowerCase());
+  if (startsWithVowel) return `${word}yay`;
+  const firstVowel = [...vowels]
+    .map(vowel => word.indexOf(vowel))
+    .filter(i => i > -1)
+    .sort((a, b) => a - b)[0];
+  const isCapitalized = word[0] !== word[0].toLowerCase();
+  if (!isCapitalized) return `${word.slice(firstVowel)}${word.slice(0, firstVowel)}ay`;
+  return `${word.slice(firstVowel)[0].toUpperCase()}${word.slice(firstVowel + 1)}${word
+    .slice(0, firstVowel)
+    .toLowerCase()}ay`;
+}
+
+function TranslateSentence(sentence) {
+  if (typeof sentence !== 'string' || sentence.length === 0) return '';
+  return sentence
+    .split(' ')
+    .map((word) => {
+      let hasPunctuation = false;
+      const punctuation = /[?\\"",]/g;
+      const indexes = [...word].reduce((tally, char) => {
+        if (punctuation.test(char)) {
+          hasPunctuation = true;
+
+          tally.push([char, word.indexOf(char)]);
+        } else if (char === '"') {
+          tally.push([char, word.indexOf(char)]);
+        }
+        return tally;
+      }, []);
+      if (!hasPunctuation) return TranslateWord(word);
+      const translatedChars = [...TranslateWord(word.replace(punctuation, ''))];
+      indexes.forEach(arr => (arr[1] > 0 ? translatedChars.push(arr[0]) : translatedChars.unshift(arr[0])));
+      return `${translatedChars.join('')}`;
+    })
+    .join(' ');
+}
+
+// function TranslateSentence(sentence) {
+//   if (typeof sentence !== 'string' || sentence.length === 0) return '';
+//   const punctuation = [...'?",.!'];
+//   return sentence.split(' ').map((word) => {
+//     let hasPunctuation = false;
+//     const indexes = punctuation.reduce((tally, char) => {
+//       if (word.includes(char)) {
+//         hasPunctuation = true;
+//         tally[char] = word.indexOf(char);
+//         word.replace(char, '');
+//       }
+//       return tally;
+//     }, {});
+//     if (!hasPunctuation) return TranslateWord(word);
+//     const translatedWord = TranslateWord(word);
+//     return translatedWord;
+//   });
+// }
+
+// function TranslateSentence(sentence) {
+//   if (typeof sentence !== 'string' || sentence.length === 0) return '';
+//   return sentence
+//     .split(' ')
+//     .map(word => TranslateWord(word))
+//     .join(' ');
+// }
