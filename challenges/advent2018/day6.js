@@ -159,7 +159,7 @@ function getAreaWithinDistance(points, distance) {
   for (let x = 0; x < maxX; x++) {
     for (let y = 0; y < maxY; y++) {
       let totalDist = 0;
-      // every instead of forEach to break out of loop early if it goes above
+      // every instead of forEach to break out of loop early if it goes above specified distance
       points.every((point) => {
         totalDist += calculateDistance([x, y], point);
         return totalDist < distance;
@@ -171,5 +171,8 @@ function getAreaWithinDistance(points, distance) {
   return totalArea;
 }
 
-console.log(getAreaWithinDistance(coordinates, 10000)); // 40134
+console.log(
+  'Size of area within given distance to all coordinates:',
+  getAreaWithinDistance(coordinates, 10000),
+); // 40134
 console.groupEnd('Day 6');

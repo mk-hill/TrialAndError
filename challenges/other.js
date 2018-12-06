@@ -430,20 +430,22 @@ Difference: |4 - 19| = 15
 
 Note: |x| is the absolute value of x
  */
-function diagonalDifference(arr) {
-  return Math.abs(
-    arr
-      .reduce(
-        (tally, subArr, i) => {
-          tally[0] += subArr[i];
-          tally[1] += subArr[subArr.length - (i + 1)];
-          return tally;
-        },
-        [0, 0],
-      )
-      .reduce((x, y) => x - y),
-  );
-}
+
+//! incomplete
+// function diagonalDifference(arr) {
+//   return Math.abs(
+//     arr
+//       .reduce(
+//         (tally, subArr, i) => {
+//           tally[0] += subArr[i];
+//           tally[1] += subArr[subArr.length - (i + 1)];
+//           return tally;
+//         },
+//         [0, 0],
+//       )
+//       .reduce((x, y) => x - y),
+//   );
+// }
 
 function miniMaxSum(arr) {
   const sorted = [...arr].sort((x, y) => x - y);
