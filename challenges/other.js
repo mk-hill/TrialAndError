@@ -374,29 +374,80 @@ function TranslateSentence(sentence) {
     .join(' ');
 }
 
-// function TranslateSentence(sentence) {
-//   if (typeof sentence !== 'string' || sentence.length === 0) return '';
-//   const punctuation = [...'?",.!'];
-//   return sentence.split(' ').map((word) => {
-//     let hasPunctuation = false;
-//     const indexes = punctuation.reduce((tally, char) => {
-//       if (word.includes(char)) {
-//         hasPunctuation = true;
-//         tally[char] = word.indexOf(char);
-//         word.replace(char, '');
-//       }
-//       return tally;
-//     }, {});
-//     if (!hasPunctuation) return TranslateWord(word);
-//     const translatedWord = TranslateWord(word);
-//     return translatedWord;
-//   });
-// }
+/**
+ * Given a square matrix, calculate the absolute difference between the sums of its diagonals.
 
-// function TranslateSentence(sentence) {
-//   if (typeof sentence !== 'string' || sentence.length === 0) return '';
-//   return sentence
-//     .split(' ')
-//     .map(word => TranslateWord(word))
-//     .join(' ');
-// }
+For example, the square matrix  is shown below:
+
+1 2 3
+4 5 6
+9 8 9
+The left-to-right diagonal = . The right to left diagonal = . Their absolute difference is .
+
+Function description
+
+Complete the  function in the editor below. It must return an integer representing the absolute diagonal difference.
+
+diagonalDifference takes the following parameter:
+
+arr: an array of integers .
+Input Format
+
+The first line contains a single integer, , the number of rows and columns in the matrix .
+Each of the next  lines describes a row, , and consists of  space-separated integers .
+
+Constraints
+
+Output Format
+
+Print the absolute difference between the sums of the matrix's two diagonals as a single integer.
+
+Sample Input
+
+3
+11 2 4
+4 5 6
+10 8 -12
+Sample Output
+
+15
+Explanation
+
+The primary diagonal is:
+
+11
+   5
+     -12
+Sum across the primary diagonal: 11 + 5 - 12 = 4
+
+The secondary diagonal is:
+
+     4
+   5
+10
+Sum across the secondary diagonal: 4 + 5 + 10 = 19
+Difference: |4 - 19| = 15
+
+Note: |x| is the absolute value of x
+ */
+function diagonalDifference(arr) {
+  return Math.abs(
+    arr
+      .reduce(
+        (tally, subArr, i) => {
+          tally[0] += subArr[i];
+          tally[1] += subArr[subArr.length - (i + 1)];
+          return tally;
+        },
+        [0, 0],
+      )
+      .reduce((x, y) => x - y),
+  );
+}
+
+function miniMaxSum(arr) {
+  const sorted = [...arr].sort((x, y) => x - y);
+  return console.log(
+    `${sorted.slice(0, 4).reduce((x, y) => x + y)} ${sorted.slice(1).reduce((x, y) => x + y)}`,
+  );
+}
