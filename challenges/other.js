@@ -453,3 +453,55 @@ function miniMaxSum(arr) {
     `${sorted.slice(0, 4).reduce((x, y) => x + y)} ${sorted.slice(1).reduce((x, y) => x + y)}`,
   );
 }
+
+// Complete the playingWithNumbers function below.
+function playingWithNumbers(arr, queries) {
+  return queries.map((q) => {
+    arr = arr.map(n => n + q);
+    const absSum = arr.reduce((x, y) => Math.abs(x) + Math.abs(y));
+    console.log(absSum);
+    return absSum;
+  });
+}
+
+// Complete the climbingLeaderboard function below.
+function climbingLeaderboard(scores, alice) {
+  const uniqueScores = [...new Set(scores)];
+  const scoreMap = {};
+  uniqueScores.forEach((score, index) => {
+    scoreMap[score] = index + 1;
+  });
+  let startingPoint;
+
+  return alice.map((score) => {
+    if (score > uniqueScores[0]) return 1;
+    if (score < uniqueScores[uniqueScores.length - 1]) {
+      return scoreMap[uniqueScores[uniqueScores.length - 1]] + 1;
+    }
+
+    if (!startingPoint) {
+      let chunk = [...uniqueScores];
+      while (chunk.length > 1000) {
+        const mid = Math.floor(chunk.length / 2);
+        if (score === chunk[mid]) return scoreMap[chunk[mid]];
+        chunk = score > chunk[mid] ? chunk.slice(0, mid) : chunk.slice(mid);
+      }
+      startingPoint = scoreMap[chunk[chunk.length - 1]] - 1;
+    }
+
+    let lastScore;
+    for (let i = startingPoint; i >= 0; i--) {
+      if (uniqueScores[i] > score) break;
+      lastScore = uniqueScores[i];
+    }
+    startingPoint = scoreMap[lastScore] - 1;
+    return scoreMap[lastScore];
+  });
+}
+
+function gradingStudents(grades) {
+  return grades.map(grade => {
+    if (grade < 38 || grade % 5 < 3) return grade;
+    return grade + (5 - (grade % 5));
+  });
+}
