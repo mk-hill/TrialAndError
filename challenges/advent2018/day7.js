@@ -186,5 +186,5 @@ function getCompletionTime(steps) {
   return timeElapsed;
 }
 
-console.log(`It took ${getCompletionTime(instructions)} for 5 elves to finish the sleigh.`); // 973
+console.log(`It took ${getCompletionTime(instructions)} seconds for 5 elves to finish the sleigh.`); // 973
 console.groupEnd('Day 7');
