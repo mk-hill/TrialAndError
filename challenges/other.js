@@ -505,3 +505,15 @@ function gradingStudents(grades) {
     return grade + (5 - (grade % 5));
   });
 }
+
+// Complete the designerPdfViewer function below.
+function designerPdfViewer(h, word) {
+  const heights = [...word].map((c, i) => {
+    const code = word.charCodeAt(i);
+    if (code > 64 && code < 96) {
+      return code - 65;
+    }
+    return code - 97;
+  }).map((i) => h[i]);
+  return Math.max(...heights) * word.length;
+}
