@@ -182,6 +182,7 @@ function moveCarts(linesInput = gridLines, ticksToMove = 1) {
     });
     ticks += 1;
   }
+  gridLines = lines;
   return lines;
 }
 
