@@ -50,7 +50,7 @@ submitButton.addEventListener('click', () => {
   setTimeout(visualize, 200);
 });
 
-document.body.onkeyup = (e) => {
+document.body.onkeydown = (e) => {
   if (e.keyCode === 39) {
     gridLines = moveCarts(gridLines, ticksToGo);
     currentTick += ticksToGo;
