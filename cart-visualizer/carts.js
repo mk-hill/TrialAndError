@@ -206,7 +206,7 @@ let visualized = false;
 let ticksToGo = 1;
 let currentTick = 0;
 let auto = false;
-let autoSpeed = 100;
+let autoSpeed = 250;
 
 function visualize(lines = gridLines) {
   mapContainer.innerHTML = '';
