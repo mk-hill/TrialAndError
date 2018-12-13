@@ -1,66 +1,12 @@
-/* eslint-disable no-console */
 /* eslint-disable max-len */
 
-const inputField = document.getElementById('map-input');
-const submitButton = document.getElementById('input-submit');
-const mapContainer = document.getElementById('map');
-const tickSetter = document.getElementById('tick-setting');
-const log = document.getElementById('log');
-const logList = document.getElementById('log-list');
-const tickDisplay = document.getElementById('current-tick');
+//
+// ─── MODIFIED SOLUTION FOR VISUALIZER ───────────────────────────────────────────
+//
 
-let ticksToGo = 1;
-let currentTick = 0;
+let gridLines; // Moved out of moveCarts for visualizer
+let carts; // Moved out of moveCarts for visualizer
 
-let gridLines;
-let carts;
-// [...line].join('')
-function visualize(lines = gridLines) {
-  mapContainer.innerHTML = '';
-  lines.forEach((line) => {
-    // console.log(line);
-    const highlightedLine = [...line]
-      .map(char => (char in cartTypes ? `<span class="cart">${char}</span>` : char))
-      .join('');
-    const p = document.createElement('p');
-    p.innerHTML = highlightedLine;
-    mapContainer.appendChild(p);
-  });
-  tickDisplay.textContent = `Current Tick: ${currentTick}`;
-}
-
-function addLog(str) {
-  const newLi = document.createElement('li');
-  newLi.textContent = str;
-  logList.appendChild(newLi);
-}
-
-submitButton.addEventListener('click', () => {
-  const input = inputField.value;
-  gridLines = input.split('\n');
-  carts = createCarts();
-  inputField.classList.add('disabled');
-  submitButton.classList.add('disabled');
-  log.style.opacity = '1';
-  tickDisplay.style.opacity = '1';
-  document.querySelector('h3').textContent = 'Press right arrow to advance ticks. Set number of ticks to advance per key press below.';
-  setTimeout(() => document.body.removeChild(inputField), 100);
-  setTimeout(() => document.body.removeChild(submitButton), 100);
-  setTimeout(() => tickSetter.classList.remove('disabled'), 200);
-  setTimeout(visualize, 200);
-});
-
-document.body.onkeydown = (e) => {
-  if (e.keyCode === 39) {
-    gridLines = moveCarts(gridLines, ticksToGo);
-    currentTick += ticksToGo;
-    visualize();
-  }
-};
-
-tickSetter.onchange = (e) => {
-  ticksToGo = Number(e.target.value);
-};
 // Keep track of what each character becomes when it turns, and how it moves per tick
 const cartTypes = {
   '>': {
@@ -191,13 +137,15 @@ function createCarts(lines = gridLines) {
     .filter(ar => ar.length > 0)
     .reduce((flat, ar) => [...flat, ...ar], []);
 }
-let crashedCarts = 0;
+
+let crashedCarts = 0; // Moved out of moveCarts for visualizer
+
 // Modified for part 2
-function moveCarts(linesInput = gridLines, ticksToGo = 1) {
+function moveCarts(linesInput = gridLines, ticksToMove = 1) {
   const lines = [...linesInput.map(lineStr => [...lineStr])];
 
   let ticks = 0;
-  while (ticks < ticksToGo) {
+  while (ticks < ticksToMove) {
     // Keep carts sorted so they move in the correct order
     carts.sort((a, b) => a.y * 9001 - b.y * 9001 + (a.x - b.x)); // Row first, x matters only when y is equal
     carts.forEach((cart) => {
@@ -216,7 +164,6 @@ function moveCarts(linesInput = gridLines, ticksToGo = 1) {
           colliders.forEach((crashingCart) => {
             if (!crashingCart.hasCrashed) crashingCart.collide('X', false);
           });
-          if (!crashedCarts) firstCollision = colliders;
           crashedCarts += colliders.length;
           addLog(
             carts.length - crashedCarts > 1
@@ -236,4 +183,114 @@ function moveCarts(linesInput = gridLines, ticksToGo = 1) {
     ticks += 1;
   }
   return lines;
+}
+
+//
+// ─── VISUALIZER DOM STUFF ───────────────────────────────────────────────────────
+//
+
+const inputField = document.getElementById('map-input');
+const submitButton = document.getElementById('input-submit');
+const mapContainer = document.getElementById('map');
+const tickSetter = document.getElementById('tick-setting');
+const log = document.getElementById('log');
+const logList = document.getElementById('log-list');
+const tickDisplay = document.getElementById('current-tick');
+const autoToggle = document.getElementById('auto-button');
+const autoDisplay = document.getElementById('auto-display');
+const leftHud = document.getElementById('left-hud');
+const instructions = document.querySelector('h3');
+const autoSpeedSetter = document.getElementById('auto-speed');
+
+let visualized = false;
+let ticksToGo = 1;
+let currentTick = 0;
+let auto = false;
+let autoSpeed = 100;
+
+function visualize(lines = gridLines) {
+  mapContainer.innerHTML = '';
+  lines.forEach((line) => {
+    const highlightedLine = [...line]
+      .map(char => (char in cartTypes ? `<span class="cart">${char}</span>` : char))
+      .join('');
+    const p = document.createElement('p');
+    p.innerHTML = highlightedLine;
+    mapContainer.appendChild(p);
+  });
+  instructions.textContent = auto
+    ? 'Key press disabled, ticks set to 1. Select auto speed below.'
+    : 'Press right arrow to advance ticks. Set number of ticks to advance per key press below.';
+  tickDisplay.textContent = `Current Tick: ${currentTick}`;
+  autoDisplay.textContent = auto ? 'Auto mode enabled.' : 'Auto mode disabled.';
+}
+
+function addLog(str) {
+  const newLi = document.createElement('li');
+  newLi.textContent = str;
+  logList.appendChild(newLi);
+}
+// ${auto ? 'Auto mode enabled' : 'Press right arrow to advance ticks.'}
+submitButton.addEventListener('click', messyInit);
+
+function advanceTicks(ticksPerCalc = ticksToGo) {
+  gridLines = moveCarts(gridLines, ticksPerCalc);
+  currentTick += ticksToGo;
+  visualize();
+}
+
+document.body.onkeydown = (e) => {
+  if (e.keyCode === 39 && visualized && !auto) advanceTicks();
+};
+
+tickSetter.onchange = (e) => {
+  ticksToGo = Number(e.target.value);
+};
+
+let autoInterval;
+
+autoSpeedSetter.onchange = (e) => {
+  autoSpeed = Number(e.target.value);
+  clearInterval(autoInterval);
+  autoInterval = setInterval(() => advanceTicks(1), autoSpeed);
+};
+
+autoToggle.addEventListener('click', () => {
+  auto = !auto;
+  if (auto) {
+    tickSetter.classList.add('disabled');
+    autoSpeedSetter.classList.remove('disabled');
+    autoInterval = setInterval(() => advanceTicks(1), autoSpeed);
+  } else {
+    clearInterval(autoInterval);
+    tickSetter.classList.remove('disabled');
+    autoSpeedSetter.classList.add('disabled');
+    visualize();
+  }
+});
+
+function messyInit() {
+  const input = inputField.value;
+  gridLines = input.split('\n');
+  carts = createCarts();
+  inputField.classList.add('disabled');
+  submitButton.classList.add('disabled');
+  log.style.opacity = '1';
+  leftHud.style.opacity = '1';
+  instructions.textContent = 'Press right arrow to advance ticks. Set number of ticks to advance per key press below.';
+  setTimeout(() => document.body.removeChild(inputField), 100);
+  setTimeout(() => document.body.removeChild(submitButton), 100);
+  setTimeout(() => tickSetter.classList.remove('disabled'), 200);
+  setTimeout(() => {
+    autoToggle.style.display = 'inline-block';
+    autoDisplay.style.display = 'inline-block';
+  }, 200);
+  setTimeout(() => {
+    autoToggle.style.opacity = '1';
+    autoDisplay.style.opacity = '1';
+  }, 400);
+  setTimeout(visualize, 200);
+  setTimeout(() => {
+    visualized = true;
+  }, 200);
 }

@@ -14,7 +14,10 @@
   <body>
     <h1>Advent of Code 2018 - Day 13 Visualizer</h1>
     <h3>Paste your puzzle input below</h3>
-    <h4 id="current-tick"></h4>
+    <div id="left-hud">
+      <h4 id="current-tick"></h4>
+      <h4 id="auto-display"></h4>
+    </div>
     <div id="log">
       <h4>Log</h4>
       <ul id="log-list"></ul>
@@ -26,6 +29,18 @@
       id="tick-setting"
       placeholder="1"
     />
+    <button id="auto-button">Toggle auto</button>
+    <select name="auto-speed" class="disabled" id="auto-speed">
+      <option value="1000">1000ms</option>
+      <option value="750">750ms</option>
+      <option value="500">500ms</option>
+      <option value="375">375ms</option>
+      <option value="250" selected>250ms</option>
+      <option value="150">150ms</option>
+      <option value="100">100ms</option>
+      <option value="75">75ms</option>
+      <option value="50">50ms</option>
+    </select>
     <textarea id="map-input"></textarea>
     <button id="input-submit">Visualize!</button>
     <div id="map"></div>
