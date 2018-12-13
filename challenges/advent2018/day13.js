@@ -161,10 +161,7 @@ After following their respective paths for a while, the carts eventually crash. 
 In this example, the location of the first crash is 7,3.
  */
 
-const mapString = fs.readFileSync('./txt/day13.txt', 'utf8', (err, data) => {
-  if (err) throw err;
-  return data;
-});
+const mapString = fs.readFileSync('./txt/day13.txt', 'utf8');
 
 // Format: gridLines[y][x];
 const gridLines = mapString.split('\n');
@@ -406,3 +403,5 @@ console.log(
     answers.soleSurvivor.y
   }\x1b[0m when the final collision occurred on tick ${answers.soleSurvivor.tick}.`,
 ); // 84,90
+
+console.groupEnd('Day 13');
