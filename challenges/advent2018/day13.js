@@ -169,6 +169,7 @@ const mapString = fs.readFileSync('./txt/day13.txt', 'utf8', (err, data) => {
 // Format: gridLines[y][x];
 const gridLines = mapString.split('\n');
 
+// Keep track of what each character becomes when it turns, and how it moves per tick
 const cartTypes = {
   '>': {
     char: '>',
@@ -202,21 +203,23 @@ const cartTypes = {
   },
 };
 
+// Point turn results to appropriate cartTypes rather than just the character to avoid constant lookups
 Object.keys(cartTypes).forEach((char) => {
   cartTypes[char].left = cartTypes[cartTypes[char].left];
   cartTypes[char].right = cartTypes[cartTypes[char].right];
 });
 
+// Circular links to keep track of each cart's next turn when they arrive at an intersection
 const turns = {
   left: { val: 'left' },
   straight: { val: null },
   right: { val: 'right' },
 };
-
 turns.left.next = turns.straight;
 turns.straight.next = turns.right;
 turns.right.next = turns.left;
 
+// Which direction each cart type turns to when arriving at a corner
 const corners = {
   '/': {
     '>': 'left',
@@ -244,6 +247,7 @@ class Cart {
   }
 
   handleIntersection() {
+    // this.nextTurn.val is null if it's pointing to turns.straight
     if (this.nextTurn.val) {
       this.type = this.type[this.nextTurn.val];
     }
@@ -274,7 +278,7 @@ class Cart {
   }
 
   moveTo(track) {
-    if (track === ' ') throw new Error('Trying to move off track');
+    if (track === ' ') throw new Error('Trying to move off track'); // Just in case the calculations below go wrong somehow
     this.tick += 1;
     this.x = this.getNextX();
     this.y = this.getNextY();
@@ -285,6 +289,7 @@ class Cart {
   }
 }
 
+// Returning array of Cart objects ordered by their y and x
 function createCarts(lines = gridLines) {
   return lines
     .map((lineStr, y) => [...lineStr]
@@ -307,6 +312,7 @@ function moveCarts(linesInput = gridLines) {
     // Keep carts sorted so they move in the correct order
     carts.sort((a, b) => a.y * 9001 - b.y * 9001 + (a.x - b.x)); // Row first, x matters only when y is equal
     carts.forEach((cart) => {
+      // Remove crashed carts from carts array instead of this if number of carts increase to the point where it causes performance issues
       if (cart.type !== cartTypes.X) {
         const targetChar = lines[cart.getNextY()][cart.getNextX()];
         lines[cart.y][cart.x] = cart.onTrackChar;
@@ -317,6 +323,7 @@ function moveCarts(linesInput = gridLines) {
           const colliders = carts.filter(
             cartToCheck => cartToCheck.x === cart.x && cartToCheck.y === cart.y,
           );
+          // Correct the status of the cart that doesn't know it has been crashed into
           colliders.forEach((crashingCart) => {
             if (!crashingCart.hasCrashed) crashingCart.collide('X', false);
           });
