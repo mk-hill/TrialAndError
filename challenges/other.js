@@ -500,7 +500,7 @@ function climbingLeaderboard(scores, alice) {
 }
 
 function gradingStudents(grades) {
-  return grades.map(grade => {
+  return grades.map((grade) => {
     if (grade < 38 || grade % 5 < 3) return grade;
     return grade + (5 - (grade % 5));
   });
@@ -508,12 +508,14 @@ function gradingStudents(grades) {
 
 // Complete the designerPdfViewer function below.
 function designerPdfViewer(h, word) {
-  const heights = [...word].map((c, i) => {
-    const code = word.charCodeAt(i);
-    if (code > 64 && code < 96) {
-      return code - 65;
-    }
-    return code - 97;
-  }).map((i) => h[i]);
+  const heights = [...word]
+    .map((c, i) => {
+      const code = word.charCodeAt(i);
+      if (code > 64 && code < 96) {
+        return code - 65;
+      }
+      return code - 97;
+    })
+    .map(i => h[i]);
   return Math.max(...heights) * word.length;
 }
