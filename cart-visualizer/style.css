@@ -10,16 +10,6 @@ h3 {
   margin: 0;
 }
 
-/* #current-tick {
-  position: fixed;
-  top: 0;
-  left: 0;
-  opacity: 0;
-  transition: opacity 0.05s;
-  padding: 0 1rem;
-  background: rgba(31, 31, 31, 0.7);
-} */
-
 #left-hud {
   position: fixed;
   top: 0;
@@ -27,8 +17,9 @@ h3 {
   opacity: 0;
   transition: opacity 0.05s;
   padding: 0 1rem;
-  background: rgba(31, 31, 31, 0.7);
+  background: rgba(29, 29, 29, 0.7);
   text-align: left;
+  border-radius: 5px;
 }
 
 #log {
@@ -39,6 +30,7 @@ h3 {
   opacity: 0;
   transition: opacity 0.05s;
   background: rgba(37, 37, 37, 0.7);
+  border-radius: 5px;
 }
 
 #log-list {
@@ -80,6 +72,10 @@ h3 {
   transition: all 0.1s ease-in-out;
 }
 
+#auto-display {
+  padding-bottom: 1rem;
+}
+
 #auto-speed {
   width: 70px;
   transition: all 0.1s ease-in-out;
@@ -101,4 +97,34 @@ h3 {
 
 #map p {
   margin: 0;
+}
+
+@media only screen and (max-width: 1250px) {
+  html {
+    font-size: 80%;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  html {
+    font-size: 60%;
+  }
+}
+
+@media only screen and (max-width: 750px) {
+  html {
+    font-size: 50%;
+  }
+  p {
+    font-size: 80%;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  html {
+    font-size: 40%;
+  }
+  p {
+    font-size: 60%;
+  }
 }
