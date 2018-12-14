@@ -1,6 +1,6 @@
 body {
   text-align: center;
-  background: linear-gradient(130deg, #0f0f23, rgb(24, 24, 58));
+  background: #0f0f23;
   color: rgb(207, 207, 207);
   min-height: 100vh;
   font-family: 'Source Code Pro', monospace;
@@ -54,7 +54,7 @@ h4 {
   display: block;
   outline-color: #ddd;
   margin: -2rem auto 0.5rem auto;
-  transition: all 0.05s ease-in-out;
+  transition: all 0.1s ease-in-out;
 }
 
 #input-submit,
@@ -70,6 +70,10 @@ h4 {
   outline-color: #ddd;
 }
 
+#input-submit {
+  text-shadow: 0 0 20px rgba(236, 236, 236, 0.753);
+}
+
 #tick-setting {
   font-family: 'Source Code Pro', monospace;
   background: #131319;
@@ -80,7 +84,7 @@ h4 {
   border: 1px solid rgba(221, 221, 221, 0.5);
   border-radius: 3px;
   margin: 1rem 0;
-  transition: all 0.05s ease-in-out;
+  transition: all 0.1s ease-in-out;
   width: 6rem;
   min-height: 1rem;
 }
@@ -99,7 +103,7 @@ h4 {
 
 #auto-speed {
   width: 6rem;
-  padding: 4px;
+  padding: 4.3px;
   transition: all 0.1s ease-in-out;
 }
 
@@ -114,8 +118,8 @@ h4 {
 
 .cart {
   font-weight: 900;
-  color: #6aec94;
-  text-shadow: 0 0 12px rgba(236, 236, 236, 0.5);
+  color: #00cc00;
+  text-shadow: 0 0 7px #6aec94, 0 0 5px #00cc00;
 }
 
 #map p {
