@@ -245,7 +245,8 @@ document.body.onkeydown = (e) => {
 };
 
 tickSetter.onchange = (e) => {
-  ticksToGo = Number(e.target.value);
+  ticksToGo = Math.abs(Number(e.target.value));
+  if (Math.abs(Number(e.target.value)) !== Number(e.target.value)) instructions.textContent = 'Absolute values are used for negative numbers. Please enter a positive number.';
 };
 
 let autoInterval;
