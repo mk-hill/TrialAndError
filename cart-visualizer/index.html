@@ -15,16 +15,75 @@
   </head>
   <body>
     <h1>
-      <span class="star">*</span> Advent of Code 2018 - Day 13 Visualizer
       <span class="star">*</span>
+      <a
+        class="link"
+        href="https://adventofcode.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Advent of Code</a
+      >
+      2018 -
+      <a
+        class="link"
+        href="https://adventofcode.com/2018/day/13"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Day 13</a
+      >
+      Visualizer <span class="star">*</span>
     </h1>
     <h3>
-      Paste your puzzle input in the field below, or leave it blank to visualize
-      mine.
+      Paste
+      <a
+        class="link"
+        href="https://adventofcode.com/2018/day/13/input"
+        target="_blank"
+        rel="noopener noreferrer"
+        >your puzzle input</a
+      >
+      in the field below, or leave it blank to visualize mine.
     </h3>
     <div id="left-hud">
       <h4 id="current-tick"></h4>
       <h4 id="auto-display"></h4>
+      <h4 id="map-settings-header">Map Settings</h4>
+      <label class="map-setting-label" for="map-color">Track Brightness</label>
+      <input
+        class="map-slider"
+        id="map-color"
+        type="range"
+        name="map-color"
+        step="0.02"
+        min="0.02"
+        max="1"
+        value="0.8"
+      />
+      <label class="map-setting-label" for="y-spacing">Vertical Spacing</label>
+      <input
+        class="map-slider"
+        id="y-spacing"
+        type="range"
+        name="y-spacing"
+        min="-15"
+        max="5"
+        value="0"
+        data-unit="px"
+      />
+      <label class="map-setting-label" for="x-spacing"
+        >Horizontal Spacing</label
+      >
+      <input
+        class="map-slider"
+        id="x-spacing"
+        type="range"
+        name="x-spacing"
+        min="-4"
+        max="2"
+        value="0"
+        data-unit="px"
+      />
+      <button id="reset-map-settings">Restore defaults</button>
     </div>
     <div id="log">
       <h4>Collision log</h4>

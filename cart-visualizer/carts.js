@@ -202,6 +202,8 @@ const autoDisplay = document.getElementById('auto-display');
 const leftHud = document.getElementById('left-hud');
 const instructions = document.querySelector('h3');
 const autoSpeedSetter = document.getElementById('auto-speed');
+const mapSettings = document.querySelectorAll('.map-slider');
+const mapResetter = document.getElementById('reset-map-settings');
 
 let visualized = false;
 let ticksToGo = 1;
@@ -239,7 +241,7 @@ function visualize(lines = gridLines) {
     : 'Press right arrow to advance ticks. Set number of ticks to advance per key press below.';
   if (instructions.textContent !== instructionsText) instructions.textContent = instructionsText;
   tickDisplay.textContent = `Current Tick: ${currentTick}`;
-  const autoDisplayText = auto ? 'Auto mode enabled' : 'Auto mode disabled';
+  const autoDisplayText = auto ? 'Auto mode enabled ' : 'Auto mode disabled';
   if (autoDisplay.textContent !== autoDisplayText) autoDisplay.textContent = autoDisplayText;
 }
 
@@ -298,12 +300,14 @@ function messyInit() {
   log.style.opacity = '1';
   leftHud.style.opacity = '1';
   instructions.textContent = 'Press right arrow to advance ticks. Set number of ticks to advance per key press below.';
+  [...document.getElementsByClassName('link')].forEach(link => link.classList.add('disabled-link'));
   setTimeout(() => document.body.removeChild(inputField), 100);
   setTimeout(() => document.body.removeChild(submitButton), 100);
   setTimeout(() => tickSetter.classList.remove('disabled'), 200);
   setTimeout(() => {
     autoToggle.style.display = 'inline-block';
     autoDisplay.style.display = 'inline-block';
+    document.querySelector('h1').textContent = 'Advent of Code 2018 - Day 13 Visualizer';
   }, 200);
   setTimeout(() => {
     autoToggle.style.opacity = '1';
@@ -316,6 +320,29 @@ function messyInit() {
     visualized = true;
   }, 200);
 }
+
+function updateValue() {
+  // Accessing custom data-sizing attirbute
+  const suffix = this.dataset.unit || '';
+  // Variables set on root document element in css
+  document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+}
+
+mapSettings.forEach(input => input.addEventListener('change', updateValue));
+// Change event only triggers when mb is released and new value is set
+// mousemove triggers any mouse movement on the input even if not clicked?
+// Could refine further to eliminate mousemove without clicks
+// Need change for touchscreen?
+mapSettings.forEach(input => input.addEventListener('mousemove', updateValue));
+
+mapResetter.addEventListener('click', () => {
+  document.documentElement.style.setProperty('--x-spacing', '0px');
+  document.documentElement.style.setProperty('--y-spacing', '0px');
+  document.documentElement.style.setProperty('--map-color', '0.8');
+  document.getElementById('y-spacing').value = 0;
+  document.getElementById('x-spacing').value = 0;
+  document.getElementById('map-color').value = 0.8;
+});
 
 const defaultInput = `     /----------------------------------------------------------------------------------------------\\                                                 
      |                                                          /-----------------------------------+-------------------------------\\                 

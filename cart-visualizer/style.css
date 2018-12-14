@@ -1,3 +1,9 @@
+:root {
+  --y-spacing: 0px;
+  --x-spacing: 0px;
+  --map-color: 0.8;
+}
+
 body {
   text-align: center;
   background: #0f0f23;
@@ -27,6 +33,7 @@ h4 {
   background: rgba(19, 19, 25, 0.7);
   text-align: left;
   border-radius: 5px;
+  padding-bottom: 1rem;
 }
 
 #log {
@@ -38,6 +45,10 @@ h4 {
   transition: opacity 0.05s;
   background: rgba(19, 19, 25, 0.7);
   border-radius: 5px;
+}
+
+#log h4 {
+  font-size: 1.1em;
 }
 
 #log-list {
@@ -62,7 +73,8 @@ h4 {
 
 #input-submit,
 #auto-button,
-#auto-speed {
+#auto-speed,
+#reset-map-settings {
   font-size: 110%;
   font-family: 'Source Code Pro', monospace;
   background: #131319;
@@ -90,14 +102,11 @@ h4 {
 
 #auto-button,
 #auto-display {
+  white-space: pre-wrap;
   margin: 0;
   display: none;
   opacity: 0;
   transition: all 0.1s ease-in-out;
-}
-
-#auto-display {
-  padding-bottom: 1rem;
 }
 
 #auto-speed {
@@ -120,10 +129,15 @@ h4 {
   font-weight: 900;
   color: #00cc00;
   text-shadow: 0 0 7px rgba(106, 236, 147, 0.5), 0 0 2px #00cc00;
+  z-index: 10;
 }
 
 #map p {
-  margin: 0;
+  margin-top: var(--y-spacing);
+  margin-bottom: var(--y-spacing);
+  letter-spacing: var(--x-spacing);
+  color: rgba(230, 230, 230, var(--map-color));
+  z-index: -1;
 }
 
 .star {
@@ -136,15 +150,71 @@ h4 {
 }
 
 #input-submit:hover,
-#auto-button:hover {
-  /* cursor: pointer; */
+#auto-button:hover,
+#reset-map-settings:hover {
   box-shadow: 0 0 10px rgba(236, 236, 236, 0.5);
-  text-shadow: 0 0 20px rgba(236, 236, 236, 0.753);
+  text-shadow: 0 0 10px rgba(236, 236, 236, 0.5);
 }
 
 #input-submit:active,
-#auto-button:active {
+#auto-button:active,
+#reset-map-settings:active {
   transform: translateY(1px);
+}
+
+.link {
+  color: #ddd;
+  text-shadow: 0 0 4px #ddd;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+
+.disabled-link {
+  text-shadow: none;
+}
+
+.link:hover {
+  color: #fff;
+  text-shadow: 0 0 5px #fff;
+}
+
+#left-hud h4 {
+  font-size: 1.1em;
+}
+
+#map-settings-header {
+  text-align: center;
+  margin-bottom: 0.7rem;
+}
+
+/* #map-settings-header::before {
+  display: block;
+  content: '---';
+  height: 10px;
+  transform: translateY(-150%);
+  color: #ddd;
+} */
+
+.map-setting-label {
+  text-align: center;
+  display: block;
+  font-size: 0.85em;
+  margin: 0;
+}
+
+.map-slider {
+  display: block;
+  width: 100%;
+  opacity: 0.75;
+  transform: scale(0.85);
+  margin: 0;
+}
+
+#reset-map-settings {
+  width: 100%;
+  margin-top: 0.7rem;
+  font-size: 90%;
+  text-align: center;
 }
 
 @media only screen and (max-width: 1250px) {
