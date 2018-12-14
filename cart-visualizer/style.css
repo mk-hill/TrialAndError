@@ -53,8 +53,11 @@ h4 {
   border-radius: 5px;
   display: block;
   outline-color: #ddd;
-  margin: -2rem auto 0.5rem auto;
+  margin: -2rem auto 1.5rem auto;
   transition: all 0.1s ease-in-out;
+  text-align: center;
+  width: 15rem;
+  padding: 1rem 0 0 0;
 }
 
 #input-submit,
@@ -68,10 +71,6 @@ h4 {
   border-radius: 3px;
   padding: 5px;
   outline-color: #ddd;
-}
-
-#input-submit {
-  text-shadow: 0 0 20px rgba(236, 236, 236, 0.753);
 }
 
 #tick-setting {
@@ -103,13 +102,14 @@ h4 {
 
 #auto-speed {
   width: 6rem;
-  padding: 4.3px;
+  padding: 4.4px;
   transition: all 0.1s ease-in-out;
 }
 
 #map {
   white-space: pre-wrap;
   text-align: center;
+  transition: opacity 0.25s ease-in-out;
 }
 
 .disabled {
@@ -119,11 +119,32 @@ h4 {
 .cart {
   font-weight: 900;
   color: #00cc00;
-  text-shadow: 0 0 7px #6aec94, 0 0 5px #00cc00;
+  text-shadow: 0 0 7px rgba(106, 236, 147, 0.5), 0 0 2px #00cc00;
 }
 
 #map p {
   margin: 0;
+}
+
+.star {
+  color: #ffff66;
+  transition: opacity 1s ease-in-out;
+}
+
+.transparent {
+  opacity: 0;
+}
+
+#input-submit:hover,
+#auto-button:hover {
+  /* cursor: pointer; */
+  box-shadow: 0 0 10px rgba(236, 236, 236, 0.5);
+  text-shadow: 0 0 20px rgba(236, 236, 236, 0.753);
+}
+
+#input-submit:active,
+#auto-button:active {
+  transform: translateY(1px);
 }
 
 @media only screen and (max-width: 1250px) {
@@ -135,6 +156,10 @@ h4 {
 @media only screen and (max-width: 1000px) {
   html {
     font-size: 60%;
+  }
+  #map-input {
+    width: 25rem;
+    padding-top: 1.5rem;
   }
 }
 

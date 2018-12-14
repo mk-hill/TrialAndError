@@ -239,7 +239,7 @@ function visualize(lines = gridLines) {
     : 'Press right arrow to advance ticks. Set number of ticks to advance per key press below.';
   if (instructions.textContent !== instructionsText) instructions.textContent = instructionsText;
   tickDisplay.textContent = `Current Tick: ${currentTick}`;
-  const autoDisplayText = auto ? 'Auto mode enabled.' : 'Auto mode disabled.';
+  const autoDisplayText = auto ? 'Auto mode enabled' : 'Auto mode disabled';
   if (autoDisplay.textContent !== autoDisplayText) autoDisplay.textContent = autoDisplayText;
 }
 
@@ -308,6 +308,8 @@ function messyInit() {
   setTimeout(() => {
     autoToggle.style.opacity = '1';
     autoDisplay.style.opacity = '1';
+    [...document.getElementsByClassName('star')].forEach(star => star.classList.add('transparent'));
+    mapContainer.classList.remove('transparent');
   }, 400);
   setTimeout(visualize, 200);
   setTimeout(() => {

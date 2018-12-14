@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Mine Cart Madness Visualizer</title>
+    <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
     <link
       href="https://fonts.googleapis.com/css?family=Source+Code+Pro:300,900"
       rel="stylesheet"
@@ -12,7 +14,10 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Advent of Code 2018 - Day 13 Visualizer</h1>
+    <h1>
+      <span class="star">*</span> Advent of Code 2018 - Day 13 Visualizer
+      <span class="star">*</span>
+    </h1>
     <h3>
       Paste your puzzle input in the field below, or leave it blank to visualize
       mine.
@@ -63,9 +68,9 @@
         >25ms</option
       >
     </select>
-    <textarea id="map-input"></textarea>
+    <textarea id="map-input" placeholder="Puzzle input goes here"></textarea>
     <button id="input-submit">Visualize!</button>
-    <div id="map"></div>
+    <div id="map" class="transparent"></div>
     <script src="carts.js"></script>
   </body>
 </html>
