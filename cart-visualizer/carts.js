@@ -208,22 +208,39 @@ let ticksToGo = 1;
 let currentTick = 0;
 let auto = false;
 let autoSpeed = 250;
+let firstPaint = true;
 
 function visualize(lines = gridLines) {
-  mapContainer.innerHTML = '';
-  lines.forEach((line) => {
-    const highlightedLine = [...line]
-      .map(char => (char in cartTypes ? `<span class="cart">${char}</span>` : char))
-      .join('');
-    const p = document.createElement('p');
-    p.innerHTML = highlightedLine;
-    mapContainer.appendChild(p);
-  });
-  instructions.textContent = auto
-    ? 'Key press disabled, ticks set to 1. Select auto speed below.'
+  if (firstPaint) {
+    // mapContainer.innerHTML = '';
+    lines.forEach((line) => {
+      const highlightedLine = [...line]
+        .map(char => (char in cartTypes ? `<span class="cart">${char}</span>` : char))
+        .join('');
+      const p = document.createElement('p');
+      p.innerHTML = highlightedLine;
+      mapContainer.appendChild(p);
+    });
+    firstPaint = false;
+  } else {
+    const existingLines = [...mapContainer.childNodes];
+    lines.forEach((line, i) => {
+      const highlightedLine = [...line]
+        .map(char => (char in cartTypes ? `<span class="cart">${char}</span>` : char))
+        .join('');
+      // Only repaint lines that have changed
+      if (highlightedLine !== existingLines[i].innerHTML) {
+        existingLines[i].innerHTML = highlightedLine;
+      }
+    });
+  }
+  const instructionsText = auto
+    ? 'Key press disabled while in auto mode. Select auto update interval below.'
     : 'Press right arrow to advance ticks. Set number of ticks to advance per key press below.';
+  if (instructions.textContent !== instructionsText) instructions.textContent = instructionsText;
   tickDisplay.textContent = `Current Tick: ${currentTick}`;
-  autoDisplay.textContent = auto ? 'Auto mode enabled.' : 'Auto mode disabled.';
+  const autoDisplayText = auto ? 'Auto mode enabled.' : 'Auto mode disabled.';
+  if (autoDisplay.textContent !== autoDisplayText) autoDisplay.textContent = autoDisplayText;
 }
 
 function addLog(str) {

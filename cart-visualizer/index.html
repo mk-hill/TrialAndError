@@ -33,16 +33,35 @@
       placeholder="1"
     />
     <button id="auto-button">Toggle auto</button>
-    <select name="auto-speed" class="disabled" id="auto-speed">
+    <select
+      name="auto-speed"
+      class="disabled"
+      id="auto-speed"
+      title="Extremely low intervals may cause performance issues on older hardware when many carts are present."
+    >
       <option value="1000">1000ms</option>
-      <option value="750">750ms</option>
+      <option value="800">800ms</option>
+      <option value="600">600ms</option>
       <option value="500">500ms</option>
       <option value="375">375ms</option>
       <option value="250" selected>250ms</option>
       <option value="150">150ms</option>
       <option value="100">100ms</option>
-      <option value="75">75ms</option>
-      <option value="50">50ms</option>
+      <option
+        value="75"
+        title="Extremely low intervals may cause performance issues on older hardware when many carts are present."
+        >75ms</option
+      >
+      <option
+        value="50"
+        title="Extremely low intervals may cause performance issues on older hardware when many carts are present."
+        >50ms</option
+      >
+      <option
+        value="25"
+        title="Extremely low intervals may cause performance issues on older hardware when many carts are present."
+        >25ms</option
+      >
     </select>
     <textarea id="map-input"></textarea>
     <button id="input-submit">Visualize!</button>
