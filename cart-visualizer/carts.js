@@ -236,7 +236,7 @@ submitButton.addEventListener('click', messyInit);
 
 function advanceTicks(ticksPerCalc = ticksToGo) {
   gridLines = moveCarts(gridLines, ticksPerCalc);
-  currentTick += ticksToGo;
+  currentTick += ticksPerCalc;
   visualize();
 }
 
