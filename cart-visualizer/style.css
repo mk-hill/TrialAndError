@@ -133,7 +133,7 @@ h4 {
 }
 
 #map p {
-  margin-top: var(--y-spacing);
+  margin-top: 0;
   margin-bottom: var(--y-spacing);
   letter-spacing: var(--x-spacing);
   color: rgba(230, 230, 230, var(--map-color));
