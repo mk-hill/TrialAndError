@@ -519,3 +519,44 @@ function designerPdfViewer(h, word) {
     .map(i => h[i]);
   return Math.max(...heights) * word.length;
 }
+
+// Complete the hurdleRace function below.
+function hurdleRace(k, height) {
+  return Math.max(...height) - k < 0 ? 0 : Math.max(...height) - k;
+}
+
+// Complete the viralAdvertising function below.
+function viralAdvertising(n) {
+  let shared = 5;
+  let likes = 2;
+  for (let i = 1; i < n; i++) {
+    shared = Math.floor(shared / 2) * 3;
+    likes += Math.floor(shared / 2);
+  }
+  return likes;
+}
+
+// Complete the beautifulDays function below.
+function beautifulDays(i, j, k) {
+  let days = 0;
+  for (let x = i; x <= j; x++) {
+    if (Math.abs(x - Number([...`${x}`].reverse().join(''))) % k === 0) {
+      days += 1;
+    }
+  }
+  return days;
+}
+
+// Complete the utopianTree function below.
+function utopianTree(n) {
+  let height = 1;
+  for (let i = 0; i < n; i++) {
+    if (i % 2 === 0) {
+      height *= 2;
+    } else {
+      height += 1;
+    }
+  }
+
+  return height;
+}
