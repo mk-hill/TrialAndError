@@ -299,24 +299,19 @@ function messyInit() {
   submitButton.classList.add('disabled');
   log.style.opacity = '1';
   leftHud.style.opacity = '1';
+  autoToggle.style.display = 'inline-block';
   instructions.textContent = 'Press right arrow to advance ticks. Set number of ticks to advance per key press below.';
-  [...document.getElementsByClassName('link')].forEach(link => link.classList.add('disabled-link'));
-  setTimeout(() => document.body.removeChild(inputField), 100);
-  setTimeout(() => document.body.removeChild(submitButton), 100);
-  setTimeout(() => tickSetter.classList.remove('disabled'), 200);
   setTimeout(() => {
-    autoToggle.style.display = 'inline-block';
-    autoDisplay.style.display = 'inline-block';
-  }, 200);
+    document.body.removeChild(inputField);
+    document.body.removeChild(submitButton);
+  }, 100);
   setTimeout(() => {
-    autoToggle.style.opacity = '1';
-    autoDisplay.style.opacity = '1';
+    tickSetter.classList.remove('disabled');
+    autoToggle.classList.remove('disabled');
+    visualize();
+    visualized = true;
     [...document.getElementsByClassName('star')].forEach(star => star.classList.add('transparent'));
     mapContainer.classList.remove('transparent');
-  }, 400);
-  setTimeout(visualize, 200);
-  setTimeout(() => {
-    visualized = true;
   }, 200);
 }
 

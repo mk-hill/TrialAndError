@@ -27,7 +27,7 @@ h4 {
   top: 0;
   left: 0;
   opacity: 0;
-  transition: opacity 0.05s;
+  transition: opacity 0.6s ease-in-out;
   padding: 0 1rem;
   background: rgba(19, 19, 25, 0.7);
   text-align: left;
@@ -41,7 +41,7 @@ h4 {
   top: 0;
   right: 0;
   opacity: 0;
-  transition: opacity 0.05s;
+  transition: opacity 0.6s ease-in-out;
   background: rgba(19, 19, 25, 0.7);
   border-radius: 5px;
 }
@@ -99,13 +99,15 @@ h4 {
   min-height: 1rem;
 }
 
-#auto-button,
+#auto-button {
+  display: none;
+  /* opacity: 0; */
+  transition: all 0.1s ease-in-out;
+}
+
 #auto-display {
   white-space: pre-wrap;
   margin: 0;
-  display: none;
-  opacity: 0;
-  transition: all 0.1s ease-in-out;
 }
 
 #auto-speed {
@@ -141,7 +143,7 @@ h4 {
 
 .star {
   color: #ffff66;
-  transition: opacity 1s ease-in-out;
+  transition: opacity 0.25s ease-in-out;
 }
 
 .transparent {
@@ -192,6 +194,7 @@ h3 .link:hover {
 }
 
 #map-settings-header {
+  transition: opacity 0.1s;
   text-align: center;
   margin-bottom: 0.7rem;
 }
@@ -205,6 +208,7 @@ h3 .link:hover {
 } */
 
 .map-setting-label {
+  transition: opacity 0.1s;
   text-align: center;
   display: block;
   font-size: 0.85em;
@@ -212,6 +216,7 @@ h3 .link:hover {
 }
 
 .map-slider {
+  transition: opacity 0.1s;
   display: block;
   width: 100%;
   opacity: 0.75;
@@ -220,6 +225,7 @@ h3 .link:hover {
 }
 
 #reset-map-settings {
+  transition: opacity 0.1s;
   width: 100%;
   margin-top: 0.7rem;
   font-size: 90%;
@@ -240,6 +246,11 @@ h3 .link:hover {
     width: 25rem;
     padding-top: 1.5rem;
   }
+
+  #auto-speed {
+    width: max-content;
+    padding: 4px;
+  }
 }
 
 @media only screen and (max-width: 750px) {
@@ -257,5 +268,9 @@ h3 .link:hover {
   }
   p {
     font-size: 60%;
+  }
+  #map-input {
+    width: 60vw;
+    padding-top: 2rem;
   }
 }

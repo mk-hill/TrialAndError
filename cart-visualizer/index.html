@@ -59,8 +59,8 @@
       in the field below, or leave it blank to visualize mine.
     </h3>
     <div id="left-hud">
-      <h4 id="current-tick"></h4>
-      <h4 id="auto-display"></h4>
+      <h4 id="current-tick">Current Tick: 0</h4>
+      <h4 id="auto-display">Auto mode disabled</h4>
       <h4 id="map-settings-header">Map Settings</h4>
       <label class="map-setting-label" for="map-color">Track Opacity</label>
       <input
@@ -70,7 +70,7 @@
         name="map-color"
         step="0.05"
         min="0"
-        max="0.8"
+        max="0.9"
         value="0.8"
       />
       <label class="map-setting-label" for="y-spacing">Vertical Spacing</label>
@@ -110,7 +110,7 @@
       id="tick-setting"
       placeholder="1"
     />
-    <button id="auto-button">Toggle auto</button>
+    <button id="auto-button" class="disabled">Toggle auto</button>
     <select
       name="auto-speed"
       class="disabled"
