@@ -7,7 +7,7 @@
 body {
   text-align: center;
   background: #0f0f23;
-  color: rgb(207, 207, 207);
+  color: rgb(230, 230, 230);
   font-family: 'Source Code Pro', monospace;
   box-sizing: border-box;
 }
@@ -93,7 +93,7 @@ h4 {
   outline-color: #ddd;
   border: 1px solid rgba(221, 221, 221, 0.5);
   border-radius: 3px;
-  margin: 1rem 0;
+  margin: 1rem 0 0.7rem 0;
   transition: all 0.1s ease-in-out;
   width: 6rem;
   min-height: 1rem;
@@ -163,7 +163,7 @@ h4 {
 
 .link {
   color: #ddd;
-  text-shadow: 0 0 4px #ddd;
+  text-shadow: 0 0 3px #ddd;
   text-decoration: none;
   transition: all 0.15s;
 }
@@ -174,7 +174,17 @@ h4 {
 
 .link:hover {
   color: #fff;
-  text-shadow: 0 0 5px #fff;
+  text-shadow: 0 0 6px #fff;
+}
+
+h3 .link {
+  color: #00cc00;
+  text-shadow: none;
+}
+
+h3 .link:hover {
+  color: #99ff99;
+  text-shadow: 0 0 4px #99ff99;
 }
 
 #left-hud h4 {

@@ -307,7 +307,6 @@ function messyInit() {
   setTimeout(() => {
     autoToggle.style.display = 'inline-block';
     autoDisplay.style.display = 'inline-block';
-    document.querySelector('h1').textContent = 'Advent of Code 2018 - Day 13 Visualizer';
   }, 200);
   setTimeout(() => {
     autoToggle.style.opacity = '1';
