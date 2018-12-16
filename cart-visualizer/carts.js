@@ -167,7 +167,7 @@ function moveCarts(linesInput = gridLines, ticksToMove = 1) {
           crashedCarts += colliders.length;
           addLog(
             carts.length - crashedCarts > 1
-              ? `${carts.length - crashedCarts} carts left.`
+              ? `${carts.length - crashedCarts} carts left`
               : 'Last cart!',
           );
           // Clear collision by reverting coords to track char underneath both carts
