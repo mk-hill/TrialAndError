@@ -71,20 +71,18 @@ const [input1, input2] = input.day16.split('\n\n\n');
 const formattedP1Input = input1
   .split('\n\n')
   .map(str => str.split('\n'))
-  .map((ar, i) => ({
-    before: ar[0]
+  .map((linesArr, i) => ({
+    before: linesArr[0]
       .slice(9, -1)
       .split(', ')
-      .map(str => Number(str)), // [ar[0][9], ar[0][12], ar[0][15], ar[0][18]],
-    after: ar[2]
+      .map(str => Number(str)),
+    after: linesArr[2]
       .slice(9, -1)
       .split(', ')
-      .map(str => Number(str)), // [ar[2][9], ar[2][12], ar[2][15], ar[2][18]],
-    op: ar[1].split(' ').map(str => Number(str)),
+      .map(str => Number(str)),
+    op: linesArr[1].split(' ').map(str => Number(str)),
     caseNum: i,
   }));
-
-console.log(formattedP1Input[1]);
 
 // Return ops that match
 function getMatchingOpCodes({
@@ -118,17 +116,23 @@ function getMatchingOpCodes({
   };
 }
 
-function getAmbiguousSamples(testCases = formattedP1Input) {
-  // Map case numbers to matches
-  const map = {};
+function runTestCases(testCases = formattedP1Input) {
+  // Map case numbers to matches under samples, op numbers to matching codes under opNums
+  const map = { samples: {}, opNums: {} };
   testCases.forEach((testCase) => {
     const testResults = getMatchingOpCodes(testCase);
-    map[testResults.caseNum] = testResults.matches;
+    map.samples[testResults.caseNum] = testResults.matches;
+    // Assign matches array if empty, filter to leave only common matches if array exists
+    map.opNums[testResults.opNum] = map.opNums[testResults.opNum]
+      ? map.opNums[testResults.opNum].filter(existingMatch => testResults.matches.includes(existingMatch))
+      : testResults.matches;
   });
-  return Object.entries(map).filter(pair => pair[1].length > 2).length;
+  return [Object.entries(map.samples).filter(pair => pair[1].length > 2).length, map.opNums];
 }
 
-console.log(getAmbiguousSamples());
+const [p1Answer, matchingOpCodes] = runTestCases();
+
+console.log(`\x1b[32m${p1Answer}\x1b[0m samples behave like three or more opcodes.`); // 596
 
 /**
  * Your puzzle answer was 596.
@@ -141,21 +145,8 @@ Using the samples you collected, work out the number of each opcode and execute 
 What value is contained in register 0 after executing the test program?
  */
 
-function checkMatches(testCases = formattedP1Input) {
-  // Map op numbers to codes
-  const map = {};
-  testCases.forEach((testCase) => {
-    const testResults = getMatchingOpCodes(testCase);
-    // Assign matches array if empty, filter to leave only common matches if array exists
-    map[testResults.opNum] = map[testResults.opNum]
-      ? map[testResults.opNum].filter(existingMatch => testResults.matches.includes(existingMatch))
-      : testResults.matches;
-  });
-  return map;
-}
-
 // Remove codes that have been narrowed down to 1 from other match lists until all codes are known
-function narrowMatches(map = checkMatches()) {
+function narrowMatches(map = matchingOpCodes) {
   while (Object.values(map).some(matchList => matchList.length > 1)) {
     const knownCodes = Object.values(map)
       .filter(matchList => matchList.length === 1)
@@ -173,11 +164,11 @@ function narrowMatches(map = checkMatches()) {
   return map;
 }
 
-console.log(narrowMatches());
-const instructions = input2.split('\n').map(line => line.split(' ').map(char => Number(char)));
+const formattedP2Input = input2.split('\n').map(line => line.split(' ').map(char => Number(char)));
 
-function performCalculations(codes = narrowMatches(), lines = instructions) {
+function getFinalRegister0Value(codes = narrowMatches(), instructions = formattedP2Input) {
   const regs = [0, 0, 0, 0];
+  // Each function returns value to be assigned to regs[c]
   const ops = {
     addr: (a, b) => regs[a] + regs[b],
     addi: (a, b) => regs[a] + b,
@@ -196,12 +187,13 @@ function performCalculations(codes = narrowMatches(), lines = instructions) {
     eqri: (a, b) => (regs[a] === b ? 1 : 0),
     eqrr: (a, b) => (regs[a] === regs[b] ? 1 : 0),
   };
-  lines.forEach((instruction) => {
+  instructions.forEach((instruction) => {
     const [opNum, a, b, c] = instruction;
-    const code = codes[opNum];
-    regs[c] = ops[code](a, b);
+    regs[c] = ops[codes[opNum]](a, b);
   });
-  return regs;
+  return regs[0];
 }
 
-console.log(performCalculations());
+console.log(
+  `Register 0 contains the value \x1b[32m${getFinalRegister0Value()}\x1b[0m after completing the program.`,
+); // 554
