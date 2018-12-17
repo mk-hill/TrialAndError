@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 /* eslint-disable no-console */
 /* eslint-disable max-len */
 const input = require('./input');
@@ -64,3 +65,143 @@ You collect many of these samples (the first section of your puzzle input). The 
 
 Ignoring the opcode numbers, how many samples in your puzzle input behave like three or more opcodes?
  */
+
+const [input1, input2] = input.day16.split('\n\n\n');
+
+const formattedP1Input = input1
+  .split('\n\n')
+  .map(str => str.split('\n'))
+  .map((ar, i) => ({
+    before: ar[0]
+      .slice(9, -1)
+      .split(', ')
+      .map(str => Number(str)), // [ar[0][9], ar[0][12], ar[0][15], ar[0][18]],
+    after: ar[2]
+      .slice(9, -1)
+      .split(', ')
+      .map(str => Number(str)), // [ar[2][9], ar[2][12], ar[2][15], ar[2][18]],
+    op: ar[1].split(' ').map(str => Number(str)),
+    caseNum: i,
+  }));
+
+console.log(formattedP1Input[1]);
+
+// Return ops that match
+function getMatchingOpCodes({
+  before, after, op, caseNum,
+}) {
+  const [opNum, a, b, c] = op;
+
+  const opResults = {
+    addr: before[a] + before[b],
+    addi: before[a] + b,
+    mulr: before[a] * before[b],
+    muli: before[a] * b,
+    banr: before[a] & before[b],
+    bani: before[a] & b,
+    borr: before[a] | before[b],
+    bori: before[a] | b,
+    setr: before[a],
+    seti: a,
+    gtir: a > before[b] ? 1 : 0,
+    gtri: before[a] > b ? 1 : 0,
+    gtrr: before[a] > before[b] ? 1 : 0,
+    eqir: a === before[b] ? 1 : 0,
+    eqri: before[a] === b ? 1 : 0,
+    eqrr: before[a] === before[b] ? 1 : 0,
+  };
+
+  return {
+    opNum,
+    caseNum,
+    matches: Object.keys(opResults).filter(opCode => after[c] === opResults[opCode]),
+  };
+}
+
+function getAmbiguousSamples(testCases = formattedP1Input) {
+  // Map case numbers to matches
+  const map = {};
+  testCases.forEach((testCase) => {
+    const testResults = getMatchingOpCodes(testCase);
+    map[testResults.caseNum] = testResults.matches;
+  });
+  return Object.entries(map).filter(pair => pair[1].length > 2).length;
+}
+
+console.log(getAmbiguousSamples());
+
+/**
+ * Your puzzle answer was 596.
+
+The first half of this puzzle is complete! It provides one gold star: *
+
+--- Part Two ---
+Using the samples you collected, work out the number of each opcode and execute the test program (the second section of your puzzle input).
+
+What value is contained in register 0 after executing the test program?
+ */
+
+function checkMatches(testCases = formattedP1Input) {
+  // Map op numbers to codes
+  const map = {};
+  testCases.forEach((testCase) => {
+    const testResults = getMatchingOpCodes(testCase);
+    // Assign matches array if empty, filter to leave only common matches if array exists
+    map[testResults.opNum] = map[testResults.opNum]
+      ? map[testResults.opNum].filter(existingMatch => testResults.matches.includes(existingMatch))
+      : testResults.matches;
+  });
+  return map;
+}
+
+// Remove codes that have been narrowed down to 1 from other match lists until all codes are known
+function narrowMatches(map = checkMatches()) {
+  while (Object.values(map).some(matchList => matchList.length > 1)) {
+    const knownCodes = Object.values(map)
+      .filter(matchList => matchList.length === 1)
+      .map(ar => ar[0]);
+    knownCodes.forEach((code) => {
+      Object.values(map).forEach((ar) => {
+        if (ar.includes(code) && ar.length > 1) ar.splice(ar.indexOf(code), 1);
+      });
+    });
+  }
+  // Pull out remaining single strings from arrays with length of 1
+  Object.keys(map).forEach((code) => {
+    [map[code]] = map[code];
+  });
+  return map;
+}
+
+console.log(narrowMatches());
+const instructions = input2.split('\n').map(line => line.split(' ').map(char => Number(char)));
+
+function performCalculations(codes = narrowMatches(), lines = instructions) {
+  const regs = [0, 0, 0, 0];
+  const ops = {
+    addr: (a, b) => regs[a] + regs[b],
+    addi: (a, b) => regs[a] + b,
+    mulr: (a, b) => regs[a] * regs[b],
+    muli: (a, b) => regs[a] * b,
+    banr: (a, b) => regs[a] & regs[b],
+    bani: (a, b) => regs[a] & b,
+    borr: (a, b) => regs[a] | regs[b],
+    bori: (a, b) => regs[a] | b,
+    setr: (a, b) => regs[a],
+    seti: (a, b) => a,
+    gtir: (a, b) => (a > regs[b] ? 1 : 0),
+    gtri: (a, b) => (regs[a] > b ? 1 : 0),
+    gtrr: (a, b) => (regs[a] > regs[b] ? 1 : 0),
+    eqir: (a, b) => (a === regs[b] ? 1 : 0),
+    eqri: (a, b) => (regs[a] === b ? 1 : 0),
+    eqrr: (a, b) => (regs[a] === regs[b] ? 1 : 0),
+  };
+  lines.forEach((instruction) => {
+    const [opNum, a, b, c] = instruction;
+    const code = codes[opNum];
+    regs[c] = ops[code](a, b);
+  });
+  return regs;
+}
+
+console.log(performCalculations());
