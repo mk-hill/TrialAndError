@@ -264,7 +264,8 @@ document.body.onkeydown = (e) => {
 };
 
 tickSetter.onchange = (e) => {
-  ticksToGo = Math.abs(Number(e.target.value));
+  ticksToGo = Math.abs(Number(e.target.value)) < 100000 ? Math.abs(Number(e.target.value)) : 100000;
+  e.target.value = ticksToGo;
   if (Math.abs(Number(e.target.value)) !== Number(e.target.value)) instructions.textContent = 'Absolute values are used for negative numbers. Please enter a positive number.';
 };
 
@@ -313,6 +314,17 @@ function messyInit() {
     [...document.getElementsByClassName('star')].forEach(star => star.classList.add('transparent'));
     mapContainer.classList.remove('transparent');
   }, 200);
+  console.info(`To bypass the 100000 limit on ticks per key press, set ticksToGo to the desired number. 
+Extremely high values might take a long time to calculate. 
+
+Example: 
+ticksToGo = 1000000000;
+
+To set custom auto update interval set autoSpeed to desired ms value. 
+Extremely low values may not yield consistent updates. 
+
+Example: 
+autoSpeed = 42; `);
 }
 
 function updateValue() {
