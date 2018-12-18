@@ -308,6 +308,12 @@ class Node {
     this.right = null;
     this.up = null;
     this.down = null;
+    this.directions = ['left', 'up', 'right', 'down'];
+  }
+
+  isAdjacent(target) {
+    // this returns true if diagonal
+    // return Math.abs(this.x - target.x) === 1 || Math.abs(this.y - target.y) === 1;
   }
 
   getDistance({ x, y }) {
@@ -324,6 +330,7 @@ function generateMap(lines = mapStrings) {
     if (nodes[node.y - 1]) node.up = nodes[node.y - 1][node.x];
     if (nodes[node.x + 1]) node.right = nodes[node.y][node.x + 1];
     if (nodes[node.y + 1]) node.down = nodes[node.y + 1][node.x - 1];
+    // node.surroundings = [node.left, node.right, node.up, node.down];
   }));
   return nodes;
 }
@@ -336,6 +343,7 @@ class Fighter {
     this.hp = 200;
     this.ap = 3;
     this.isAlive = true;
+    this.location.occupant = this;
   }
 
   takeDamage(n) {
@@ -347,10 +355,27 @@ class Fighter {
     target.takeDamage(this.ap);
   }
 
+  // move(...directions) { // single items
+  // take in array of directions
+  move(directions) {
+    directions.forEach((direction) => {
+      if (this.location[direction].occupant) throw new Error('Trying to move into occupied spot');
+      this.location.occupant = null;
+      this.location = this.location[direction];
+      this.location.occupant = this;
+    });
+  }
+
+  // use this in acquireTarget instead?
+  getSurroundingDistances(target) {
+    return this.location.directions.map(direction => (target.location[direction].isTraversable && !target.location[direction].occupant
+      ? { direction: this.location.getDistance(target.location[direction]) }
+      : null));
+  }
+
   acquireTarget(enemies) {
     // BFS to get closest target(s) ?
-    // Determine reading order in case of multiple
-
+    // todo get distance to nodes around the enemy, not the enemy location itself
     const targetDistances = enemies
       .map(enemy => ({ target: enemy, distance: this.location.getDistance(enemy.location) }))
       .sort((x, y) => x.distance - y.distance);
@@ -358,6 +383,7 @@ class Fighter {
     const equidistantTargets = targetDistances.filter(
       enemy => enemy.distance === targetDistances[0].distance,
     );
+    // Determine reading order in case of multiple
   }
 
   attackPhase(target) {
@@ -381,4 +407,4 @@ class Elf extends Fighter {
   }
 }
 
-console.log(generateMap());
+console.log(generateMap()[0][0].surroundings);
