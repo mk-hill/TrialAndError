@@ -296,15 +296,17 @@ function messyInit() {
   if (!input) input = defaultInput;
   gridLines = input.split('\n');
   carts = createCarts();
+  log.style.display = 'block';
+  leftHud.style.display = 'block';
   inputField.classList.add('disabled');
   submitButton.classList.add('disabled');
-  log.style.opacity = '1';
-  leftHud.style.opacity = '1';
   autoToggle.style.display = 'inline-block';
   instructions.textContent = 'Press right arrow to advance ticks. Set number of ticks to advance per key press below.';
   setTimeout(() => {
     document.body.removeChild(inputField);
     document.body.removeChild(submitButton);
+    log.style.opacity = '1';
+    leftHud.style.opacity = '1';
   }, 100);
   setTimeout(() => {
     tickSetter.classList.remove('disabled');

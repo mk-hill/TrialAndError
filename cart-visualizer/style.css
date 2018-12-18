@@ -23,6 +23,7 @@ h4 {
 }
 
 #left-hud {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -36,6 +37,7 @@ h4 {
 }
 
 #log {
+  display: none;
   padding: 0 1rem;
   position: fixed;
   top: 0;
