@@ -99,7 +99,7 @@ class Cart {
   collide(char, print = true) {
     if (char === 'X') this.tick += 1;
     if (print) {
-      addLog(`${this.type.char} collided with ${char} at ${this.x},${this.y} on tick ${this.tick}`);
+      addLog(`${this.type.char} crashed into ${char} at ${this.x},${this.y} on tick ${this.tick}`);
     }
     this.type = cartTypes.X;
     this.hasCrashed = true;
@@ -205,6 +205,7 @@ const autoSpeedSetter = document.getElementById('auto-speed');
 const mapSettings = document.querySelectorAll('.map-slider');
 const mapResetter = document.getElementById('reset-map-settings');
 
+// const priorStates = [];
 let visualized = false;
 let ticksToGo = 1;
 let currentTick = 0;
@@ -254,13 +255,24 @@ function addLog(str) {
 submitButton.addEventListener('click', messyInit);
 
 function advanceTicks(ticksPerCalc = ticksToGo) {
+  // priorStates.push({ currentTick, gridLines, carts });
   gridLines = moveCarts(gridLines, ticksPerCalc);
   currentTick += ticksPerCalc;
   visualize();
 }
 
+// function rewindState() {
+//   if (priorStates.length < 1) return;
+//   const lastState = priorStates.pop();
+//   currentTick = lastState.currentTick;
+//   gridLines = lastState.gridLines;
+//   carts = createCarts();
+//   visualize();
+// }
+
 document.body.onkeydown = (e) => {
   if (e.keyCode === 39 && visualized && !auto) advanceTicks();
+  // if (e.keyCode === 37 && visualized && !auto) rewindState();
 };
 
 tickSetter.onchange = (e) => {
