@@ -131,7 +131,7 @@ function runTestCases(testCases = formattedP1Input) {
 }
 
 const [p1Answer, matchingOpCodes] = runTestCases();
-
+console.group('Day 16');
 console.log(`\x1b[32m${p1Answer}\x1b[0m samples behave like three or more opcodes.`); // 596
 
 /**
@@ -197,3 +197,4 @@ function getFinalRegister0Value(codes = narrowMatches(), instructions = formatte
 console.log(
   `Register 0 contains the value \x1b[32m${getFinalRegister0Value()}\x1b[0m after completing the program.`,
 ); // 554
+console.groupEnd('Day 16');
