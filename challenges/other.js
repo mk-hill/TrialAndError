@@ -557,6 +557,25 @@ function utopianTree(n) {
       height += 1;
     }
   }
-
   return height;
+}
+
+// Complete the angryProfessor function below.
+function angryProfessor(k, a) {
+  return a.filter(n => n < 1).length >= k ? 'NO' : 'YES';
+}
+
+// Complete the catAndMouse function below.
+function catAndMouse(x, y, z) {
+  const aDist = Math.abs(x - z);
+  const bDist = Math.abs(y - z);
+  if (aDist === bDist) return 'Mouse C';
+  return aDist > bDist ? 'Cat B' : 'Cat A';
+}
+
+// Complete the bonAppetit function below.
+function bonAppetit(bill, k, b) {
+  bill.splice(k, 1);
+  const fairShare = bill.reduce((x, y) => x + y) / 2;
+  console.log(b === fairShare ? 'Bon Appetit' : b - fairShare);
 }

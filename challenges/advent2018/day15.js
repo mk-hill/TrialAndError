@@ -293,13 +293,15 @@ What is the outcome of the combat described in your puzzle input?
  * Break out of round when any single fighter finds no enemies left or deduct 1 from final round count
  */
 
+const mapStrings = input.day15.split('\n');
+
 class Node {
   constructor(x, y, char) {
     // Might not end up needing all of these
     this.x = x;
     this.y = y;
-    this.char = char;
-    this.isTraversable = char === '.';
+    this.char = char === '#' ? char : '.';
+    this.isTraversable = char !== '#';
     this.occupant = null; // Need something like this to not traverse occupied nodes + acquire target
     // Link these after map is generated?
     this.left = null;
@@ -307,20 +309,55 @@ class Node {
     this.up = null;
     this.down = null;
   }
+
+  getDistance({ x, y }) {
+    return Math.abs(this.x - x) + Math.abs(this.y - y);
+  }
+
+  getPath({ x, y }) {}
+}
+
+function generateMap(lines = mapStrings) {
+  const nodes = lines.map((line, y) => [...line].map((char, x) => new Node(x, y, char)));
+  nodes.forEach(line => line.forEach((node) => {
+    if (nodes[node.x - 1]) node.left = nodes[node.y][node.x - 1];
+    if (nodes[node.y - 1]) node.up = nodes[node.y - 1][node.x];
+    if (nodes[node.x + 1]) node.right = nodes[node.y][node.x + 1];
+    if (nodes[node.y + 1]) node.down = nodes[node.y + 1][node.x - 1];
+  }));
+  return nodes;
 }
 
 class Fighter {
   // Use nodes instead of x,y for location?
-  constructor(x, y, char) {
-    this.location = ''; // Grab node with given x,y from however we're storing them
-    this.char = char; // To be used to determine allegiance? or just set side based on char without storing char
+  constructor(x, y, map) {
+    this.location = map[y][x]; // Grab node with given x,y from however we're storing them
+    // this.char = char; // To be used to determine allegiance? or just set side based on char without storing char
     this.hp = 200;
     this.ap = 3;
+    this.isAlive = true;
   }
 
-  acquireTarget() {
+  takeDamage(n) {
+    this.hp -= n;
+    if (this.hp <= 0) this.isAlive = false;
+  }
+
+  attack(target) {
+    target.takeDamage(this.ap);
+  }
+
+  acquireTarget(enemies) {
     // BFS to get closest target(s) ?
     // Determine reading order in case of multiple
+
+    const targetDistances = enemies
+      .map(enemy => ({ target: enemy, distance: this.location.getDistance(enemy.location) }))
+      .sort((x, y) => x.distance - y.distance);
+    if (targetDistances[0].distance < targetDistances[1].distance) return targetDistances[0].target;
+    const equidistantTargets = targetDistances.filter(
+      enemy => enemy.distance === targetDistances[0].distance,
+    );
   }
 
   attackPhase(target) {
@@ -329,3 +366,19 @@ class Fighter {
     // todo revisit each phase's structure
   }
 }
+
+class Goblin extends Fighter {
+  constructor(x, y, map) {
+    super(x, y, map);
+    this.enemy = Elf;
+  }
+}
+
+class Elf extends Fighter {
+  constructor(x, y, map) {
+    super(x, y, map);
+    this.enemy = Goblin;
+  }
+}
+
+console.log(generateMap());
