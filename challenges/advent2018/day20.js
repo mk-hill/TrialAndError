@@ -143,22 +143,10 @@ class Node {
 }
 
 const movement = {
-  N: {
-    dx: 0,
-    dy: -1,
-  },
-  W: {
-    dx: -1,
-    dy: 0,
-  },
-  S: {
-    dx: 0,
-    dy: 1,
-  },
-  E: {
-    dx: 1,
-    dy: 0,
-  },
+  N: { x: 0, y: -1 },
+  E: { x: 1, y: 0 },
+  S: { x: 0, y: 1 },
+  W: { x: -1, y: 0 },
 };
 
 function generateMap(directions = directionsString) {
@@ -171,16 +159,11 @@ function generateMap(directions = directionsString) {
     if (char === ')') currentNode = path.pop();
     if (char === '|') currentNode = path[path.length - 1];
     if (char in movement) {
-      const nextX = currentNode.x + movement[char].dx;
-      const nextY = currentNode.y + movement[char].dy;
-      let nextNode;
+      const nextX = currentNode.x + movement[char].x;
+      const nextY = currentNode.y + movement[char].y;
       if (!map[nextY]) map[nextY] = {};
-      if (map[nextY][nextX]) {
-        nextNode = map[nextY][nextX];
-      } else {
-        nextNode = new Node(nextX, nextY, currentNode.dist + 1);
-        map[nextY][nextX] = nextNode;
-      }
+      const nextNode = map[nextY][nextX] || new Node(nextX, nextY, currentNode.dist + 1);
+      map[nextY][nextX] = nextNode;
       currentNode = nextNode;
     }
   });
@@ -203,7 +186,9 @@ How many rooms have a shortest path from your current location that pass through
  */
 
 console.log(
-  `\x1b[32m${distances.filter(n => n >= 1000).length}\x1b[0m rooms are 1000 or more doors away.`,
+  `\x1b[32m${
+    distances.filter(n => n >= 1000).length
+  }\x1b[0m rooms would take at least 1000 doors to reach.`,
 ); // 8000
 
 console.groupEnd('Day 20');
