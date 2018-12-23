@@ -421,10 +421,14 @@ This is tied with other routes as the fastest way to reach the target: 45 minute
 What is the fewest number of minutes you can take to reach the target?
  */
 
+// todo figure out how to find shortest path properly with changing weights based on tools
+
 function calculateDistanceToTarget([x1, y1], [x2, y2] = targetCoords) {
   return Math.abs(x1 - x2) + Math.abs(y1 - y2);
 }
 
+// How to decide which of the two tool options to actually switch to?
+// Keep both possibilities open and narrow down only once another region type is passed into?
 function getMovementResults(currentToolOptions, destination) {
   const commonTools = currentToolOptions.filter(tool => destination.tools.includes(tool));
   return {
@@ -435,11 +439,12 @@ function getMovementResults(currentToolOptions, destination) {
   };
 }
 
-function checkSurroundings(x, y, currentToolOptions) {
+// function checkSurroundings(x, y, currentToolOptions) {
+function checkSurroundings({ x, y, tools }) {
   return [[x - 1, y], [x, y - 1], [x + 1, y], [x, y + 1]]
     .map((coords) => {
       if (coords.some(num => num < 0)) return null;
-      return getMovementResults(currentToolOptions, map.getRegion(...coords));
+      return getMovementResults(tools, map.getRegion(...coords));
     })
     .filter(result => result !== null);
 }
@@ -457,41 +462,4 @@ function findLowestCostMove(x, y, currentToolOptions) {
   return options[0];
 }
 
-// function determinePath(target = targetCoords) {
-//   const [targetX, targetY] = target;
-//   let currentX = 0;
-//   let currentY = 0;
-//   let currentToolOptions = [TORCH];
-//   let timeSpent = 0;
-//   while (currentX < targetX || currentY < targetY) {
-//     const options = [[currentX + 1, currentY], [currentX, currentY + 1]];
-//     const choice = options
-//       .map(option => [option, map.getSingleMoveCost(option, currentToolOptions)])
-//       .reduce(
-//         (carry, option) => {
-//           if (
-//             option[1] <= carry[1]
-//             && calculateDistance(option[0], target) <= calculateDistance(carry[0], target)
-//           ) carry = option;
-//           return carry;
-//         },
-//         [[0, 0], Infinity],
-//       );
-//     currentX = choice[0][0];
-//     currentY = choice[0][1];
-//     currentToolOptions = chooseTools(currentToolOptions, map.getRegion(currentX, currentY));
-//     timeSpent += choice[1];
-//     console.log(
-//       [currentX, currentY],
-//       timeSpent,
-//       currentToolOptions,
-//       calculateDistance([currentX, currentY], target),
-//     );
-//   }
-//   if (currentToolOptions.includes(TORCH)) timeSpent += 7;
-//   return timeSpent;
-// }
-
-// console.dir(map);
-// console.log(determinePath());
 console.groupEnd('Day 22');
