@@ -579,3 +579,68 @@ function bonAppetit(bill, k, b) {
   const fairShare = bill.reduce((x, y) => x + y) / 2;
   console.log(b === fairShare ? 'Bon Appetit' : b - fairShare);
 }
+
+function wurstIsBetter(str) {
+  const re = /(kielbasa)|(Chorizo)|(Moronga)|(Salami)|(Sausage)|(Andouille)|(Naem)|(Merguez)|(Gurka)|(Snorkers)|(Pepperoni)/gi;
+  return str.replace(re, 'Wurst');
+}
+
+function alternatingCaps(str) {
+  return [...str]
+    .map((char, i) => (i % 2 === 0 ? char.toUpperCase() : char.toLowerCase()))
+    .join('');
+}
+
+function validatePIN(pin) {
+  return /^\d+$/.test(pin) && (pin.length === 4 || pin.length === 6);
+}
+
+/**
+ * Create a function that takes three arguments (x, y, z) and returns an array containing subarrays (e.g. [[], [], []]), each of a certain number of items, all set to either a string or an integer.
+x argument: Number of subarrays contained within the main array.
+y argument Number of items contained within each subarray(s).
+z argument: Item contained within each subarray(s).
+
+Examples
+3, 2, 3 ➞ [[3, 3], [3, 3], [3, 3]]
+
+2, 1, "edabit" ➞ [["edabit"], ["edabit"]]
+
+3, 2, 0 ➞ [[0, 0], [0, 0], [0, 0]]
+ */
+
+function matrix(x, y, z) {
+  return Array(x).fill(Array(y).fill(z));
+}
+
+/**
+ *
+ * Given an array of numbers, write a function that returns an array that...
+Has all duplicate elements removed.
+Is sorted from least to greatest value.
+ */
+
+const uniqueSort = arr => [...new Set(arr)].sort((a, b) => a > b);
+
+/**
+* Create a function that takes an array of numbers and returns the sum of the two lowest
+positive numbers.
+Examples
+[19, 5, 42, 2, 77] ➞ 7
+
+[10, 343445353, 3453445, 3453545353453] ➞ 3453455
+
+[2, 9, 6, -1] ➞ 8
+
+[879, 953, 694, -847, 342, 221, -91, -723, 791, -587] ➞ 563
+
+[3683, 2902, 3951, -475, 1617, -2385] ➞ 4519
+ */
+
+function sumTwoSmallestNums(arr) {
+  return arr
+    .filter(n => n > 0)
+    .sort((x, y) => x - y)
+    .slice(0, 2)
+    .reduce((x, y) => x + y); // Single pass with reduce instead if inputs get long?
+}
