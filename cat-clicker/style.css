@@ -9,6 +9,7 @@ body {
   font-family: 'Open Sans', sans-serif;
   box-sizing: border-box;
   background-repeat: no-repeat;
+  background: linear-gradient(to right, #485563, #29323c);
 }
 
 h1,

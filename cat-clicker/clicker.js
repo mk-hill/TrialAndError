@@ -1,82 +1,101 @@
-const catHeader = document.getElementById('cat-name');
-const catPic = document.getElementById('cat-pic');
-const counter = document.getElementById('counter');
-const catLinks = [...document.getElementsByClassName('nav-link')];
-const meow = new Audio('./assets/meow.ogg');
+const model = {
+  activeCatIndex: 0,
+  cats: [
+    { name: 'space', clicks: 0 },
+    { name: 'moon', clicks: 0 },
+    { name: 'blanket', clicks: 0 },
+    { name: 'forest', clicks: 0 },
+    { name: 'watcher', clicks: 0 },
+  ],
+};
 
-const cats = {
-  space: {
-    index: 0,
-    clicks: 0,
+const octopus = {
+  meowFreq: 10,
+
+  getActiveCat() {
+    return model.cats[model.activeCatIndex];
   },
-  moon: {
-    index: 1,
-    clicks: 0,
+
+  setActiveCat(index = 0) {
+    const previousCat = { index: model.activeCatIndex, name: this.getActiveCat().name };
+    model.activeCatIndex = index;
+    // if (model.cats[index].imgSrc) this.activeCat.imgSrc = model.cats[index].imgSrc;
+    view.displayActiveCat({ index, ...this.getActiveCat() }, previousCat);
   },
-  blanket: {
-    index: 2,
-    clicks: 0,
+
+  incrementClicks() {
+    model.cats[model.activeCatIndex].clicks += 1;
+    if (model.cats[model.activeCatIndex].clicks % this.meowFreq === 0) {
+      view.meow();
+    }
   },
-  forest: {
-    index: 3,
-    clicks: 0,
-  },
-  watcher: {
-    index: 4,
-    clicks: 0,
+
+  init() {
+    view.init(model.cats.map(cat => cat.name));
+    this.setActiveCat();
   },
 };
 
-let activeCat = '';
+const view = {
+  catHeader: document.getElementById('cat-name'),
+  catPic: document.getElementById('cat-pic'),
+  counter: document.getElementById('counter'),
+  catList: document.getElementById('cat-list'),
+  meowSound: new Audio('./assets/meow.ogg'),
 
-function updateCounter() {
-  counter.textContent = cats[activeCat].clicks
-    ? `Clicks: ${cats[activeCat].clicks}`
-    : 'No clicks yet :(';
-}
+  updateCounter() {
+    const { clicks } = octopus.getActiveCat();
+    this.counter.textContent = clicks ? `Clicks: ${clicks}` : 'No clicks yet :(';
+  },
 
-function setActiveCat(name = 'space') {
-  if (activeCat) {
-    document.body.classList.remove(activeCat);
-    catLinks[cats[activeCat].index].classList.remove('active');
-  }
-  document.body.classList.add(name);
-  activeCat = name;
-  catLinks[cats[name].index].classList.add('active');
-  catHeader.textContent = `Click the ${name.charAt(0).toUpperCase() + name.substring(1)} Cat`;
-  catPic.src = `./assets/${name}cat.jpg`;
-  updateCounter();
-}
+  displayActiveCat(currentCat, previousCat) {
+    if (previousCat) {
+      document.body.classList.remove(previousCat.name);
+      this.catLinks[previousCat.index].classList.remove('active');
+    }
+    const { index, name, imgSrc } = currentCat;
+    document.body.classList.add(name);
+    this.catLinks[index].classList.add('active');
+    this.catHeader.textContent = `Click the ${name.charAt(0).toUpperCase()
+      + name.substring(1)} Cat`;
+    this.catPic.src = imgSrc || `./assets/${name}cat.jpg`;
+    this.updateCounter();
+  },
 
-function initialLoad() {
-  catHeader.style.display = 'block';
-  counter.style.display = 'block';
-  catPic.style.display = 'block';
-  setActiveCat();
-}
+  createCatLink(name, index) {
+    const catLink = document.createElement('li');
+    catLink.classList.add('nav-link');
+    catLink.dataset.index = index;
+    catLink.textContent = `${name[0].toUpperCase()}${name.slice(1)} Cat`;
+    return catLink;
+  },
 
-function catClicked() {
-  cats[activeCat].clicks += 1;
-  if (cats[activeCat].clicks % 10 === 0) {
-    meow.play();
-  }
-  updateCounter();
-}
+  initCatLinks(catNames) {
+    this.catLinks = catNames.map((name, index) => this.createCatLink(name, index));
+    this.catLinks.forEach(link => this.catList.appendChild(link));
+  },
 
-function navHandler(e) {
-  const catName = e.target.textContent
-    .replace('Cat', '')
-    .trim()
-    .toLowerCase();
-  setActiveCat(catName);
-}
+  init(catNames) {
+    [this.catHeader, this.counter, this.catPic].forEach((elem) => {
+      elem.style.display = 'block';
+    });
+    this.initCatLinks(catNames);
+    this.catLinks.forEach(link => link.addEventListener('click', this.navHandler));
+    this.catPic.addEventListener('click', this.catClicked.bind(this));
+  },
 
-catLinks.forEach(link => link.addEventListener('click', navHandler));
-catPic.addEventListener('click', catClicked);
+  navHandler(e) {
+    return octopus.setActiveCat(e.target.dataset.index);
+  },
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => initialLoad());
-} else {
-  // `DOMContentLoaded` already fired
-  initialLoad();
-}
+  meow() {
+    return this.meowSound.play();
+  },
+
+  catClicked() {
+    octopus.incrementClicks();
+    this.updateCounter();
+  },
+};
+
+octopus.init();
