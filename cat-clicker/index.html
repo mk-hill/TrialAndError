@@ -17,7 +17,45 @@
       <h1 id="cat-name"></h1>
       <h2 id="counter"></h2>
       <img id="cat-pic" src="" alt="Cat pic" />
+      <button id="admin-toggle" class="button">Edit Cat</button>
+      <div class="admin no-display">
+        <div class="form-row">
+          <label class="admin-label" for="name">Name</label>
+          <input
+            id="admin-input-name"
+            class="admin-input"
+            type="text"
+            name="name"
+            placeholder="Cat Name"
+          />
+        </div>
+        <div class="form-row">
+          <label class="admin-label" for="clicks">Clicks</label>
+          <input
+            id="admin-input-clicks"
+            class="admin-input"
+            type="number"
+            name="clicks"
+            placeholder="Clicks"
+          />
+        </div>
+        <div class="form-row">
+          <label class="admin-label" for="imgSrc">Image</label>
+          <input
+            id="admin-input-imgSrc"
+            class="admin-input"
+            type="text"
+            name="imgSrc"
+            placeholder="Image"
+          />
+        </div>
+        <div class="admin-buttons">
+          <button id="admin-reset" class="button" type="reset">Restore</button>
+          <button id="admin-submit" class="button" type="submit">Update</button>
+        </div>
+      </div>
     </div>
+
     <script src="clicker.js"></script>
   </body>
 </html>

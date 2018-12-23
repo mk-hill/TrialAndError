@@ -16,6 +16,10 @@ const octopus = {
     return model.cats[model.activeCatIndex];
   },
 
+  getActiveCatIndex() {
+    return model.activeCatIndex;
+  },
+
   setActiveCat(index = 0) {
     const previousCat = { index: model.activeCatIndex, name: this.getActiveCat().name };
     model.activeCatIndex = index;
@@ -32,7 +36,22 @@ const octopus = {
 
   init() {
     view.init(model.cats.map(cat => cat.name));
+    this.defaults = [...model.cats];
     this.setActiveCat();
+  },
+
+  updateCat({
+    name, clicks, imgSrc, index,
+  }) {
+    model.cats[index] = { name, clicks: Number(clicks), imgSrc };
+    view.displayActiveCat({ index, ...this.getActiveCat() });
+  },
+
+  restoreCat(index) {
+    this.updateCat({
+      index,
+      ...this.defaults[index],
+    });
   },
 };
 
@@ -42,10 +61,27 @@ const view = {
   counter: document.getElementById('counter'),
   catList: document.getElementById('cat-list'),
   meowSound: new Audio('./assets/meow.ogg'),
+  adminToggle: document.getElementById('admin-toggle'),
+  adminPanel: document.querySelector('.admin'),
+  adminNameInput: document.getElementById('admin-input-name'),
+  adminClicksInput: document.getElementById('admin-input-clicks'),
+  adminSrcInput: document.getElementById('admin-input-imgSrc'),
+  inputs: [this.adminNameInput, this.adminClicksInput, this.adminSrcInput],
+  adminSubmit: document.getElementById('admin-submit'),
+  adminReset: document.getElementById('admin-reset'),
 
   updateCounter() {
     const { clicks } = octopus.getActiveCat();
     this.counter.textContent = clicks ? `Clicks: ${clicks}` : 'No clicks yet :(';
+    this.adminClicksInput.value = clicks;
+  },
+
+  populateAdminPanel() {
+    let { name, clicks, imgSrc } = octopus.getActiveCat();
+    if (!imgSrc) imgSrc = `./assets/${name}cat.jpg`;
+    this.adminNameInput.value = name;
+    this.adminClicksInput.value = clicks;
+    this.adminSrcInput.value = imgSrc;
   },
 
   displayActiveCat(currentCat, previousCat) {
@@ -59,6 +95,7 @@ const view = {
     this.catHeader.textContent = `Click the ${name.charAt(0).toUpperCase()
       + name.substring(1)} Cat`;
     this.catPic.src = imgSrc || `./assets/${name}cat.jpg`;
+    this.populateAdminPanel();
     this.updateCounter();
   },
 
@@ -82,6 +119,30 @@ const view = {
     this.initCatLinks(catNames);
     this.catLinks.forEach(link => link.addEventListener('click', this.navHandler));
     this.catPic.addEventListener('click', this.catClicked.bind(this));
+    this.adminToggle.addEventListener('click', () => this.adminPanel.classList.toggle('no-display'));
+    this.adminSubmit.addEventListener('click', this.updateHandler.bind(this));
+    this.adminReset.addEventListener('click', this.resetHandler);
+  },
+
+  updateHandler(e) {
+    console.log('triggerred');
+    e.preventDefault(); // needed?
+    const [name, clicks, imgSrc] = [
+      this.adminNameInput,
+      this.adminClicksInput,
+      this.adminSrcInput,
+    ].map(input => input.value);
+    const index = octopus.getActiveCatIndex();
+    octopus.updateCat({
+      name,
+      clicks,
+      imgSrc,
+      index,
+    });
+  },
+
+  resetHandler() {
+    octopus.restoreCat(octopus.getActiveCatIndex());
   },
 
   navHandler(e) {
