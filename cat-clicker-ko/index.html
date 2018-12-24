@@ -12,12 +12,12 @@
     <!-- <link rel="stylesheet" href="style.css" /> -->
   </head>
   <body class="space">
-    <!-- <nav id="cat-nav"><ul id="cat-list"></ul></nav> -->
+    <nav id="cat-nav" data-bind="foreach: catList "><ul id="cat-list" data-bind="click: $parent.setCurrentCat, text: name"></ul></nav>
     <div class="wrapper" data-bind="with: currentCat">
       <h1 id="cat-name" data-bind="text: name"></h1>
       <h2 data-bind="text: level"></h2>
       <h2 id="counter" ><span data-bind="text: clickCount"></span> clicks</h2>
-      <img id="cat-pic" src="" alt="Cat pic"  data-bind="click: $parent.incrementCounter, attr: {src: imgSrc}"/>
+      <img id="cat-pic" width="500px" src="" alt="Cat pic"  data-bind="click: $parent.incrementCounter, attr: {src: imgSrc}"/>
       <h3>Nicknames</h3>
       <ul data-bind="foreach: nicknames" >
         <li data-bind="text: $data"></li>

@@ -1,3 +1,36 @@
+const defaultCats = [
+  {
+    name: 'Space Cat',
+    clicks: 0,
+    imgSrc: './assets/spacecat.jpg',
+    nicknames: ['Astro', 'Spacey', 'PodCat'],
+  },
+  {
+    name: 'Moon Cat',
+    clicks: 0,
+    imgSrc: './assets/mooncat.jpg',
+    nicknames: ['Nickname 1', 'Nickname 2', 'Nickname 3'],
+  },
+  {
+    name: 'Blanket Cat',
+    clicks: 0,
+    imgSrc: './assets/blanketcat.jpg',
+    nicknames: ['Nickname 1', 'Nickname 2', 'Nickname 3'],
+  },
+  {
+    name: 'Forest Cat',
+    clicks: 0,
+    imgSrc: './assets/forestcat.jpg',
+    nicknames: ['Nickname 1', 'Nickname 2', 'Nickname 3'],
+  },
+  {
+    name: 'Watcher Cat',
+    clicks: 0,
+    imgSrc: './assets/watchercat.jpg',
+    nicknames: ['Nickname 1', 'Nickname 2', 'Nickname 3'],
+  },
+];
+
 class Cat {
   constructor({
     name = 'Space Cat',
@@ -24,7 +57,14 @@ class Cat {
 }
 
 const ViewModel = function () {
-  this.currentCat = ko.observable(new Cat());
+  this.catList = ko.observable(defaultCats.map(catSettings => new Cat(catSettings)));
+  this.currentCat = ko.observable(this.catList()[0]);
+  // click handler receives the model rather than regular event
+  this.setCurrentCat = (clickedCat) => {
+    this.currentCat(clickedCat);
+    // console.log('a');
+  };
+
   this.incrementCounter = () => {
     // if regular func is used:
     // inside this function this represents binding context of currentCat
