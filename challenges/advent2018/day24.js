@@ -212,7 +212,7 @@ class Group {
   acquireTarget(enemies) {
     const target = this.getTargetChoice(enemies);
     this.target = target;
-    if (target) target.isTargeted = true; // account for null
+    if (target) target.isTargeted = true; // account for no target being available (this.target === null)
   }
 
   getTargetChoice(enemies) {
@@ -226,7 +226,7 @@ class Group {
       }))
       .filter(enemy => enemy.potentialDamage > 0 && !enemy.isTargeted)
       .sort((x, y) => y.potentialDamage - x.potentialDamage);
-    if (!enemyValues.length) return null; // No damage is possible to enemies which haven't already been targeted by someone else
+    if (!enemyValues.length) return null; // No damage is possible to enemies which haven't already been targeted by someone else, returning null
     if (
       enemyValues.length === 1
       || enemyValues[0].potentialDamage !== enemyValues[1].potentialDamage
@@ -264,7 +264,7 @@ const getTotalUnits = ar => ar.reduce((totalUnits, group) => {
   return totalUnits;
 }, 0);
 
-// Added boost and remaining units for part 2
+// Modified for part 2
 function battle(boost = 0, immuneStats = immuneGroupStats, infectionStats = infectionGroupStats) {
   let immuneArmy = immuneStats.map(
     stats => new Group({ type: 'immune', ...stats, ap: stats.ap + boost }),
@@ -286,7 +286,7 @@ function battle(boost = 0, immuneStats = immuneGroupStats, infectionStats = infe
     unitsRemaining[0].push(getTotalUnits(immuneArmy));
     unitsRemaining[1].push(getTotalUnits(infectionArmy));
 
-    // Break if remaining units haven't changed in the last 5 rounds
+    // Stalemate if both armies are no longer losing any units
     if (
       unitsRemaining.every(ar => ar.length > 10)
       && unitsRemaining.every(ar => ar.slice(-5).every(val => val === ar[ar.length - 1]))
