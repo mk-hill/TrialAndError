@@ -13,11 +13,15 @@
   </head>
   <body class="space">
     <!-- <nav id="cat-nav"><ul id="cat-list"></ul></nav> -->
-    <div class="wrapper">
+    <div class="wrapper" data-bind="with: currentCat">
       <h1 id="cat-name" data-bind="text: name"></h1>
       <h2 data-bind="text: level"></h2>
       <h2 id="counter" ><span data-bind="text: clickCount"></span> clicks</h2>
-      <img id="cat-pic" src="" alt="Cat pic"  data-bind="click: incrementCounter, attr: {src: imgSrc}"/>
+      <img id="cat-pic" src="" alt="Cat pic"  data-bind="click: $parent.incrementCounter, attr: {src: imgSrc}"/>
+      <h3>Nicknames</h3>
+      <ul data-bind="foreach: nicknames" >
+        <li data-bind="text: $data"></li>
+      </ul>
 <!--       
       <button id="admin-toggle" class="button">Edit Cat</button>
       <div class="admin no-display">
