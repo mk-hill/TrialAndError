@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Cat Clicker</title>
+    <!-- <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300"
+      rel="stylesheet"
+    /> -->
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+  </head>
+  <body class="space">
+    <!-- <nav id="cat-nav"><ul id="cat-list"></ul></nav> -->
+    <div class="wrapper">
+      <h1 id="cat-name" data-bind="text: name"></h1>
+      <h2 data-bind="text: level"></h2>
+      <h2 id="counter" ><span data-bind="text: clickCount"></span> clicks</h2>
+      <img id="cat-pic" src="" alt="Cat pic"  data-bind="click: incrementCounter, attr: {src: imgSrc}"/>
+<!--       
+      <button id="admin-toggle" class="button">Edit Cat</button>
+      <div class="admin no-display">
+        <div class="form-row">
+          <label class="admin-label" for="name">Name</label>
+          <input
+            id="admin-input-name"
+            class="admin-input"
+            type="text"
+            name="name"
+            placeholder="Cat Name"
+          />
+        </div>
+        <div class="form-row">
+          <label class="admin-label" for="clicks">Clicks</label>
+          <input
+            id="admin-input-clicks"
+            class="admin-input"
+            type="number"
+            name="clicks"
+            placeholder="Clicks"
+          />
+        </div>
+        <div class="form-row">
+          <label class="admin-label" for="imgSrc">Image</label>
+          <input
+            id="admin-input-imgSrc"
+            class="admin-input"
+            type="text"
+            name="imgSrc"
+            placeholder="Image"
+          />
+        </div>
+        <div class="admin-buttons">
+          <button id="admin-reset" class="button" type="reset">Restore</button>
+          <button id="admin-submit" class="button" type="submit">Update</button>
+        </div>
+      </div>
+    </div> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+    <script src="clicker.js"></script>
+  </body>
+</html>
