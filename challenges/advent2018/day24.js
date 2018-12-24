@@ -166,7 +166,7 @@ const [immuneGroupStats, infectionGroupStats] = input.day24.split('\n\n').map(st
   .map((ar) => {
     const tally = { weak: new Set(), immune: new Set() };
     if (ar[7][0] === '(') {
-      let type = ar[7].slice(1);
+      let type = ar[7].slice(1); // slicing '(immune' or '(weak'
       let nextIndex = 9; // Skipping 'to'
       while (ar[nextIndex][ar[nextIndex].length - 1] !== ')') {
         let word = ar[nextIndex];
@@ -181,7 +181,7 @@ const [immuneGroupStats, infectionGroupStats] = input.day24.split('\n\n').map(st
         }
         nextIndex += 1;
       }
-      tally[type].add(ar[nextIndex].slice(0, ar[nextIndex].length - 1));
+      tally[type].add(ar[nextIndex].slice(0, ar[nextIndex].length - 1)); // Add final weakness/immunity
     }
 
     return {
@@ -200,7 +200,6 @@ class Group {
     Object.keys(stats).forEach((key) => {
       this[key] = stats[key];
     });
-    this.isDead = false;
     this.target = null;
     this.isTargeted = false; // Use to ensure only one attacker per target as specified
   }
@@ -209,12 +208,17 @@ class Group {
     return this.ap * this.units;
   }
 
+  get isDead() {
+    return this.units < 1;
+  }
+
   acquireTarget(enemies) {
     const target = this.getTargetChoice(enemies);
     this.target = target;
     if (target) target.isTargeted = true; // account for no target being available (this.target === null)
   }
 
+  // Does not act, only returns chosen enemy or null if none are available
   getTargetChoice(enemies) {
     let enemyValues = enemies
       .map((enemy, index) => ({
@@ -243,12 +247,11 @@ class Group {
   }
 
   attack() {
-    if (this.target) this.target.takeDamage(this.ep, this.damageType); // account for null
+    if (this.target) this.target.takeDamage(this.ep, this.damageType); // account for null target
   }
 
   takeDamage(val, type) {
     this.units -= Math.floor(this.getDamageValue(val, type) / this.hp);
-    if (this.units < 1) this.isDead = true;
     this.isTargeted = false; // reset for next target acquisition after each round
   }
 

@@ -11677,14 +11677,6 @@ pos=<-5275537,5450959,-47631431>, r=95658441
 pos=<-42015164,8859133,19668585>, r=77547921
 pos=<36883774,-13073625,-13164796>, r=61796081`;
 
-exports.day24test = `Immune System:
-17 units each with 5390 hit points (weak to radiation, bludgeoning) with an attack that does 4507 fire damage at initiative 2
-989 units each with 1274 hit points (immune to fire; weak to bludgeoning, slashing) with an attack that does 25 slashing damage at initiative 3
-
-Infection:
-801 units each with 4706 hit points (weak to radiation) with an attack that does 116 bludgeoning damage at initiative 1
-4485 units each with 2961 hit points (immune to radiation; weak to fire, cold) with an attack that does 12 slashing damage at initiative 4`;
-
 exports.day24 = `Immune System:
 2208 units each with 6238 hit points (immune to slashing) with an attack that does 23 bludgeoning damage at initiative 20
 7603 units each with 6395 hit points (weak to radiation) with an attack that does 6 cold damage at initiative 15
