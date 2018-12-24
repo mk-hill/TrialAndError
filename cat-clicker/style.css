@@ -130,10 +130,42 @@ h2 {
   box-shadow: none;
 }
 
+@media only screen and (max-width: 1500px) {
+  .admin {
+    right: 1%;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .admin {
+    width: 50%;
+    right: 20%;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .admin {
+    top: 40%;
+    right: 20%;
+  }
+  .admin-buttons button {
+    margin: 1rem 0.2rem;
+    padding: 0.2rem;
+  }
+}
+
 .space {
   background: #000
     url(http://www.script-tutorials.com/demos/360/images/stars.png) repeat top
     center;
+}
+
+.moon {
+  background: linear-gradient(to top, #355c7d, #6c5b7b, #c06c84);
+}
+
+.blanket {
+  background: linear-gradient(to right, #654ea3, #eaafc8);
 }
 
 .forest {
@@ -145,14 +177,6 @@ h2 {
     #00bf72,
     #a8eb12
   );
-}
-
-.blanket {
-  background: linear-gradient(to right, #654ea3, #eaafc8);
-}
-
-.moon {
-  background: linear-gradient(to top, #355c7d, #6c5b7b, #c06c84);
 }
 
 .watcher {

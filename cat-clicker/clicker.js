@@ -121,28 +121,31 @@ const view = {
     this.catPic.addEventListener('click', this.catClicked.bind(this));
     this.adminToggle.addEventListener('click', () => this.adminPanel.classList.toggle('no-display'));
     this.adminSubmit.addEventListener('click', this.updateHandler.bind(this));
-    this.adminReset.addEventListener('click', this.resetHandler);
+    this.adminReset.addEventListener('click', this.resetHandler.bind(this));
   },
 
   updateHandler(e) {
-    console.log('triggerred');
     e.preventDefault(); // needed?
+    document.body.classList.remove(octopus.getActiveCat().name); // remove predefined styles for cat type when user sets custom cat
     const [name, clicks, imgSrc] = [
       this.adminNameInput,
       this.adminClicksInput,
       this.adminSrcInput,
     ].map(input => input.value);
     const index = octopus.getActiveCatIndex();
+    this.catLinks[index].textContent = `${name[0].toUpperCase()}${name.slice(1)} Cat`;
     octopus.updateCat({
       name,
       clicks,
       imgSrc,
       index,
     });
+    this.adminPanel.classList.add('no-display');
   },
 
   resetHandler() {
     octopus.restoreCat(octopus.getActiveCatIndex());
+    this.adminPanel.classList.add('no-display');
   },
 
   navHandler(e) {
