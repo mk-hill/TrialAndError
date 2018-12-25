@@ -1,370 +1,376 @@
-/* eslint-disable max-len */
+/* eslint-disable func-names */
+(function () {
+  //
+  // ─── MODIFIED SOLUTION FOR VISUALIZER ───────────────────────────────────────────
+  //
 
-//
-// ─── MODIFIED SOLUTION FOR VISUALIZER ───────────────────────────────────────────
-//
+  // State moved out of moveCarts function for visualizer
+  let gridLines;
+  let carts;
+  let crashedCarts = 0;
 
-let gridLines; // Moved out of moveCarts for visualizer
-let carts; // Moved out of moveCarts for visualizer
+  // Keep track of what each character becomes when it turns, and how it moves per tick
+  const cartTypes = {
+    '>': {
+      char: '>',
+      left: '^',
+      right: 'v',
+      movement: { x: 1, y: 0 },
+    },
+    '<': {
+      char: '<',
+      left: 'v',
+      right: '^',
+      movement: { x: -1, y: 0 },
+    },
+    '^': {
+      char: '^',
+      left: '<',
+      right: '>',
+      movement: { x: 0, y: -1 },
+    },
+    v: {
+      char: 'v',
+      left: '>',
+      right: '<',
+      movement: { x: 0, y: 1 },
+    },
+    X: {
+      char: 'X',
+      left: 'X',
+      right: 'X',
+      movement: { x: 0, y: 0 },
+    },
+  };
 
-// Keep track of what each character becomes when it turns, and how it moves per tick
-const cartTypes = {
-  '>': {
-    char: '>',
-    left: '^',
-    right: 'v',
-    movement: { x: 1, y: 0 },
-  },
-  '<': {
-    char: '<',
-    left: 'v',
-    right: '^',
-    movement: { x: -1, y: 0 },
-  },
-  '^': {
-    char: '^',
-    left: '<',
-    right: '>',
-    movement: { x: 0, y: -1 },
-  },
-  v: {
-    char: 'v',
-    left: '>',
-    right: '<',
-    movement: { x: 0, y: 1 },
-  },
-  X: {
-    char: 'X',
-    left: 'X',
-    right: 'X',
-    movement: { x: 0, y: 0 },
-  },
-};
+  // Point turn results to appropriate cartTypes rather than just the character to avoid constant lookups
+  Object.keys(cartTypes).forEach((char) => {
+    cartTypes[char].left = cartTypes[cartTypes[char].left];
+    cartTypes[char].right = cartTypes[cartTypes[char].right];
+  });
 
-// Point turn results to appropriate cartTypes rather than just the character to avoid constant lookups
-Object.keys(cartTypes).forEach((char) => {
-  cartTypes[char].left = cartTypes[cartTypes[char].left];
-  cartTypes[char].right = cartTypes[cartTypes[char].right];
-});
+  // Circular links to keep track of each cart's next turn when they arrive at an intersection
+  const turns = {
+    left: { val: 'left' },
+    straight: { val: null },
+    right: { val: 'right' },
+  };
+  turns.left.next = turns.straight;
+  turns.straight.next = turns.right;
+  turns.right.next = turns.left;
 
-// Circular links to keep track of each cart's next turn when they arrive at an intersection
-const turns = {
-  left: { val: 'left' },
-  straight: { val: null },
-  right: { val: 'right' },
-};
-turns.left.next = turns.straight;
-turns.straight.next = turns.right;
-turns.right.next = turns.left;
+  // Which direction each cart type turns to when arriving at a corner
+  const corners = {
+    '/': {
+      '>': 'left',
+      '<': 'left',
+      '^': 'right',
+      v: 'right',
+    },
+    '\\': {
+      '>': 'right',
+      '<': 'right',
+      '^': 'left',
+      v: 'left',
+    },
+  };
 
-// Which direction each cart type turns to when arriving at a corner
-const corners = {
-  '/': {
-    '>': 'left',
-    '<': 'left',
-    '^': 'right',
-    v: 'right',
-  },
-  '\\': {
-    '>': 'right',
-    '<': 'right',
-    '^': 'left',
-    v: 'left',
-  },
-};
-
-class Cart {
-  constructor(char, x, y) {
-    this.type = cartTypes[char];
-    this.x = x;
-    this.y = y;
-    this.nextTurn = turns.left;
-    this.tick = 0;
-    this.onTrackChar = char === '>' || char === '<' ? '-' : '|';
-    this.hasCrashed = false;
-  }
-
-  handleIntersection() {
-    // this.nextTurn.val is null if it's pointing to turns.straight
-    if (this.nextTurn.val) {
-      this.type = this.type[this.nextTurn.val];
+  class Cart {
+    constructor(char, x, y) {
+      this.type = cartTypes[char];
+      this.x = x;
+      this.y = y;
+      this.nextTurn = turns.left;
+      this.tick = 0;
+      this.onTrackChar = char === '>' || char === '<' ? '-' : '|';
+      this.hasCrashed = false;
     }
-    this.nextTurn = this.nextTurn.next;
-  }
 
-  turnOnCorner(corner) {
-    this.type = this.type[corners[corner][this.type.char]];
-  }
-
-  collide(char, print = true) {
-    if (char === 'X') this.tick += 1;
-    if (print) {
-      addLog(`${this.type.char} crashed into ${char} at ${this.x},${this.y} on tick ${this.tick}`);
+    handleIntersection() {
+      // this.nextTurn.val is null if it's pointing to turns.straight
+      if (this.nextTurn.val) {
+        this.type = this.type[this.nextTurn.val];
+      }
+      this.nextTurn = this.nextTurn.next;
     }
-    this.type = cartTypes.X;
-    this.hasCrashed = true;
+
+    turnOnCorner(corner) {
+      this.type = this.type[corners[corner][this.type.char]];
+    }
+
+    collide(char, print = true) {
+      if (char === 'X') this.tick += 1;
+      if (print) {
+        addLog(
+          `${this.type.char} crashed into ${char} at ${this.x},${this.y} on tick ${this.tick}`,
+        );
+      }
+      this.type = cartTypes.X;
+      this.hasCrashed = true;
+    }
+
+    getNextX() {
+      return this.x + this.type.movement.x;
+    }
+
+    getNextY() {
+      return this.y + this.type.movement.y;
+    }
+
+    moveTo(track) {
+      if (track === ' ') throw new Error('Trying to move off track'); // Just in case the calculations below go wrong somehow
+      this.tick += 1;
+      this.x = this.getNextX();
+      this.y = this.getNextY();
+      this.onTrackChar = track;
+      if (track === '+') this.handleIntersection();
+      if (track in corners) this.turnOnCorner(track);
+      if (track in cartTypes) this.collide(track);
+    }
   }
 
-  getNextX() {
-    return this.x + this.type.movement.x;
+  // Returning array of Cart objects ordered by their y and x
+  function createCarts(lines = gridLines) {
+    return lines
+      .map((lineStr, y) => [...lineStr]
+        .map((char, x) => {
+          if (char in cartTypes) return new Cart(char, x, y);
+          return null;
+        })
+        .filter(x => x !== null))
+      .filter(ar => ar.length > 0)
+      .reduce((flat, ar) => [...flat, ...ar], []);
   }
 
-  getNextY() {
-    return this.y + this.type.movement.y;
-  }
+  // Modified for part 2
+  function moveCarts(linesInput = gridLines, ticksToMove = 1) {
+    const lines = [...linesInput.map(lineStr => [...lineStr])];
 
-  moveTo(track) {
-    if (track === ' ') throw new Error('Trying to move off track'); // Just in case the calculations below go wrong somehow
-    this.tick += 1;
-    this.x = this.getNextX();
-    this.y = this.getNextY();
-    this.onTrackChar = track;
-    if (track === '+') this.handleIntersection();
-    if (track in corners) this.turnOnCorner(track);
-    if (track in cartTypes) this.collide(track);
-  }
-}
-
-// Returning array of Cart objects ordered by their y and x
-function createCarts(lines = gridLines) {
-  return lines
-    .map((lineStr, y) => [...lineStr]
-      .map((char, x) => {
-        if (char in cartTypes) return new Cart(char, x, y);
-        return null;
-      })
-      .filter(x => x !== null))
-    .filter(ar => ar.length > 0)
-    .reduce((flat, ar) => [...flat, ...ar], []);
-}
-
-let crashedCarts = 0; // Moved out of moveCarts for visualizer
-
-// Modified for part 2
-function moveCarts(linesInput = gridLines, ticksToMove = 1) {
-  const lines = [...linesInput.map(lineStr => [...lineStr])];
-
-  let ticks = 0;
-  while (ticks < ticksToMove) {
-    // Keep carts sorted so they move in the correct order
-    carts.sort((a, b) => a.y * 9001 - b.y * 9001 + (a.x - b.x)); // Row first, x matters only when y is equal
-    carts.forEach((cart) => {
-      // Remove crashed carts from carts array instead of this if number of carts increase to the point where it causes performance issues
-      if (cart.type !== cartTypes.X) {
-        const targetChar = lines[cart.getNextY()][cart.getNextX()];
-        lines[cart.y][cart.x] = cart.onTrackChar;
-        cart.moveTo(targetChar);
-        lines[cart.y][cart.x] = cart.type.char;
-        if (cart.hasCrashed) {
-          // Current collision caused by the carts with same x and y as the last cart that moved
-          const colliders = carts.filter(
-            cartToCheck => cartToCheck.x === cart.x && cartToCheck.y === cart.y,
-          );
-          // Correct the status of the cart that doesn't know it has been crashed into
-          colliders.forEach((crashingCart) => {
-            if (!crashingCart.hasCrashed) crashingCart.collide('X', false);
-          });
-          crashedCarts += colliders.length;
-          addLog(
-            carts.length - crashedCarts > 1
-              ? `${carts.length - crashedCarts} carts left`
-              : 'Last cart!',
-          );
-          // Clear collision by reverting coords to track char underneath both carts
-          lines[cart.y][cart.x] = colliders.reduce((char, crashingCart) => {
-            if ('-+|/\\'.includes(crashingCart.onTrackChar)) char = crashingCart.onTrackChar;
-            return char;
-          }, '');
-          // Make sure I didn't mess up
-          if (!lines[cart.y][cart.x]) throw new Error('Could not find track char to replace crash with');
+    let ticks = 0;
+    while (ticks < ticksToMove) {
+      // Keep carts sorted so they move in the correct order
+      // By row first, x matters only if y is equal
+      carts.sort((a, b) => a.y * 9001 - b.y * 9001 + (a.x - b.x));
+      carts.forEach((cart) => {
+        // Remove crashed carts from carts array instead of this if number of carts increase
+        // to the point where it causes performance issues
+        if (cart.type !== cartTypes.X) {
+          const targetChar = lines[cart.getNextY()][cart.getNextX()];
+          lines[cart.y][cart.x] = cart.onTrackChar;
+          cart.moveTo(targetChar);
+          lines[cart.y][cart.x] = cart.type.char;
+          if (cart.hasCrashed) {
+            // Current collision caused by the carts with same x and y as the last cart that moved
+            const colliders = carts.filter(
+              cartToCheck => cartToCheck.x === cart.x && cartToCheck.y === cart.y,
+            );
+            // Correct the status of the cart that doesn't know it has been crashed into
+            colliders.forEach((crashingCart) => {
+              if (!crashingCart.hasCrashed) crashingCart.collide('X', false);
+            });
+            crashedCarts += colliders.length;
+            addLog(
+              carts.length - crashedCarts > 1
+                ? `${carts.length - crashedCarts} carts left`
+                : 'Last cart!',
+            );
+            // Clear collision by reverting coords to track char underneath both carts
+            lines[cart.y][cart.x] = colliders.reduce((char, crashingCart) => {
+              if ('-+|/\\'.includes(crashingCart.onTrackChar)) char = crashingCart.onTrackChar;
+              return char;
+            }, '');
+            // Make sure I didn't mess up
+            if (!lines[cart.y][cart.x]) throw new Error('Could not find track char to replace crash with');
+          }
         }
-      }
-    });
-    ticks += 1;
+      });
+      ticks += 1;
+    }
+    gridLines = lines;
+    return lines;
   }
-  gridLines = lines;
-  return lines;
-}
 
-//
-// ─── VISUALIZER DOM STUFF ───────────────────────────────────────────────────────
-//
+  //
+  // ─── VISUALIZER DOM STUFF ───────────────────────────────────────────────────────
+  //
 
-const inputField = document.getElementById('map-input');
-const submitButton = document.getElementById('input-submit');
-const mapContainer = document.getElementById('map');
-const tickSetter = document.getElementById('tick-setting');
-const log = document.getElementById('log');
-const logList = document.getElementById('log-list');
-const tickDisplay = document.getElementById('current-tick');
-const autoToggle = document.getElementById('auto-button');
-const autoDisplay = document.getElementById('auto-display');
-const leftHud = document.getElementById('left-hud');
-const instructions = document.querySelector('h3');
-const autoSpeedSetter = document.getElementById('auto-speed');
-const mapSettings = document.querySelectorAll('.map-slider');
-const mapResetter = document.getElementById('reset-map-settings');
+  const inputField = document.getElementById('map-input');
+  const submitButton = document.getElementById('input-submit');
+  const mapContainer = document.getElementById('map');
+  const tickSetter = document.getElementById('tick-setting');
+  const log = document.getElementById('log');
+  const logList = document.getElementById('log-list');
+  const tickDisplay = document.getElementById('current-tick');
+  const autoToggle = document.getElementById('auto-button');
+  const autoDisplay = document.getElementById('auto-display');
+  const leftHud = document.getElementById('left-hud');
+  const instructions = document.querySelector('h3');
+  const autoSpeedSetter = document.getElementById('auto-speed');
+  const mapSettings = document.querySelectorAll('.map-slider');
+  const mapResetter = document.getElementById('reset-map-settings');
 
-// const priorStates = [];
-let visualized = false;
-let ticksToGo = 1;
-let currentTick = 0;
-let auto = false;
-let autoSpeed = 250;
-let firstPaint = true;
+  // const priorStates = [];
+  let visualized = false;
+  let ticksToGo = 1;
+  let currentTick = 0;
+  let auto = false;
+  let autoSpeed = 250;
+  let firstPaint = true;
+  let autoInterval;
 
-function visualize(lines = gridLines) {
-  if (firstPaint) {
-    // mapContainer.innerHTML = '';
-    lines.forEach((line) => {
-      const highlightedLine = [...line]
-        .map(char => (char in cartTypes ? `<span class="cart">${char}</span>` : char))
-        .join('');
-      const p = document.createElement('p');
-      p.innerHTML = highlightedLine;
-      mapContainer.appendChild(p);
-    });
-    firstPaint = false;
-  } else {
-    const existingLines = [...mapContainer.childNodes];
-    lines.forEach((line, i) => {
-      const highlightedLine = [...line]
-        .map(char => (char in cartTypes ? `<span class="cart">${char}</span>` : char))
-        .join('');
-      // Only repaint lines that have changed
-      if (highlightedLine !== existingLines[i].innerHTML) {
-        existingLines[i].innerHTML = highlightedLine;
-      }
-    });
+  function visualize(lines = gridLines) {
+    if (firstPaint) {
+      // mapContainer.innerHTML = '';
+      lines.forEach((line) => {
+        const highlightedLine = [...line]
+          .map(char => (char in cartTypes ? `<span class="cart">${char}</span>` : char))
+          .join('');
+        const p = document.createElement('p');
+        p.innerHTML = highlightedLine;
+        mapContainer.appendChild(p);
+      });
+      firstPaint = false;
+    } else {
+      const existingLines = [...mapContainer.childNodes];
+      lines.forEach((line, i) => {
+        const highlightedLine = [...line]
+          .map(char => (char in cartTypes ? `<span class="cart">${char}</span>` : char))
+          .join('');
+        // Only repaint lines that have changed
+        if (highlightedLine !== existingLines[i].innerHTML) {
+          existingLines[i].innerHTML = highlightedLine;
+        }
+      });
+    }
+    const instructionsText = auto
+      ? 'Key press disabled while in auto mode. Select auto update interval below.'
+      : 'Press right arrow to advance ticks. Set number of ticks to advance per key press below.';
+    if (instructions.textContent !== instructionsText) instructions.textContent = instructionsText;
+    tickDisplay.textContent = `Current Tick: ${currentTick}`;
+    const autoDisplayText = auto ? 'Auto mode enabled ' : 'Auto mode disabled';
+    if (autoDisplay.textContent !== autoDisplayText) autoDisplay.textContent = autoDisplayText;
   }
-  const instructionsText = auto
-    ? 'Key press disabled while in auto mode. Select auto update interval below.'
-    : 'Press right arrow to advance ticks. Set number of ticks to advance per key press below.';
-  if (instructions.textContent !== instructionsText) instructions.textContent = instructionsText;
-  tickDisplay.textContent = `Current Tick: ${currentTick}`;
-  const autoDisplayText = auto ? 'Auto mode enabled ' : 'Auto mode disabled';
-  if (autoDisplay.textContent !== autoDisplayText) autoDisplay.textContent = autoDisplayText;
-}
 
-function addLog(str) {
-  const newLi = document.createElement('li');
-  newLi.textContent = str;
-  logList.appendChild(newLi);
-}
-// ${auto ? 'Auto mode enabled' : 'Press right arrow to advance ticks.'}
-submitButton.addEventListener('click', messyInit);
+  function addLog(str) {
+    const newLi = document.createElement('li');
+    newLi.textContent = str;
+    logList.appendChild(newLi);
+  }
+  // ${auto ? 'Auto mode enabled' : 'Press right arrow to advance ticks.'}
+  submitButton.addEventListener('click', messyInit);
 
-function advanceTicks(ticksPerCalc = ticksToGo) {
-  // priorStates.push({ currentTick, gridLines, carts });
-  gridLines = moveCarts(gridLines, ticksPerCalc);
-  currentTick += ticksPerCalc;
-  visualize();
-}
+  function advanceTicks(ticksPerCalc = ticksToGo) {
+    // priorStates.push({ currentTick, gridLines, carts });
+    gridLines = moveCarts(gridLines, ticksPerCalc);
+    currentTick += ticksPerCalc;
+    visualize();
+  }
 
-// function rewindState() {
-//   if (priorStates.length < 1) return;
-//   const lastState = priorStates.pop();
-//   currentTick = lastState.currentTick;
-//   gridLines = lastState.gridLines;
-//   carts = createCarts();
-//   visualize();
-// }
+  // function rewindState() {
+  //   if (priorStates.length < 1) return;
+  //   const lastState = priorStates.pop();
+  //   currentTick = lastState.currentTick;
+  //   gridLines = lastState.gridLines;
+  //   carts = createCarts();
+  //   visualize();
+  // }
 
-document.body.onkeydown = (e) => {
-  if (e.keyCode === 39 && visualized && !auto) advanceTicks();
-  // if (e.keyCode === 37 && visualized && !auto) rewindState();
-};
+  document.body.onkeydown = (e) => {
+    if (e.keyCode === 39 && visualized && !auto) advanceTicks();
+    // if (e.keyCode === 37 && visualized && !auto) rewindState();
+  };
 
-tickSetter.onchange = (e) => {
-  ticksToGo = Math.abs(Number(e.target.value)) < 100000 ? Math.abs(Number(e.target.value)) : 100000;
-  e.target.value = ticksToGo;
-  if (Math.abs(Number(e.target.value)) !== Number(e.target.value)) instructions.textContent = 'Absolute values are used for negative numbers. Please enter a positive number.';
-};
+  tickSetter.onchange = (e) => {
+    ticksToGo = Math.abs(Number(e.target.value)) < 100000 ? Math.abs(Number(e.target.value)) : 100000;
+    e.target.value = ticksToGo;
+    if (Math.abs(Number(e.target.value)) !== Number(e.target.value)) instructions.textContent = 'Absolute values are used for negative numbers. Please enter a positive number.';
+  };
 
-let autoInterval;
-
-autoSpeedSetter.onchange = (e) => {
-  autoSpeed = Number(e.target.value);
-  clearInterval(autoInterval);
-  autoInterval = setInterval(() => advanceTicks(1), autoSpeed);
-};
-
-autoToggle.addEventListener('click', () => {
-  auto = !auto;
-  if (auto) {
-    tickSetter.classList.add('disabled');
-    autoSpeedSetter.classList.remove('disabled');
-    autoInterval = setInterval(() => advanceTicks(1), autoSpeed);
-  } else {
+  autoSpeedSetter.onchange = (e) => {
+    autoSpeed = Number(e.target.value);
     clearInterval(autoInterval);
-    tickSetter.classList.remove('disabled');
-    autoSpeedSetter.classList.add('disabled');
-    visualize();
+    autoInterval = setInterval(() => advanceTicks(1), autoSpeed);
+  };
+
+  autoToggle.addEventListener('click', () => {
+    auto = !auto;
+    if (auto) {
+      tickSetter.classList.add('disabled');
+      autoSpeedSetter.classList.remove('disabled');
+      autoInterval = setInterval(() => advanceTicks(1), autoSpeed);
+    } else {
+      clearInterval(autoInterval);
+      tickSetter.classList.remove('disabled');
+      autoSpeedSetter.classList.add('disabled');
+      visualize();
+    }
+  });
+
+  function messyInit() {
+    let input = inputField.value;
+    if (!input) input = defaultInput;
+    gridLines = input.split('\n');
+    carts = createCarts();
+    log.style.display = 'block';
+    leftHud.style.display = 'block';
+    inputField.classList.add('disabled');
+    submitButton.classList.add('disabled');
+    autoToggle.style.display = 'inline-block';
+    instructions.textContent = 'Press right arrow to advance ticks. Set number of ticks to advance per key press below.';
+    setTimeout(() => {
+      document.body.removeChild(inputField);
+      document.body.removeChild(submitButton);
+      log.style.opacity = '1';
+      leftHud.style.opacity = '1';
+    }, 100);
+    setTimeout(() => {
+      tickSetter.classList.remove('disabled');
+      autoToggle.classList.remove('disabled');
+      visualize();
+      visualized = true;
+      [...document.getElementsByClassName('star')].forEach(star => star.classList.add('transparent'));
+      mapContainer.classList.remove('transparent');
+    }, 200);
   }
-});
 
-function messyInit() {
-  let input = inputField.value;
-  if (!input) input = defaultInput;
-  gridLines = input.split('\n');
-  carts = createCarts();
-  log.style.display = 'block';
-  leftHud.style.display = 'block';
-  inputField.classList.add('disabled');
-  submitButton.classList.add('disabled');
-  autoToggle.style.display = 'inline-block';
-  instructions.textContent = 'Press right arrow to advance ticks. Set number of ticks to advance per key press below.';
-  setTimeout(() => {
-    document.body.removeChild(inputField);
-    document.body.removeChild(submitButton);
-    log.style.opacity = '1';
-    leftHud.style.opacity = '1';
-  }, 100);
-  setTimeout(() => {
-    tickSetter.classList.remove('disabled');
-    autoToggle.classList.remove('disabled');
-    visualize();
-    visualized = true;
-    [...document.getElementsByClassName('star')].forEach(star => star.classList.add('transparent'));
-    mapContainer.classList.remove('transparent');
-  }, 200);
-  console.info(`To bypass the 100000 limit on ticks per key press, set ticksToGo to the desired number. 
-Extremely high values might take a long time to calculate. 
+  function updateValue() {
+    // Accessing custom data-sizing attirbute
+    const suffix = this.dataset.unit || '';
+    // Variables set on root document element in css
+    document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+  }
 
-Example: 
-ticksToGo = 1000000000;
+  mapSettings.forEach(input => input.addEventListener('change', updateValue));
+  // Change event only triggers when mb is released and new value is set
+  // mousemove triggers any mouse movement on the input even if not clicked?
+  // Could refine further to eliminate mousemove without clicks
+  // Need change for touchscreen?
+  mapSettings.forEach(input => input.addEventListener('mousemove', updateValue));
 
-To set custom auto update interval set autoSpeed to desired ms value. 
-Extremely low values may not yield consistent updates. 
+  mapResetter.addEventListener('click', () => {
+    document.documentElement.style.setProperty('--x-spacing', '0px');
+    document.documentElement.style.setProperty('--y-spacing', '0px');
+    document.documentElement.style.setProperty('--map-color', '0.8');
+    document.getElementById('y-spacing').value = 0;
+    document.getElementById('x-spacing').value = 0;
+    document.getElementById('map-color').value = 0.8;
+  });
 
-Example: 
-autoSpeed = 42; `);
-}
+  /**
+  * console.info(`To bypass the 100000 limit on ticks per key press, set ticksToGo to the desired number.
+  Extremely high values might take a long time to calculate.
 
-function updateValue() {
-  // Accessing custom data-sizing attirbute
-  const suffix = this.dataset.unit || '';
-  // Variables set on root document element in css
-  document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
-}
+  Example:
+  ticksToGo = 1000000000;
 
-mapSettings.forEach(input => input.addEventListener('change', updateValue));
-// Change event only triggers when mb is released and new value is set
-// mousemove triggers any mouse movement on the input even if not clicked?
-// Could refine further to eliminate mousemove without clicks
-// Need change for touchscreen?
-mapSettings.forEach(input => input.addEventListener('mousemove', updateValue));
+  To set custom auto update interval set autoSpeed to desired ms value.
+  Extremely low values may not yield consistent updates.
 
-mapResetter.addEventListener('click', () => {
-  document.documentElement.style.setProperty('--x-spacing', '0px');
-  document.documentElement.style.setProperty('--y-spacing', '0px');
-  document.documentElement.style.setProperty('--map-color', '0.8');
-  document.getElementById('y-spacing').value = 0;
-  document.getElementById('x-spacing').value = 0;
-  document.getElementById('map-color').value = 0.8;
-});
+  Example:
+  autoSpeed = 42; `);
+     */
 
-const defaultInput = `     /----------------------------------------------------------------------------------------------\\                                                 
+  const defaultInput = `     /----------------------------------------------------------------------------------------------\\                                                 
      |                                                          /-----------------------------------+-------------------------------\\                 
      |      /-------------\\                             /-------+-----------------------------------+----------------\\              |                 
      |      |        /----+-----------------------------+-------+----------------------------------<+\\               |              |                 
@@ -514,3 +520,4 @@ const defaultInput = `     /----------------------------------------------------
       |             |                \\---------+--------------+----/    |                                      |                                      
       \\-------------+--------------------------+--------------+---------+--------------------------------------/                                      
                     \\--------------------------/              \\---------/                                                                             `;
+}());
