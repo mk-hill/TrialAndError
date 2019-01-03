@@ -7,19 +7,19 @@ const app = express();
 
 const port = process.env.PORT || 59768;
 
+// Serving static assets from /public when request to /assets is made
+app.use('/assets', express.static(`${__dirname}/public`));
+
+// Custom middleware like redux - app.use takes in path and func
+app.use('/', (req, res, next) => {
+  console.log(req.url);
+  next();
+});
+
+app.set('view engine', 'ejs'); // Will use /views by default
+
 app.get('/', (req, res) => {
-  res.send(`<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Title</title>
-</head>
-<body>
-  <h1>hello</h1>
-</body>
-</html>`);
+  res.render('index');
 });
 
 app.get('/json', (req, res) => {
@@ -30,7 +30,7 @@ app.get('/item/:collection/:id', (req, res) => {
   const {
     params: { collection, id },
   } = req; // Pulling out of request.params
-  res.json({ collection, id });
+  res.render('item', { collection, id });
 });
 
 app.listen(port);
