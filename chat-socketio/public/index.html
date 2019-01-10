@@ -4,10 +4,73 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Chat</title>
+    <link
+      rel="stylesheet"
+      href="https://bootswatch.com/4/sketchy/bootstrap.min.css"
+    />
+    <title>Chat em up</title>
+    <style>
+      body {
+        background: rgb(202, 224, 190);
+      }
+
+      p {
+        opacity: 0.2;
+      }
+
+      #user-input {
+        background: rgb(230, 238, 225);
+      }
+
+      input[type='submit'] {
+        cursor: pointer;
+      }
+
+      #msg-list {
+        margin-top: 1rem;
+        list-style: none;
+      }
+
+      #msg-list li {
+        border: 1px solid rgb(178, 209, 159);
+        border-radius: 5px;
+        padding: 0.3rem 0.5rem;
+        margin: 2px auto;
+        background: rgb(195, 224, 178);
+      }
+
+      #msg-list li:nth-child(even) {
+        background: rgb(210, 231, 196);
+      }
+    </style>
   </head>
   <body>
-    <p>testing socketio</p>
+    <p class="ml-2">testing socket.io</p>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-12">
+          <form id="msg-form">
+            <div class="col-10 mx-auto">
+              <label>Enter message</label>
+              <input
+                type="text"
+                id="user-input"
+                placeholder="Message goes here"
+                class="w-100"
+              />
+            </div>
+            <div class="col-sm-5 mx-auto">
+              <input
+                type="submit"
+                value="Send"
+                class="btn-block btn-secondary w-50 mx-auto mt-3"
+              />
+            </div>
+          </form>
+          <ul id="msg-list"></ul>
+        </div>
+      </div>
+    </div>
 
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script> -->
     <!-- CDN not necessary, socket.io serves client at this path by default. -->
