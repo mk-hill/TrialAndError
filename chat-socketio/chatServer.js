@@ -27,6 +27,13 @@ const server = new SocketIoServer(expressServer, {
 }); // Options obj can be removed, kept defaults
 
 /**
+ * const server = SocketIoServer(expressServer);
+ * ^ equivalent to:
+ * const server = SocketIoServer();
+ * server.attach(expressServer)
+ */
+
+/**
  * Client always initially connects to main namespace ("/"), can connect to others after
  * connect fires on connection to a namespace defaults to main when namespace not specified
  * socket that was connected on comes in as param to callback
