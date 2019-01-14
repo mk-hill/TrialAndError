@@ -41,32 +41,26 @@ const server = new SocketIoServer(expressServer, {
  * (not actual tcp/ip socket, instance of Socket class provided defined in socket.io)
  * Inherits from EventEmitter, overrides emit method only
  */
-
+// server.on(...) === server.of('/').on(...)
 server.on('connect', (socket) => {
   // Custom events
   // Emit to socket that was created on connection, event identified by string as expected
+  // Socket already belongs to namespace, no .of required
+  // (unlike server if using namespace other than default)
   socket.emit('msgFromServer', { msg: 'Connected to socket.io server' });
   // Register new handler for given event, inherited directly from EventEmitter
   socket.on('msgToServer', (objectFromClient) => {
     console.log(objectFromClient);
   });
 
-  // On event from any given socket
-  socket.on('userMsg', ({ userMsg }) => {
-    // Emit event to all open sockets
-    // console.log(userMsg);
-    server.emit('msgToClients', { newMsg: userMsg });
-    // ^ equivalent to: server.of('/').emit('msgToClients', { newMsg: userMsg });
-  });
+  // Rooms managed on server
+  socket.join('room1');
+  socket.to('room1').emit('joinedRoom', 'You joined room 1.'); // sending only to the one that made the connection
+  server.to('room1').emit('joinedRoom', `${socket.id} joined room 1.`); // sending to everyone in room1
+  // each socket also gets its own room - sending PM by socket.to(otherSocketId) for example
 });
 
 server.of('/test').on('connect', (socket) => {
-  socket.emit('msgFromServer', { msg: 'Connected to socket.io server' });
-  socket.on('msgToServer', (objectFromClient) => {
-    console.log(objectFromClient);
-  });
-
-  socket.on('userMsg', ({ userMsg }) => {
-    server.of('/test').emit('msgToClients', { newMsg: userMsg });
-  });
+  console.log('Connected to test namespace.');
+  server.of('/test').emit('welcome', 'Welcome to the test namespace');
 });

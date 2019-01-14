@@ -33,11 +33,11 @@ function addMessage(msg) {
 * and creates new Manager
  */
 const socket = io('http://localhost:59768'); // "/" namespace/endpoint
-const socket2 = io('http://localhost:59768/test'); // "/test" namespace/endpoint
+const socket2 = io('http://localhost:59768/test'); // "/test" namespace
 
-socket.on('connect', () => console.log(`Socket ID: ${socket.id}`));
+socket2.on('welcome', messageFromServer => console.log(messageFromServer));
 
-socket2.on('connect', () => console.log(`Test socket ID: ${socket2.id}`));
+socket.on('joinedRoom', msg => console.log(msg));
 
 // Custom events work the same way here in the client (any string except reserved ones)
 socket.on('msgFromServer', (objectFromServer) => {
@@ -46,15 +46,3 @@ socket.on('msgFromServer', (objectFromServer) => {
   p.textContent = displayString;
   socket.emit('msgToServer', { msg: 'Sent from client' });
 });
-
-/**
- * ping/pong done automatically, defaults customizable on server
- * Default engine.io ping/pong:
- * pingInterval 25000 (ping every 25s)
- * pingTimeout 5000 (wait 5s for pong packet to come back)
- */
-
-socket.on('ping', () => console.log('Ping received from server'));
-socket.on('pong', latency => console.log(`Pong sent to server. Latency: ${latency}`));
-
-socket.on('msgToClients', ({ newMsg }) => addMessage(newMsg));
