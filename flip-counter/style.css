@@ -1,0 +1,94 @@
+.counter {
+  position: relative;
+  height: 200px;
+  width: 400px;
+  margin: 0 auto;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-evenly;
+
+  background: #ddd;
+
+  overflow: hidden;
+
+  /* perspective: 1000px; */
+}
+
+.counter__card {
+  position: relative;
+  height: 100%;
+  width: 40%;
+  background: #fff;
+  perspective: 500px;
+}
+
+.card-flipper {
+  height: 100%;
+  width: 100%;
+  background: #777;
+  border-radius: 10px;
+  transform-style: preserve-3d;
+  position: absolute;
+
+  perspective: 500px;
+  background: transparent;
+  z-index: 2;
+
+  transition: all 0.8s ease;
+}
+
+.card-flipper:hover {
+  transform: rotateX(-180deg);
+}
+
+.card-flipper:hover .back {
+  /* transform: rotateX(90deg);
+  background-color: red; */
+}
+
+.card-flipper .front,
+.card-flipper .back,
+.card-static {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+
+  /* transform-origin: bottom; */
+
+  font-size: 8rem;
+  background: #555;
+
+  /* perspective: 500px; */
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.card-static {
+  z-index: 0;
+}
+
+.counter__card .front,
+.counter__card .back {
+  transition: all 0.8s ease;
+}
+
+.counter__card .front {
+  z-index: 20;
+  backface-visibility: hidden;
+  transform-origin: 50% 100%;
+}
+
+.counter__card .back {
+  transform: rotateX(180deg);
+  transform-origin: 50% 100%;
+}
+
+.seconds-form {
+  width: 400px;
+  margin: 20px auto;
+  display: flex;
+  justify-content: center;
+}

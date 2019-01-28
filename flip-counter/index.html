@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Flip counter</title>
+  </head>
+  <body>
+    <div class="counter">
+      <div class="counter__card counter__card--left">
+        <!-- <div class="card-flipper">
+          <div class="front">7</div>
+          <div class="back">7</div>
+        </div>
+        <div class="card-static">7</div> -->
+      </div>
+      <div class="counter__card counter__card--right">
+        <!-- <div class="front"></div>
+        <div class="back"></div> -->
+      </div>
+    </div>
+    <form class="seconds-form">
+      <!-- <label for="seconds">Enter seconds to count:</label> -->
+      <input
+        type="number"
+        name="seconds"
+        value="60"
+        max="99"
+        placeholder="Enter seconds to count"
+      />
+      <input type="submit" value="Count" />
+    </form>
+
+    <script src="flip.js"></script>
+  </body>
+</html>
