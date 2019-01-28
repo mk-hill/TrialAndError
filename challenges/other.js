@@ -644,3 +644,17 @@ function sumTwoSmallestNums(arr) {
     .slice(0, 2)
     .reduce((x, y) => x + y); // Single pass with reduce instead if inputs get long?
 }
+
+// Complete the countingValleys function below.
+function countingValleys(n, s) {
+  // Assuming hike started at sea level
+  let currentLevel = 0;
+  const stepValues = { u: 1, d: -1 };
+  let valleys = 0;
+  [...s].forEach((step) => {
+    const nextLevel = currentLevel + stepValues[step.toLowerCase()];
+    if (currentLevel === -1 && nextLevel === 0) valleys++;
+    currentLevel = nextLevel;
+  });
+  return valleys;
+}
