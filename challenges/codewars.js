@@ -123,3 +123,45 @@ function points(games) {
     return totalScore;
   }, 0);
 }
+
+// https://www.codewars.com/kata/5502c9e7b3216ec63c0001aa/train/javascript
+
+function openOrSenior(data) {
+  return data.map(ar => (ar[0] >= 55 && ar[1] > 7 ? 'Senior' : 'Open'));
+}
+
+// https://www.codewars.com/kata/vasya-clerk/train/javascript
+
+function tickets(peopleInLine) {
+  const register = {
+    25: 0,
+    50: 0,
+    hasChangeFor(bill) {
+      if (bill === 25) {
+        this['25']++;
+        return true;
+      }
+      if (bill === 50) {
+        if (this['25']) {
+          this['50']++;
+          this['25']--;
+          return true;
+        }
+        return false;
+      }
+      if (bill === 100) {
+        if (this['50'] && this['25']) {
+          this['50']--;
+          this['25']--;
+          return true;
+        }
+        if (this['25'] >= 3) {
+          this['25'] -= 3;
+          return true;
+        }
+        return false;
+      }
+    },
+  };
+  return peopleInLine.every(bill => register.hasChangeFor(bill)) ? 'YES' : 'NO';
+}

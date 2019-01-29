@@ -674,3 +674,28 @@ function toCamelCase(str) {
   });
   return chars.join('');
 }
+
+
+// Complete the insertNodeAtTail function below.
+
+/*
+ * For your reference:
+ *
+ * SinglyLinkedListNode {
+ *     int data;
+ *     SinglyLinkedListNode next;
+ * }
+ *
+ */
+function insertNodeAtTail(head, data) {
+    const newNode = new SinglyLinkedListNode(data);
+    let currentNode = head;
+    if (currentNode) {
+        while (currentNode.next) {
+            currentNode = currentNode.next;
+        }
+        currentNode.next = newNode;
+        return head;
+    }
+    return newNode;
+}
