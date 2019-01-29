@@ -205,10 +205,7 @@ const q1b = () => {
   fs.readFile('./santa.txt', (err, data) => {
     console.time('santa2');
     const inputArr = data.toString().split('');
-    const result = inputArr.reduce(
-      (acc, val) => (val === '(' ? (acc += 1) : val === ')' ? (acc -= 1) : acc),
-      0,
-    );
+    const result = inputArr.reduce((acc, val) => (val === '(' ? (acc += 1) : val === ')' ? (acc -= 1) : acc), 0);
     console.log(`q1b = ${result}`);
     console.timeEnd('santa2');
   });
@@ -449,9 +446,7 @@ Note: |x| is the absolute value of x
 
 function miniMaxSum(arr) {
   const sorted = [...arr].sort((x, y) => x - y);
-  return console.log(
-    `${sorted.slice(0, 4).reduce((x, y) => x + y)} ${sorted.slice(1).reduce((x, y) => x + y)}`,
-  );
+  return console.log(`${sorted.slice(0, 4).reduce((x, y) => x + y)} ${sorted.slice(1).reduce((x, y) => x + y)}`);
 }
 
 // Complete the playingWithNumbers function below.
@@ -586,9 +581,7 @@ function wurstIsBetter(str) {
 }
 
 function alternatingCaps(str) {
-  return [...str]
-    .map((char, i) => (i % 2 === 0 ? char.toUpperCase() : char.toLowerCase()))
-    .join('');
+  return [...str].map((char, i) => (i % 2 === 0 ? char.toUpperCase() : char.toLowerCase())).join('');
 }
 
 function validatePIN(pin) {
@@ -657,4 +650,27 @@ function countingValleys(n, s) {
     currentLevel = nextLevel;
   });
   return valleys;
+}
+
+// camel to snake
+function toSnakeCase(str) {
+  const chars = str.split('');
+  chars.forEach((char, i) => {
+    if (char !== char.toLowerCase()) {
+      chars.splice(i, 1, `_${char.toLowerCase()}`);
+    }
+  });
+  return chars.join('');
+}
+
+// snake to camel
+function toCamelCase(str) {
+  const chars = str.split('');
+  chars.forEach((char, i) => {
+    if (char === '_') {
+      chars.splice(i, 1);
+      chars.splice(i, 1, chars[i].toUpperCase());
+    }
+  });
+  return chars.join('');
 }

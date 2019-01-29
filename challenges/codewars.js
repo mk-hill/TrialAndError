@@ -39,3 +39,87 @@ String.prototype.toJadenCase = function () {
   const jadenWords = words.map(word => word.replace(word[0], word[0].toUpperCase()));
   return jadenWords.join(' ');
 };
+
+function getWordScore(word) {
+  const letters = 'abcdefghijklmnopqrstuvwxyz';
+  return [...word].reduce((totalScore, char) => {
+    totalScore += letters.indexOf(char.toLowerCase()) + 1;
+    return totalScore;
+  }, 0);
+}
+
+function high(x) {
+  const words = x.split(' ');
+  const scores = words.map(word => getWordScore(word));
+
+  const max = Math.max(...scores);
+  const maxScores = scores.filter(score => score === max);
+
+  return words[scores.indexOf(maxScores[0])];
+}
+
+function countKprimes(k, start, nd) {
+  const kPrimes = [];
+
+  for (let n = start; n <= nd; n++) {
+    const primeFactors = n === 0 ? 0 : getPrimeFactors(n);
+    if (primeFactors === k) {
+      kPrimes.push(n);
+    }
+  }
+  return kPrimes;
+}
+
+function puzzle(s) {
+  const [aPrimes, bPrimes, cPrimes] = [1, 3, 7].map(num => countKprimes(num, 2, s));
+  let solutions = 0;
+
+  aPrimes.forEach((a) => {
+    bPrimes.forEach((b) => {
+      cPrimes.forEach((c) => {
+        if (a + b + c > s) return;
+        if (a + b + c === s) solutions++;
+      });
+    });
+  });
+
+  return solutions;
+}
+
+function getPrimeFactors(num) {
+  const primeFactors = [];
+  while (num % 2 === 0) {
+    primeFactors.push(2);
+    num /= 2;
+  }
+
+  const sqrt = Math.sqrt(num);
+
+  for (let i = 3; i <= sqrt; i++) {
+    while (num % i === 0) {
+      primeFactors.push(i);
+      num /= i;
+    }
+  }
+
+  if (num > 2) {
+    primeFactors.push(num);
+  }
+  return primeFactors.length;
+}
+
+// Total amount of points
+function points(games) {
+  return games.reduce((totalScore, scoreString) => {
+    const x = Number(scoreString[0]);
+    const y = Number(scoreString[2]);
+
+    if (x > y) {
+      totalScore += 3;
+    } else if (x === y) {
+      totalScore += 1;
+    }
+
+    return totalScore;
+  }, 0);
+}
