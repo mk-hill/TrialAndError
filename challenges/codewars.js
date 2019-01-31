@@ -165,3 +165,18 @@ function tickets(peopleInLine) {
   };
   return peopleInLine.every(bill => register.hasChangeFor(bill)) ? 'YES' : 'NO';
 }
+
+// https://www.codewars.com/kata/514b92a657cdc65150000006/
+
+function sumThreesAndFives(number) {
+  const numsToSum = {};
+
+  for (let x = 3; x < number; x += 3) {
+    numsToSum[x] = x;
+  }
+  for (let x = 5; x < number; x += 5) {
+    numsToSum[x] = x;
+  }
+
+  return Object.values(numsToSum).reduce((total, num) => total + num, 0);
+}
