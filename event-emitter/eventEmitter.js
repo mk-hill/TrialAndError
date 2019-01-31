@@ -6,12 +6,23 @@
  */
 
 class EventEmitter {
+  constructor() {
+    // Creating separate events obj to protect against events with the same name as a method
+    // Prevent eventEmitter.events from being reassigned
+    Object.defineProperty(this, 'events', { value: {}, writable: false });
+  }
+
   // Add callback to array, create array if there is none
   on(event, callback) {
-    if (!this[event]) {
-      this[event] = [];
+    if (!this.events[event]) {
+      this.events[event] = [];
     }
-    this[event].push(callback);
+    // ? Create emit alias for easier access as well?
+    if (!this[event]) {
+      this[event] = this.emit.bind(this, event);
+    }
+
+    this.events[event].push(callback);
     return this;
   }
 
@@ -29,13 +40,13 @@ class EventEmitter {
 
   // Invoke all listeners, pass along arguments
   emit(event, ...args) {
-    this[event].forEach(listener => listener(...args));
+    this.events[event].forEach(listener => listener(...args));
     return this;
   }
 
   // Remove listener from event array
   off(event, listener) {
-    this[event].splice(this[event].indexOf(listener), 1);
+    this.events[event].splice(this.events[event].indexOf(listener), 1);
     return this;
   }
 
@@ -68,7 +79,7 @@ eventEmitter
 
 function addTextAndLogEvent(e) {
   const p = document.createElement('p');
-  p.textContent = `${e.target.tagName} clicked.`;
+  p.textContent = e.target ? `${e.target.tagName} clicked.` : e;
   console.log(e);
   document.body.appendChild(p);
 }
@@ -76,3 +87,8 @@ function addTextAndLogEvent(e) {
 eventEmitter.on('buttonClick', addTextAndLogEvent);
 
 document.querySelector('button').addEventListener('click', e => eventEmitter.emit('buttonClick', e));
+
+eventEmitter.events = '';
+eventEmitter.once('test', addTextAndLogEvent);
+eventEmitter.emit('test', 'eventEmitter.events reassignment prevented.');
+eventEmitter.emit('test', 'There should be no listeners left for test.');
