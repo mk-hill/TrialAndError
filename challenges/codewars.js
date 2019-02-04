@@ -180,3 +180,24 @@ function sumThreesAndFives(number) {
 
   return Object.values(numsToSum).reduce((total, num) => total + num, 0);
 }
+
+function countSheep(num) {
+  return Array(num)
+    .fill()
+    .map((undef, i) => `${i + 1} sheep...`)
+    .join('');
+}
+
+// https://www.codewars.com/kata/meeting/
+const meeting = s => s
+  .split(';')
+  .map((name) => {
+    const [f, l] = name.split(':');
+    return { first: f.toUpperCase(), last: l.toUpperCase() };
+  })
+  .sort((x, y) => {
+    const compare = (a, b) => (a > b ? 1 : -1);
+    return x.last === y.last ? compare(x.first, y.first) : compare(x.last, y.last);
+  })
+  .map(name => `(${name.last}, ${name.first})`)
+  .join('');
