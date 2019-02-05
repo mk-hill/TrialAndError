@@ -31,10 +31,14 @@ class EventEmitter {
     return this.on(event, callback);
   }
 
-  // Adding second off() listener, to be invoked after the one passed in
+  // Adding listener which invokes original cb and then removes itself
   once(event, callback) {
-    this.on(event, callback);
-    this.on(event, () => this.off(event, callback));
+    const newCb = (...args) => {
+      callback(...args);
+      this.off(event, newCb);
+    };
+
+    this.on(event, newCb);
     return this;
   }
 
@@ -90,7 +94,7 @@ document.querySelector('button').addEventListener('click', e => eventEmitter.emi
 
 eventEmitter.events = '';
 eventEmitter.once('test', addTextAndLogEvent);
+console.log(eventEmitter.events.test[0]);
 eventEmitter.emit('test', 'eventEmitter.events reassignment prevented.');
 eventEmitter.emit('test', 'There should be no listeners left for test.');
-
-
+console.log(eventEmitter.events.test[0]);
