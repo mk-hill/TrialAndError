@@ -201,3 +201,8 @@ const meeting = s => s
   })
   .map(name => `(${name.last}, ${name.first})`)
   .join('');
+
+function nthSmallest(arr, n) {
+  // your code
+  return [...new Set(arr)].sort((x, y) => x - y)[n - 1] || null;
+}
