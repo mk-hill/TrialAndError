@@ -206,3 +206,32 @@ function nthSmallest(arr, n) {
   // your code
   return [...new Set(arr)].sort((x, y) => x - y)[n - 1] || null;
 }
+
+// https://www.codewars.com/kata/is-there-a-vowel-in-there/train/javascript
+function isVow(a) {
+  const codes = ['a', 'e', 'i', 'o', 'u'].reduce((obj, char) => {
+    obj[char.charCodeAt(0)] = char;
+    return obj;
+  }, {});
+  return a.map(num => (num in codes ? codes[num] : num));
+}
+
+// https://www.codewars.com/kata/stop-gninnips-my-sdrow/train/javascript
+function spinWords(str) {
+  return str
+    .split(' ')
+    .map(word => (word.length > 4 ? [...word].reverse().join('') : word))
+    .join(' ');
+}
+
+// https://www.codewars.com/kata/541c8630095125aba6000c00/solutions/javascript
+function digital_root(n) {
+  const sum = [...`${n}`].reduce((x, y) => Number(x) + Number(y));
+  return `${sum}`.length > 1 ? digital_root(sum) : Number(sum);
+}
+
+/**
+ * function digital_root(n) {
+ *   return (n - 1) % 9 + 1;
+ * }
+ */
