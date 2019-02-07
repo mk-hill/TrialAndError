@@ -1,1 +1,30 @@
-/* No CSS *//*# sourceMappingURL=style.css.map */
+body {
+  margin: 0;
+  height: 100vh;
+  font-family: 'Montserrat';
+  overflow: hidden;
+}
+
+section {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (auto)[10];
+      grid-template-columns: repeat(10, auto);
+}
+
+section div {
+  background-color: white;
+  height: 100vh;
+  -webkit-transition: background-color 1s ease;
+  transition: background-color 1s ease;
+}
+
+h1 {
+  font-size: 5em;
+  position: absolute;
+  top: 40%;
+  left: 15%;
+  opacity: 0;
+  z-index: 2;
+}
+/*# sourceMappingURL=style.css.map */
