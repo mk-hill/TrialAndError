@@ -25,3 +25,19 @@ timeline.add(
   },
   '-=1000', // offset
 );
+
+const rotation = anime({
+  targets: 'section',
+  scaleY: 2,
+  scaleX: 2,
+  translateX: '40%',
+  rotate: '45deg',
+  duration: 4000,
+  autoplay: false,
+});
+
+const title = document.querySelector('h1');
+
+title.addEventListener('mouseover', rotation.play);
+
+// title.addEventListener('mouseout', rotation.reverse);
