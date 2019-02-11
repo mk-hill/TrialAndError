@@ -699,3 +699,11 @@ function insertNodeAtTail(head, data) {
     }
     return newNode;
 }
+
+
+// requires -1 if none, find returns undefined
+function indexEqualsValueSearch(arr) {
+  // your code goes here
+  const result = arr.find((num, i) => num === i);
+  return result === undefined ? -1 : result;
+}

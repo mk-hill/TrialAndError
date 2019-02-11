@@ -235,3 +235,50 @@ function digital_root(n) {
  *   return (n - 1) % 9 + 1;
  * }
  */
+
+// https://www.codewars.com/kata/find-the-parity-outlier/train/javascript
+
+function findOutlier(integers) {
+  const isEven = integers
+    .slice(0, 3)
+    .reduce(
+      (tally, int) => {
+        if (int % 2 === 0) {
+          tally.even++;
+        } else {
+          tally.odd++;
+        }
+        return tally;
+      },
+      {
+        even: 0,
+        odd: 0,
+        isEven() {
+          return this.even > this.odd;
+        },
+      },
+    )
+    .isEven();
+  return isEven ? integers.find(int => int % 2 !== 0) : integers.find(int => int % 2 === 0);
+}
+
+// https://www.codewars.com/kata/who-likes-it/train/javascript
+function likes(names) {
+  if (names.length < 2) {
+    return `${names[0] || 'no one'} likes this`;
+  }
+
+  let output = '';
+
+  if (names.length > 2) {
+    output += `${names[0]}, `;
+  }
+
+  if (names.length < 4) {
+    output += names.slice(-2).join(' and ');
+  } else {
+    output += `${names[1]} and ${names.length - 2} others`;
+  }
+
+  return `${output} like this`;
+}
