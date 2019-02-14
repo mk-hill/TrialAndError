@@ -16,10 +16,11 @@ function reverse(str) {
   return outputArr.join('');
 }
 
-const reverse2 = str => str
-  .split('')
-  .reverse()
-  .join('');
+const reverse2 = str =>
+  str
+    .split('')
+    .reverse()
+    .join('');
 
 const reverse3 = str => [...str].reverse().join('');
 
@@ -73,7 +74,7 @@ const recArr = [2, 5, 5, 2, 3, 5, 1, 2, 4];
 function findFirstRecurringItem(arr) {
   const found = {};
   let result;
-  arr.some((item) => {
+  arr.some(item => {
     if (!found[item]) {
       found[item] = true;
       return false;
@@ -138,7 +139,7 @@ Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
  * @param {string} s
  * @return {number}
  */
-const romanToInt2 = (s) => {
+const romanToInt2 = s => {
   let result = 0;
   const values = {
     i: 1,
@@ -164,7 +165,7 @@ const romanToInt2 = (s) => {
  *
  * @param {string} s testing123
  */
-const romanToInt = (s) => {
+const romanToInt = s => {
   const values = {
     i: 1,
     v: 5,
@@ -257,7 +258,7 @@ const q2b = () => {
     let acc = 0;
     let position = 0;
     const inputArr = data.toString().split('');
-    const result = inputArr.some((val) => {
+    const result = inputArr.some(val => {
       if (val === '(') {
         acc += 1;
       }
@@ -350,7 +351,7 @@ function TranslateSentence(sentence) {
   if (typeof sentence !== 'string' || sentence.length === 0) return '';
   return sentence
     .split(' ')
-    .map((word) => {
+    .map(word => {
       let hasPunctuation = false;
       const punctuation = /[?\\"",]/g;
       const indexes = [...word].reduce((tally, char) => {
@@ -451,7 +452,7 @@ function miniMaxSum(arr) {
 
 // Complete the playingWithNumbers function below.
 function playingWithNumbers(arr, queries) {
-  return queries.map((q) => {
+  return queries.map(q => {
     arr = arr.map(n => n + q);
     const absSum = arr.reduce((x, y) => Math.abs(x) + Math.abs(y));
     console.log(absSum);
@@ -468,7 +469,7 @@ function climbingLeaderboard(scores, alice) {
   });
   let startingPoint;
 
-  return alice.map((score) => {
+  return alice.map(score => {
     if (score > uniqueScores[0]) return 1;
     if (score < uniqueScores[uniqueScores.length - 1]) {
       return scoreMap[uniqueScores[uniqueScores.length - 1]] + 1;
@@ -495,7 +496,7 @@ function climbingLeaderboard(scores, alice) {
 }
 
 function gradingStudents(grades) {
-  return grades.map((grade) => {
+  return grades.map(grade => {
     if (grade < 38 || grade % 5 < 3) return grade;
     return grade + (5 - (grade % 5));
   });
@@ -644,7 +645,7 @@ function countingValleys(n, s) {
   let currentLevel = 0;
   const stepValues = { u: 1, d: -1 };
   let valleys = 0;
-  [...s].forEach((step) => {
+  [...s].forEach(step => {
     const nextLevel = currentLevel + stepValues[step.toLowerCase()];
     if (currentLevel === -1 && nextLevel === 0) valleys++;
     currentLevel = nextLevel;
@@ -675,7 +676,6 @@ function toCamelCase(str) {
   return chars.join('');
 }
 
-
 // Complete the insertNodeAtTail function below.
 
 /*
@@ -688,22 +688,136 @@ function toCamelCase(str) {
  *
  */
 function insertNodeAtTail(head, data) {
-    const newNode = new SinglyLinkedListNode(data);
-    let currentNode = head;
-    if (currentNode) {
-        while (currentNode.next) {
-            currentNode = currentNode.next;
-        }
-        currentNode.next = newNode;
-        return head;
+  const newNode = new SinglyLinkedListNode(data);
+  let currentNode = head;
+  if (currentNode) {
+    while (currentNode.next) {
+      currentNode = currentNode.next;
     }
-    return newNode;
+    currentNode.next = newNode;
+    return head;
+  }
+  return newNode;
 }
-
 
 // requires -1 if none, find returns undefined
 function indexEqualsValueSearch(arr) {
   // your code goes here
   const result = arr.find((num, i) => num === i);
   return result === undefined ? -1 : result;
+}
+
+// Complete the deleteNode function below.
+
+/*
+ * For your reference:
+ *
+ * SinglyLinkedListNode {
+ *     int data;
+ *     SinglyLinkedListNode next;
+ * }
+ *
+ */
+function deleteNode(head, position) {
+  if (position === 0) return head.next;
+  let currentNode = head;
+  for (let i = 0; i < position - 1; i++) {
+    currentNode = currentNode.next;
+  }
+  currentNode.next = currentNode.next.next;
+  return head;
+}
+
+// https://www.hackerrank.com/challenges/array-left-rotation/
+function rotate(ar, d) {
+  const newArr = [...ar];
+  for (let i = 0; i < d; i++) {
+    newArr.push(newArr.shift());
+  }
+  return newArr;
+}
+
+('use strict');
+
+const fs = require('fs');
+
+process.stdin.resume();
+process.stdin.setEncoding('utf-8');
+
+let inputString = '';
+let currentLine = 0;
+
+process.stdin.on('data', function(inputStdin) {
+  inputString += inputStdin;
+});
+
+process.stdin.on('end', function() {
+  inputString = inputString.split('\n');
+
+  main();
+});
+
+function readLine() {
+  return inputString[currentLine++];
+}
+
+/*
+ * Complete the 'zeros' function below.
+ *
+ * The function is expected to return an INTEGER.
+ * The function accepts INTEGER n as parameter.
+ */
+function zeros(n) {
+  // Write your code here
+  // Some test cases too large to calculate factorial
+  // Keeping track of divisions instead
+  let twos = 0;
+  let fives = 0;
+
+  // Check each number that would have been multiplied
+  // when calculating factorial
+  for (let i = 1; i <= n; i++) {
+    let num = i;
+    while (num % 2 === 0) {
+      num /= 2;
+      twos++;
+    }
+    while (num % 5 === 0) {
+      num /= 5;
+      fives++;
+    }
+  }
+  return Math.min(twos, fives);
+}
+
+/*
+ * Complete the function below.
+ */
+function sumEvenFib(start, end) {
+  // Write your code here.
+  // Provided range inclusive?
+  const fib = [1, 2];
+
+  // Add until last item equal to or greater than end
+  // Memoize for further runs?
+  while (fib[fib.length - 1] <= end) {
+    fib.push(fib[fib.length - 1] + fib[fib.length - 2]);
+  }
+
+  // Use given number's index if it exists in array,
+  // Closest higher number otherwise
+  // endIndex not inclusive for Array.slice
+  const getIndexes = (...nums) => {
+    return nums.map(num => {
+      const i = fib.indexOf(num);
+      return i === -1 ? fib.findIndex(n => n > num) : i;
+    });
+  };
+
+  const [startIndex, endIndex] = getIndexes(start, end);
+
+  return fib
+    .slice(startIndex, endIndex)
+    .filter(n => n % 2 === 0)
+    .reduce((x, y) => x + y, 0);
 }

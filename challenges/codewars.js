@@ -282,3 +282,12 @@ function likes(names) {
 
   return `${output} like this`;
 }
+
+// https://www.codewars.com/kata/mexican-wave/train/javascript
+const wave = str => [...str]
+  .map((char, i) => {
+    const newStr = [...str];
+    newStr[i] = char.toUpperCase();
+    return newStr.join('');
+  })
+  .filter(s => s !== str);
