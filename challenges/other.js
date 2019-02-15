@@ -790,6 +790,54 @@ function zeros(n) {
   return Math.min(twos, fives);
 }
 
+function zeros2(n) {
+  let twos = 0;
+  let fives = 0;
+
+  for (let i = 2; i <= n; i += 2) {
+    let num = i;
+    while (num % 2 === 0) {
+      num /= 2;
+      twos++;
+    }
+  }
+
+  for (let i = 5; i <= n; i += 5) {
+    let num = i;
+    while (num % 5 === 0) {
+      num /= 5;
+      fives++;
+    }
+  }
+  return Math.min(twos, fives);
+}
+
+function zerosMaker() {
+  const member = [{ twos: 0, fives: 0 }, { twos: 0, fives: 0 }];
+
+  return function(n) {
+    if (n === 0 || n === 1) return 0;
+    let twos = member[n] ? member[n].twos : member[member.length - 1].twos;
+    let fives = member[n] ? member[n].fives : member[member.length - 1].fives;
+
+    for (let i = member.length - 1; i <= n; i++) {
+      let num = i;
+      while (num % 2 === 0) {
+        num /= 2;
+        twos++;
+      }
+      while (num % 5 === 0) {
+        num /= 5;
+        fives++;
+      }
+      member.push({ twos, fives });
+    }
+    return Math.min(twos, fives);
+  };
+}
+
+let zeros = zerosMaker();
+
 /*
  * Complete the function below.
  */
@@ -820,4 +868,129 @@ function sumEvenFib(start, end) {
     .slice(startIndex, endIndex)
     .filter(n => n % 2 === 0)
     .reduce((x, y) => x + y, 0);
+}
+
+function reversePrint(head) {
+  const list = [];
+  let currentNode = head;
+  while (currentNode) {
+    list.unshift(currentNode);
+    currentNode = currentNode.next;
+  }
+  list.forEach(node => console.log(node.data));
+}
+
+// https://www.hackerrank.com/challenges/cut-the-sticks/problem
+// Complete the cutTheSticks function below.
+function cutTheSticks(arr) {
+  const lengths = [arr.length];
+
+  while (arr.length) {
+    const min = Math.min(...arr);
+    arr = arr.map(n => n - min).filter(n => n > 0);
+    if (arr.length) lengths.push(arr.length);
+  }
+
+  return lengths;
+}
+
+// https://www.hackerrank.com/challenges/jumping-on-the-clouds/problem
+// Complete the jumpingOnClouds function below.
+function jumpingOnClouds(c) {
+  let currentIndex = 0;
+  let jumps = 0;
+  while (currentIndex < c.length - 1) {
+    currentIndex += c[currentIndex + 2] === 0 ? 2 : 1;
+    jumps++;
+  }
+  return jumps;
+}
+
+// https://www.hackerrank.com/challenges/repeated-string/problem
+// Complete the repeatedString function below.
+function repeatedString(s, n) {
+  const aPerString = [...s].filter(char => char === 'a').length;
+  const aInLeftOver = [...s].slice(0, n % s.length).filter(char => char === 'a').length;
+  return Math.floor(n / s.length) * aPerString + aInLeftOver;
+}
+
+/*
+ r^n = x
+ 3^2 = 9
+
+ x   ,n  ,r
+ 9.00   ,2  ,3.001   // 3 < 9
+ 0.25,2  ,0.5 //
+
+ if x < 1
+   binary search between x and 1?
+ if x > 1
+   binary search between 1 and x?
+
+
+*/
+
+// https://www.pramp.com/challenge/jKoA5GAVy9Sr9jGBjzN4
+function root(x, n) {
+  // your code goes here
+  if (x === 1) return 1;
+  if (n === 1) return x;
+
+  let currentNum;
+  let currentPower;
+  let lowerEnd;
+  let higherEnd;
+
+  // correct difference based on n
+  const tolerance = 0.001 ** n;
+
+  if (x > 1) {
+    lowerEnd = 1;
+    higherEnd = x;
+  } else {
+    lowerEnd = 0;
+    higherEnd = 1;
+  }
+
+  currentNum = (lowerEnd + higherEnd) / 2; // mid = (hi + lo) / 2
+  currentPower = currentNum ** n;
+
+  while (Math.abs(currentPower - x) > tolerance) {
+    if (currentPower === x) return currentNum;
+
+    if (currentPower < x) {
+      lowerEnd = currentNum;
+    } else {
+      higherEnd = currentNum;
+    }
+
+    currentNum = (lowerEnd + higherEnd) / 2;
+    currentPower = currentNum ** n;
+  }
+
+  return currentNum;
+}
+
+// https://www.hackerrank.com/challenges/equality-in-a-array/problem
+// Complete the equalizeArray function below.
+function equalizeArray(arr) {
+  const occurrences = arr.reduce((tally, num) => {
+    if (!tally[num]) {
+      tally[num] = 0;
+    }
+    tally[num]++;
+    return tally;
+  }, {});
+
+  const mostCommon = Object.values(occurrences).reduce((x, y) => Math.max(x, y));
+
+  return arr.length - mostCommon;
+}
+
+// https://www.hackerrank.com/challenges/taum-and-bday/problem
+// Complete the taumBday function below.
+function taumBday(b, w, bc, wc, z) {
+  const wCost = Math.min(wc, bc + z);
+  const bCost = Math.min(bc, wc + z);
+  return b * bCost + w * wCost;
 }
