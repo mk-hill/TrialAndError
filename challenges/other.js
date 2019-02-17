@@ -914,6 +914,48 @@ function repeatedString(s, n) {
   return Math.floor(n / s.length) * aPerString + aInLeftOver;
 }
 
+// from peer, for reference
+const spiralCopy = inputMatrix => {
+  const copy = [];
+  const elCount = inputMatrix.length * inputMatrix[0].length;
+
+  let rMin = 0;
+  let rMax = inputMatrix.length - 1;
+  let cMin = 0;
+  let cMax = inputMatrix[0].length - 1;
+
+  while (copy.length < elCount) {
+    // top
+    for (let i = cMin; i <= cMax; i += 1) {
+      copy.push(inputMatrix[rMin][i]);
+    }
+    rMin += 1;
+
+    // right
+    if (copy.length >= elCount) break;
+    for (let i = rMin; i <= rMax; i += 1) {
+      copy.push(inputMatrix[i][cMax]);
+    }
+    cMax -= 1;
+
+    // bottom
+    if (copy.length >= elCount) break;
+    for (let i = cMax; i >= cMin; i -= 1) {
+      copy.push(inputMatrix[rMax][i]);
+    }
+    rMax -= 1;
+
+    // left
+    if (copy.length >= elCount) break;
+    for (let i = rMax; i >= rMin; i -= 1) {
+      copy.push(inputMatrix[i][cMin]);
+    }
+    cMin += 1;
+  }
+
+  return copy;
+};
+
 /*
  r^n = x
  3^2 = 9
@@ -993,4 +1035,21 @@ function taumBday(b, w, bc, wc, z) {
   const wCost = Math.min(wc, bc + z);
   const bCost = Math.min(bc, wc + z);
   return b * bCost + w * wCost;
+}
+
+// https://www.hackerrank.com/challenges/find-digits/problem
+// Complete the findDigits function below.
+function findDigits(n) {
+  return [...`${n}`].reduce((divisors, char) => {
+    if (n % Number(char) === 0) {
+      divisors++;
+    }
+    return divisors;
+  }, 0);
+}
+
+// https://www.hackerrank.com/challenges/camelcase/problem
+// Complete the camelcase function below.
+function camelcase(s) {
+  return s ? s.split('').reduce((words, char) => (char === char.toUpperCase() ? words + 1 : words), 1) : 0;
 }
