@@ -1053,3 +1053,54 @@ function findDigits(n) {
 function camelcase(s) {
   return s ? s.split('').reduce((words, char) => (char === char.toUpperCase() ? words + 1 : words), 1) : 0;
 }
+
+// https://www.pramp.com/challenge/r1Kw0vwG6OhK9AEGAyWV
+function findGrantsCap(grantsArray, newBudget) {
+  // your code goes here
+  const avg = newBudget / grantsArray.length; // 38
+  let { extra, missing, cappedGrants } = grantsArray.reduce(
+    (tally, num) => {
+      if (num > avg) {
+        tally.missing += num - avg;
+        tally.cappedGrants.push(num);
+      } else {
+        tally.extra += avg - num;
+      }
+      return tally;
+    },
+    { extra: 0, missing: 0, cappedGrants: [] },
+  ); // 1118
+
+  let cap = avg;
+  let minCapped = Math.min(...cappedGrants);
+
+  // Keep increasing cap to cover the min while we can afford to
+  while (extra / cappedGrants.length >= minCapped - cap) {
+    extra -= (minCapped - cap) * cappedGrants.length;
+    cap = minCapped;
+    cappedGrants.splice(cappedGrants.indexOf(minCapped), 1);
+    minCapped = Math.min(...cappedGrants);
+  }
+
+  // Add leftover budget to cap
+  cap += extra / cappedGrants.length;
+
+  // Test cases expect rounded result
+  return Number(cap.toFixed(1));
+}
+
+// WIP
+// function findGrantsCap2(grantsArray, newBudget) {
+//   const sortedGrants = [...grantsArray].sort((x, y) => x - y);
+//   let canAffordUntil = {};
+//   const canAffordAllGrants = sortedGrants.every((grant, index) => {
+//     canAffordUntil = { grant, index };
+//     return grant <= newBudget / sortedGrants.length;
+//   });
+//   if (canAffordAllGrants) return newBudget / grantsArray.length;
+//   const maxAffordableGrant = sortedGrants[canAffordUntil.index - 1];
+//   const surplus = newBudget - maxAffordableGrant * grantsArray.length;
+//   return maxAffordableGrant + surplus / grantsArray.length;
+// }
+
+console.assert(findGrantsCap([2, 100, 50, 120, 1000], 190) === 47, 'wrong result');
