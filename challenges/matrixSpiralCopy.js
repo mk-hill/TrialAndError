@@ -40,4 +40,114 @@ function spiralCopy(inputMatrix) {
 const testResult = spiralCopy(test);
 
 console.log(testResult);
-console.assert(testResult === [1, 2, 3, 4, 5, 10, 15, 20, 19, 18, 17, 16, 11, 6, 7, 8, 9, 14, 13, 12], 'asd');
+
+// peer's recursive solution
+// todo look into further levels after 2
+// /**
+// function spiralCopy(inputMatrix) {
+//   const result = [];
+//   while (result.length < inputMatrix[0].length * inputMatrix.length) {
+//     result.concat(spiralCopy2(inputMatrix));
+//   }
+//   return result;
+// }
+// */
+
+// function spiralCopy(inputMatrix) {
+//   // your code goes here
+//   let result = [];
+//   if (inputMatrix.length === 0) {
+//     return result;
+//   }
+
+//   if (inputMatrix.length === 1) {
+//     forwardCopy(inputMatrix, 0, result);
+//     return result;
+//   }
+//   // inputMatrix.length = number of arrays
+//   forwardCopy(inputMatrix, 0, result);
+//   verticalDownwards(inputMatrix, inputMatrix[0].length - 1, result);
+//   reverseCopy(inputMatrix, inputMatrix.length - 1, result);
+//   verticalUpwards(inputMatrix, 0, result);
+
+//   inputMatrix = sliceMatrix(inputMatrix);
+//   console.log('intputMatrix', inputMatrix);
+//   let spiralCopyResult = spiralCopy(inputMatrix);
+
+//   console.log('result', result); // [ 1, 2, 3, 4, 5, 10, 15, 20, 19, 18, 17, 16, 11, 6 ] [ 7, 8, 9, 14, 13, 12 ]
+
+//   console.log('spiralCopyResult', spiralCopyResult);
+//   if (spiralCopyResult) {
+//     console.assert(result.length > 0, 'result is empty!!!');
+//     return result.concat(spiralCopyResult);
+//   }
+// }
+
+// function forwardCopy(inputMatrix, rowNumber, result) {
+//   for (let col = 0; col < inputMatrix[rowNumber].length; col++) {
+//     result.push(inputMatrix[rowNumber][col]);
+//   }
+// }
+
+// function verticalDownwards(inputMatrix, colNumber, result) {
+//   for (let rows = 1; rows <= inputMatrix.length - 2; rows++) {
+//     result.push(inputMatrix[rows][colNumber]);
+//   }
+// }
+
+// function reverseCopy(inputMatrix, rowNumber, result) {
+//   for (let col = inputMatrix[rowNumber].length - 1; col >= 0; col--) {
+//     result.push(inputMatrix[rowNumber][col]);
+//   }
+// }
+
+// function verticalUpwards(inputMatrix, colNumber, result) {
+//   for (let rows = inputMatrix.length - 2; rows >= 1; rows--) {
+//     result.push(inputMatrix[rows][colNumber]);
+//   }
+// }
+
+// // at level 2, after sliceMatrix ran one time on:
+// /**
+// input:  inputMatrix  = [ [1,    2,   3,  4,    5], arr[0]
+//                          [6,    7,   8,  9,   10],
+//                          [11,  12,  13,  14,  15],
+//                          [16,  17,  18,  19,  20] ]
+//                          */
+
+// // [[ 6, 7, 8, 9],
+// //  [12,13,14]]
+
+// function sliceMatrix(inputMatrix) {
+//   let slicedMatrix = [];
+//   for (let row = 1; row <= inputMatrix.length - 2; row++) {
+//     slicedMatrix[row - 1] = [];
+//     for (let col = 1; col <= inputMatrix[0].length - 2; col++) {
+//       slicedMatrix[row - 1].push(inputMatrix[row][col]);
+//     }
+//   }
+
+//   return slicedMatrix;
+// }
+// // []
+
+// /**
+
+// Test Case #6
+// Input:
+
+// [[1,2,3,4,5],[6,7,8,9,10],[11,12,13,14,15],[16,17,18,19,20]]
+
+// Expected:
+
+// [1,2,3,4,5,10,15,20,19,18,17,16,11,6,   7,8,9,14,13,12]
+
+// Actual:
+
+// [ 1, 2, 3, 4, 5, 10, 15, 20, 19, 18, 17, 16, 11, 6 ]
+
+// StdOut:
+// [ 7, 8, 9, 14, 13, 12 ]
+// [ 1, 2, 3, 4, 5, 10, 15, 20, 19, 18, 17, 16, 11, 6 ]
+
+// */
