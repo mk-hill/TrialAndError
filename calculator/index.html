@@ -1,0 +1,212 @@
+<!-- todo fix style, add clearing -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Calculator</title>
+    <style>
+      .calculator {
+        border: 2px solid black;
+        border-radius: 3px;
+        width: 200px;
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .display {
+        border: 2px solid black;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 0.5rem;
+      }
+
+      .controls {
+        display: flex;
+        width: 100%;
+        flex: 100px 1 1;
+        border: 1px solid black;
+      }
+
+      .numbers {
+        display: flex;
+        flex-direction: column;
+        width: 300px;
+      }
+
+      .numbers div {
+        flex: 33% 1 1;
+        display: flex;
+      }
+
+      .num-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: 1px solid black;
+      }
+
+      .operations {
+        display: flex;
+        flex-direction: column;
+        width: 100px;
+      }
+
+      .op-btn {
+        flex: 20% 1 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: 1px solid black;
+      }
+
+      .btn:hover {
+        background: #ddd;
+      }
+
+      .btn:active {
+        background: #ccc;
+      }
+
+      div {
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="calculator">
+      <div class="display">
+        0
+      </div>
+      <div class="controls">
+        <div class="numbers">
+          <div>
+            <div class="btn num-btn">7</div>
+            <div class="btn num-btn">8</div>
+            <div class="btn num-btn">9</div>
+          </div>
+          <div>
+            <div class="btn num-btn">4</div>
+            <div class="btn num-btn">5</div>
+            <div class="btn num-btn">6</div>
+          </div>
+          <div>
+            <div class="btn num-btn">1</div>
+            <div class="btn num-btn">2</div>
+            <div class="btn num-btn">3</div>
+          </div>
+          <div>
+            <div class="btn num-btn">0</div>
+            <div class="btn num-btn">.</div>
+          </div>
+        </div>
+        <div class="operations">
+          <div class="btn op-btn">/</div>
+          <div class="btn op-btn">*</div>
+          <div class="btn op-btn">-</div>
+          <div class="btn op-btn">+</div>
+          <div class="btn op-btn">=</div>
+        </div>
+      </div>
+    </div>
+    <script>
+      /* --------------------
+  Keep track of numbers that have been clicked
+  when an operator is clicked,
+    store the previous number (clear current number state)
+    store the operator
+  when equals is clicked
+    calculate and display
+   
+   Add your code here
+  --------------------- */
+      class Calculator {
+        constructor() {
+          this.display = document.querySelector('.display');
+          this.numButtons = [...document.querySelectorAll('.num-btn')];
+          this.opButtons = [...document.querySelectorAll('.op-btn')];
+
+          this.currentNum = '';
+          this.prevNum = '';
+          this.currentOp = '';
+        }
+
+        static operations = {
+          '/'(x, y) {
+            return x / y;
+          },
+          '*'(x, y) {
+            return x * y;
+          },
+          '-'(x, y) {
+            return x - y;
+          },
+          '+'(x, y) {
+            return x + y;
+          },
+        };
+
+        get displayContent() {
+          return `${this.prevNum} ${this.currentOp} ${this.currentNum}`;
+        }
+
+        numberClick(el) {
+          this.currentNum += el.textContent;
+
+          this.updateDisplay();
+        }
+
+        opClick(el) {
+          if (el.textContent === '=') {
+            return this.calculate();
+          }
+
+          this.currentOp = el.textContent;
+
+          // move currentNum to prevNum
+          this.prevNum = this.currentNum;
+          this.currentNum = '';
+
+          this.updateDisplay();
+        }
+
+        calculate() {
+          const result = Calculator.operations[this.currentOp](
+            Number(this.prevNum),
+            Number(this.currentNum)
+          );
+          this.prevNum = '';
+          this.currentOp = '';
+          this.currentNum = result;
+          this.updateDisplay();
+        }
+
+        updateDisplay() {
+          this.display.textContent = this.displayContent;
+        }
+
+        init() {
+          this.numButtons.forEach(button =>
+            button.addEventListener(
+              'click',
+              this.numberClick.bind(this, button)
+            )
+          );
+          this.opButtons.forEach(button =>
+            button.addEventListener('click', this.opClick.bind(this, button))
+          );
+        }
+      }
+
+      const calc = new Calculator();
+
+      calc.init();
+    </script>
+  </body>
+</html>
