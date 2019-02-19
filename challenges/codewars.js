@@ -283,7 +283,7 @@ function likes(names) {
   return `${output} like this`;
 }
 
-// https://www.codewars.com/kata/mexican-wave/train/javascript
+// https://www.codewars.com/kata/mexican-wave/train/javascript asd
 const wave = str => [...str]
   .map((char, i) => {
     const newStr = [...str];
@@ -291,3 +291,36 @@ const wave = str => [...str]
     return newStr.join('');
   })
   .filter(s => s !== str);
+
+// https://www.codewars.com/kata/abbreviate-a-two-word-name/train/javascript
+function abbrevName(name) {
+  return name
+    .split(' ')
+    .map(word => word[0].toUpperCase())
+    .join('.');
+}
+
+// https://www.codewars.com/kata/return-the-day/train/javascript
+function whatDay(num) {
+  const days = {
+    1: 'Sunday',
+    2: 'Monday',
+    3: 'Tuesday',
+    4: 'Wednesday',
+    5: 'Thursday',
+    6: 'Friday',
+    7: 'Saturday',
+  };
+
+  return num in days ? days[num] : 'Wrong, please enter a number between 1 and 7';
+}
+
+// https://www.codewars.com/kata/will-there-be-enough-space/train/javascript
+function enough(cap, on, wait) {
+  return cap >= on + wait ? 0 : on + wait - cap;
+}
+
+// https://www.codewars.com/kata/58dbdccee5ee8fa2f9000058/solutions/javascript
+function spEng(sentence) {
+  return /english/gi.test(sentence);
+}
