@@ -1104,3 +1104,53 @@ function findGrantsCap(grantsArray, newBudget) {
 // }
 
 console.assert(findGrantsCap([2, 100, 50, 120, 1000], 190) === 47, 'wrong result');
+
+// https://www.hackerrank.com/challenges/the-birthday-bar/problem
+// Complete the birthday function below.
+function birthday(s, d, m) {
+  /// m = length, d = sum, continuous
+  const matchingSlices = [];
+  for (let start = 0; start < s.length; start++) {
+    const slice = s.slice(start, start + m);
+    const sum = slice.reduce((x, y) => x + y, 0);
+    if (sum === d && slice.length === m) {
+      matchingSlices.push(slice);
+    }
+  }
+  return matchingSlices.length;
+}
+
+// https://edabit.com/challenge/uxbwmpAWeLpcEoHXm
+function truncate(txt, txt_length, txt_suffix = '') {
+  return txt.slice(0, txt_length - txt_suffix.length) + txt_suffix;
+}
+
+// https://edabit.com/challenge/iKRmj2Q6GQHkAXXxf
+function textToNumberBinary(str) {
+  const wordMap = {
+    one: 1,
+    zero: 0,
+  };
+  const nums = str
+    .split(' ')
+    .map(word => (word.toLowerCase() in wordMap ? wordMap[word.toLowerCase()] : ''))
+    .join('');
+  return nums.slice(0, Math.floor(nums.length / 8) * 8);
+}
+
+// https://edabit.com/challenge/b7dXbWEhbr3bXCk7i
+function getStudentTopNotes(students) {
+  return students.map(({ notes }) => Math.max(...[...notes, 0]));
+}
+
+//https://edabit.com/challenge/p7vkhrwcWK7iPSqix
+function duplicateCount(str) {
+  return str.split('').reduce(
+    (tally, char) => {
+      tally[char] = tally[char] + 1 || 1;
+      if (tally[char] === 2) tally.duplicates++;
+      return tally;
+    },
+    { duplicates: 0 },
+  ).duplicates;
+}
