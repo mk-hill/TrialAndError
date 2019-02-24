@@ -16,11 +16,10 @@ function reverse(str) {
   return outputArr.join('');
 }
 
-const reverse2 = str =>
-  str
-    .split('')
-    .reverse()
-    .join('');
+const reverse2 = str => str
+  .split('')
+  .reverse()
+  .join('');
 
 const reverse3 = str => [...str].reverse().join('');
 
@@ -74,7 +73,7 @@ const recArr = [2, 5, 5, 2, 3, 5, 1, 2, 4];
 function findFirstRecurringItem(arr) {
   const found = {};
   let result;
-  arr.some(item => {
+  arr.some((item) => {
     if (!found[item]) {
       found[item] = true;
       return false;
@@ -139,7 +138,7 @@ Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
  * @param {string} s
  * @return {number}
  */
-const romanToInt2 = s => {
+const romanToInt2 = (s) => {
   let result = 0;
   const values = {
     i: 1,
@@ -165,7 +164,7 @@ const romanToInt2 = s => {
  *
  * @param {string} s testing123
  */
-const romanToInt = s => {
+const romanToInt = (s) => {
   const values = {
     i: 1,
     v: 5,
@@ -258,7 +257,7 @@ const q2b = () => {
     let acc = 0;
     let position = 0;
     const inputArr = data.toString().split('');
-    const result = inputArr.some(val => {
+    const result = inputArr.some((val) => {
       if (val === '(') {
         acc += 1;
       }
@@ -351,7 +350,7 @@ function TranslateSentence(sentence) {
   if (typeof sentence !== 'string' || sentence.length === 0) return '';
   return sentence
     .split(' ')
-    .map(word => {
+    .map((word) => {
       let hasPunctuation = false;
       const punctuation = /[?\\"",]/g;
       const indexes = [...word].reduce((tally, char) => {
@@ -452,7 +451,7 @@ function miniMaxSum(arr) {
 
 // Complete the playingWithNumbers function below.
 function playingWithNumbers(arr, queries) {
-  return queries.map(q => {
+  return queries.map((q) => {
     arr = arr.map(n => n + q);
     const absSum = arr.reduce((x, y) => Math.abs(x) + Math.abs(y));
     console.log(absSum);
@@ -469,7 +468,7 @@ function climbingLeaderboard(scores, alice) {
   });
   let startingPoint;
 
-  return alice.map(score => {
+  return alice.map((score) => {
     if (score > uniqueScores[0]) return 1;
     if (score < uniqueScores[uniqueScores.length - 1]) {
       return scoreMap[uniqueScores[uniqueScores.length - 1]] + 1;
@@ -496,7 +495,7 @@ function climbingLeaderboard(scores, alice) {
 }
 
 function gradingStudents(grades) {
-  return grades.map(grade => {
+  return grades.map((grade) => {
     if (grade < 38 || grade % 5 < 3) return grade;
     return grade + (5 - (grade % 5));
   });
@@ -645,7 +644,7 @@ function countingValleys(n, s) {
   let currentLevel = 0;
   const stepValues = { u: 1, d: -1 };
   let valleys = 0;
-  [...s].forEach(step => {
+  [...s].forEach((step) => {
     const nextLevel = currentLevel + stepValues[step.toLowerCase()];
     if (currentLevel === -1 && nextLevel === 0) valleys++;
     currentLevel = nextLevel;
@@ -739,7 +738,7 @@ function rotate(ar, d) {
 
 ('use strict');
 
-const fs = require('fs');
+// const fs = require('fs');
 
 process.stdin.resume();
 process.stdin.setEncoding('utf-8');
@@ -747,11 +746,11 @@ process.stdin.setEncoding('utf-8');
 let inputString = '';
 let currentLine = 0;
 
-process.stdin.on('data', function(inputStdin) {
+process.stdin.on('data', (inputStdin) => {
   inputString += inputStdin;
 });
 
-process.stdin.on('end', function() {
+process.stdin.on('end', () => {
   inputString = inputString.split('\n');
 
   main();
@@ -815,7 +814,7 @@ function zeros2(n) {
 function zerosMaker() {
   const member = [{ twos: 0, fives: 0 }, { twos: 0, fives: 0 }];
 
-  return function(n) {
+  return function (n) {
     if (n === 0 || n === 1) return 0;
     let twos = member[n] ? member[n].twos : member[member.length - 1].twos;
     let fives = member[n] ? member[n].fives : member[member.length - 1].fives;
@@ -836,7 +835,7 @@ function zerosMaker() {
   };
 }
 
-let zeros = zerosMaker();
+// let zeros = zerosMaker();
 
 /*
  * Complete the function below.
@@ -855,12 +854,10 @@ function sumEvenFib(start, end) {
   // Use given number's index if it exists in array,
   // Closest higher number otherwise
   // endIndex not inclusive for Array.slice
-  const getIndexes = (...nums) => {
-    return nums.map(num => {
-      const i = fib.indexOf(num);
-      return i === -1 ? fib.findIndex(n => n > num) : i;
-    });
-  };
+  const getIndexes = (...nums) => nums.map((num) => {
+    const i = fib.indexOf(num);
+    return i === -1 ? fib.findIndex(n => n > num) : i;
+  });
 
   const [startIndex, endIndex] = getIndexes(start, end);
 
@@ -915,7 +912,7 @@ function repeatedString(s, n) {
 }
 
 // from peer, for reference
-const spiralCopy = inputMatrix => {
+const spiralCopy = (inputMatrix) => {
   const copy = [];
   const elCount = inputMatrix.length * inputMatrix[0].length;
 
@@ -1108,7 +1105,7 @@ console.assert(findGrantsCap([2, 100, 50, 120, 1000], 190) === 47, 'wrong result
 // https://www.hackerrank.com/challenges/the-birthday-bar/problem
 // Complete the birthday function below.
 function birthday(s, d, m) {
-  /// m = length, d = sum, continuous
+  // / m = length, d = sum, continuous
   const matchingSlices = [];
   for (let start = 0; start < s.length; start++) {
     const slice = s.slice(start, start + m);
@@ -1143,7 +1140,7 @@ function getStudentTopNotes(students) {
   return students.map(({ notes }) => Math.max(...[...notes, 0]));
 }
 
-//https://edabit.com/challenge/p7vkhrwcWK7iPSqix
+// https://edabit.com/challenge/p7vkhrwcWK7iPSqix
 function duplicateCount(str) {
   return str.split('').reduce(
     (tally, char) => {
@@ -1153,4 +1150,67 @@ function duplicateCount(str) {
     },
     { duplicates: 0 },
   ).duplicates;
+}
+
+// https://www.hackerrank.com/challenges/hackerrank-in-a-string/problem
+// Complete the hackerrankInString function below.
+function hackerrankInString(s) {
+  const target = 'hackerrank';
+  let currentChar = 0;
+  let found = false;
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === target[currentChar]) {
+      currentChar++;
+      if (currentChar === target.length - 1) {
+        found = true;
+        break;
+      }
+    }
+  }
+  return found ? 'YES' : 'NO';
+}
+
+// https://www.hackerrank.com/challenges/alternating-characters/problem
+// Complete the alternatingCharacters function below.
+function alternatingCharacters(s) {
+  return (
+    s.length
+    - s
+      .split('')
+      .filter((char, i) => char !== s[i - 1])
+      .join('').length
+  );
+}
+
+// https://www.hackerrank.com/challenges/funny-string/problem
+// Complete the funnyString function below.
+function funnyString(s) {
+  const diff = str => str
+    .split('')
+    .map((char, i) => Math.abs(str.charCodeAt(i) - str.charCodeAt(i + 1)))
+    .slice(0, -1); // last comparison will be against undefined
+
+  const stringDiffs = diff(s);
+  const reverseDiffs = diff(
+    s
+      .split('')
+      .reverse()
+      .join(''),
+  );
+
+  return stringDiffs.every((d, i) => d === reverseDiffs[i]) ? 'Funny' : 'Not Funny';
+}
+
+// https://www.hackerrank.com/challenges/pangrams/problem
+// Complete the pangrams function below.
+function pangrams(s) {
+  const letters = 'A B C D E F G H I J K L M N O P Q R S T U V W X Y Z'.split(' ');
+  return letters.every(letter => s.toUpperCase().includes(letter)) ? 'pangram' : 'not pangram';
+}
+
+// https://www.hackerrank.com/challenges/mars-exploration/problem
+// Complete the marsExploration function below.
+function marsExploration(s) {
+  const expected = 'SOS'.repeat(s.length / 3);
+  return s.split('').filter((char, i) => char !== expected[i]).length;
 }
