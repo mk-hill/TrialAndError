@@ -1214,3 +1214,41 @@ function marsExploration(s) {
   const expected = 'SOS'.repeat(s.length / 3);
   return s.split('').filter((char, i) => char !== expected[i]).length;
 }
+
+// / https://www.hackerrank.com/challenges/caesar-cipher-1/problem
+function caesarCipher(s, k) {
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+  const rotated = alphabet.slice(k % alphabet.length);
+  for (let i = 0; i < k % alphabet.length; i++) {
+    rotated.push(alphabet[i]);
+  }
+
+  const swapChar = (char) => {
+    const target = rotated[alphabet.indexOf(char.toLowerCase())];
+    if (!target) return char;
+    const isUpper = char === char.toUpperCase();
+    return isUpper ? target.toUpperCase() : target;
+  };
+
+  return s
+    .split('')
+    .map(swapChar)
+    .join('');
+}
+
+// https://www.hackerrank.com/challenges/gem-stones/problem
+// Complete the gemstones function below.
+function gemstones(arr) {
+  return arr[0].split('').filter(char => arr.every(str => str.includes(char))).length;
+}
+
+// https://www.hackerrank.com/challenges/string-construction/problem
+// Complete the stringConstruction function below.
+function stringConstruction(s) {
+  const encountered = new Set();
+  return s.split('').reduce((cost, char) => {
+    if (!encountered.has(char)) cost++;
+    encountered.add(char);
+    return cost;
+  }, 0);
+}

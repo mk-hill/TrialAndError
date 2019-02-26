@@ -324,3 +324,12 @@ function enough(cap, on, wait) {
 function spEng(sentence) {
   return /english/gi.test(sentence);
 }
+
+// https://www.codewars.com/kata/string-scramble/train/javascript
+function scramble(str, arr) {
+  const scrambled = [];
+  arr.forEach((targetIndex, currentIndex) => {
+    scrambled[targetIndex] = str[currentIndex];
+  });
+  return scrambled.join('');
+}
