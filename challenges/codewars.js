@@ -333,3 +333,26 @@ function scramble(str, arr) {
   });
   return scrambled.join('');
 }
+
+// https://www.codewars.com/kata/sum-strings-as-numbers/train/javascript
+function sumStrings(a, b) {
+  const result = [];
+  const addDigitsAndCarry = (x = 0, y = 0, carry = 0) => {
+    const sum = Number(x) + Number(y) + Number(carry);
+    if (sum < 10) return { digit: `${sum}`, carry: false };
+    return { digit: `${sum - 10}`, carry: true };
+  };
+  let lastCarry = false;
+  for (let i = 1; i <= Math.max(a.length, b.length) + 1; i++) {
+    const { digit, carry } = addDigitsAndCarry(a[a.length - i], b[b.length - i], lastCarry);
+    result.push(digit);
+    lastCarry = carry;
+  }
+  while (result[result.length - 1] === '0') result.pop();
+  return result.reverse().join('');
+}
+
+// https://www.codewars.com/kata/shortest-word/train/javascript
+function findShort(s) {
+  return Math.min(...s.split(' ').map(word => word.length));
+}
